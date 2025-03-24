@@ -62,30 +62,39 @@ const ExpenseWrite = () => {
   const handleFileChange = (e) => {
     const selectedFiles = Array.from(e.target.files);
     const imageUrls = selectedFiles.map((file) => URL.createObjectURL(file));
-    setPreviewImages((prevImages) => [...prevImages, ...imageUrls]);
-    setFiles((prevFiles) => [...prevFiles, ...selectedFiles]);
+    setPreviewImages((prevImages) =>
+      Array.isArray(prevImages) ? [...prevImages, ...imageUrls] : [...imageUrls]
+    );
+    setFiles((prevFiles) =>
+      Array.isArray(prevFiles)
+        ? [...prevFiles, ...selectedFiles]
+        : [...selectedFiles]
+    );
     setExpense((prevExpense) => ({
       ...prevExpense,
-      photoUrls: [...prevExpense.photoUrls, ...selectedFiles],
+      photoUrls: Array.isArray(prevExpense.photoUrls)
+        ? [...prevExpense.photoUrls, ...selectedFiles]
+        : [...selectedFiles],
     }));
   };
-
   const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = new FormData();
     const totalAmount = calculateTotalAmount();
+
+    // 날짜 값 확인
     const expenseDto = {
       title: expense.title,
       content: expense.content,
       category: expense.category,
-      date: expense.date,
+      date: expense.date, // 여기서 날짜 값 확인
       amount: totalAmount,
     };
+
     console.log("expenseDto JSON:", JSON.stringify(expenseDto));
     formData.append("expenseDTO", JSON.stringify(expenseDto));
 
     if (files && files.length > 0) {
-      // files가 undefined일 경우를 대비한 조건 추가
       files.forEach((file) => {
         console.log("추가되는 파일:", file);
         formData.append("images", file);
@@ -98,8 +107,9 @@ const ExpenseWrite = () => {
       console.error("No access token found");
       return;
     }
+
     try {
-      const response = await fetch("http://localhost:8080/api/expenses", {
+      const response = await fetch("/api/expenses", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${accessToken}`,
@@ -119,7 +129,6 @@ const ExpenseWrite = () => {
       console.error("Error:", error);
     }
   };
-
   return (
     <div className="expense-write-container">
       <BackPage />

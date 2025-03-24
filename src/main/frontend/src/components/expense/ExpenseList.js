@@ -5,7 +5,6 @@ import "./ExpenseList.css";
 const ExpenseList = () => {
   const [expenses, setExpenses] = useState();
   const [token, setToken] = useState(null);
-  const [username, setUsername] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -25,7 +24,7 @@ const ExpenseList = () => {
         const expenseResponse = await fetch("/api/expenses", {
           method: "GET",
           headers: {
-            Authorization: `Bearer ${token}`, // Authorization 헤더 추가
+            Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
         });
@@ -47,16 +46,29 @@ const ExpenseList = () => {
 
     fetchData();
   }, [token]);
+
+  const handleTitleClick = (id) => {
+    navigate(`/detail/${id}`);
+  };
+
   return (
     <div className="expense-list-container">
       <h2 className="expense-list-title">경비 관리</h2>
       <ul className="expense-list-wrapper">
-        {expenses && expenses.length > 0 ? ( // expenses가 정의되었고, 길이가 0보다 큰 경우에만 map 실행
+        {expenses && expenses.length > 0 ? (
           expenses.map((expense) => (
             <li className="expense-list-item" key={expense.id}>
-              <h3 className="expense-list-title">{expense.title}</h3>
+              <h3
+                className="expense-list-title"
+                onClick={() => handleTitleClick(expense.id)}
+              >
+                {expense.title}
+              </h3>
               <p className="expense-list-content">{expense.content}</p>
               <p className="expense-list-amount">금액: {expense.amount} 원</p>
+              <p className="expense-list-date">
+                날짜: {expense.date} {/* 날짜 추가 */}
+              </p>
               <p className="expense-list-author">
                 작성자: {expense.username || localStorage.getItem("username")}
               </p>
@@ -75,4 +87,5 @@ const ExpenseList = () => {
     </div>
   );
 };
+
 export default ExpenseList;

@@ -1,119 +1,88 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useHistory } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import "./ExpenseDetail.css";
 
-const ExpenseDetailWithForm = () => {
-  const { id } = useParams(); // URL에서 id 값을 가져옵니다.
-  const history = useHistory(); // 수정 후 페이지 이동을 위한 history 사용
-  const [expense, setExpense] = useState(null);
-  const [totalAmount, setTotalAmount] = useState(0);
-  const [updatedExpense, setUpdatedExpense] = useState({
-    title: "",
-    content: "",
-    amount: 0,
-    category: "",
-    photoUrl: "",
-  });
+const ExpenseDetail = () => {
+  const [expense, setExpense] = useState(null); // expense 상태 관리
+  const { id } = useParams(); // URL에서 id 파라미터 가져오기
+  const navigate = useNavigate();
 
   useEffect(() => {
-    // 서버에서 해당 항목을 가져옵니다.
-    fetch(`/api/expenses/${id}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setExpense(data);
-        setUpdatedExpense(data); // 기존 항목을 폼에 설정
-      });
+    const fetchExpenseDetail = async () => {
+      try {
+        const token = localStorage.getItem("access_token");
+        if (!token) {
+          navigate("/login");
+          return;
+        }
 
-    // 전체 금액 합산을 서버에서 가져옵니다.
-    fetch("/api/expenses/total")
-      .then((res) => res.json())
-      .then((data) => {
-        setTotalAmount(data);
-      });
-  }, [id]);
+        const response = await fetch(`/api/expenses/${id}`, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
 
-  // 입력값 변경 처리
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setUpdatedExpense({ ...updatedExpense, [name]: value });
-  };
+        if (response.ok) {
+          const data = await response.json();
+          setExpense(data); // 데이터를 상태에 저장
+        } else {
+          console.error("Error fetching expense details:", response.status);
+        }
+      } catch (error) {
+        console.error("Error fetching expense data:", error);
+      }
+    };
 
-  // 수정된 항목을 서버로 보내기
-  const handleSubmit = (e) => {
-    e.preventDefault();
+    fetchExpenseDetail();
+  }, [id, navigate]); // id가 변경될 때마다 fetch 실행
 
-    fetch(`/api/expenses/${id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(updatedExpense),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        setExpense(data);
-        history.push(`/expenses/${id}`); // 수정 후 디테일 페이지로 이동
-      })
-      .catch((error) => console.error("Error:", error));
-  };
-
+  // 데이터를 아직 로드하지 않았으면 로딩 표시
   if (!expense) {
     return <div>Loading...</div>;
   }
 
+  // 로드한 데이터를 화면에 출력
   return (
-    <div>
-      <h2>비용 항목 수정</h2>
-      <form onSubmit={handleSubmit}>
+    <div className="expense-detail-container">
+      <h2 className="expense-detail-title">{expense.title}</h2>
+      <div className="expense-detail-info">
         <div>
-          <label>제목</label>
-          <input
-            type="text"
-            name="title"
-            value={updatedExpense.title}
-            onChange={handleChange}
-          />
+          <strong>날짜: </strong>
+          {expense.date}
         </div>
         <div>
-          <label>내용</label>
-          <textarea
-            name="content"
-            value={updatedExpense.content}
-            onChange={handleChange}
-          />
+          <strong>카테고리: </strong>
+          {expense.category}
         </div>
         <div>
-          <label>금액</label>
-          <input
-            type="number"
-            name="amount"
-            value={updatedExpense.amount}
-            onChange={handleChange}
-          />
+          <strong>내용: </strong>
+          {expense.content}
         </div>
         <div>
-          <label>카테고리</label>
-          <input
-            type="text"
-            name="category"
-            value={updatedExpense.category}
-            onChange={handleChange}
-          />
+          <strong>금액: </strong>
+          {expense.amount} 원
         </div>
-        <div>
-          <label>사진 URL</label>
-          <input
-            type="text"
-            name="photoUrl"
-            value={updatedExpense.photoUrl}
-            onChange={handleChange}
-          />
-        </div>
-        <button type="submit">수정하기</button>
-      </form>
+      </div>
 
-      <h3>전체 합계: {totalAmount} 원</h3>
+      {expense.photoUrls && expense.photoUrls.length > 0 && (
+        <div className="expense-detail-images">
+          <h3>사진</h3>
+          <div className="expense-detail-image-container">
+            {expense.photoUrls.map((url, index) => (
+              <img
+                key={index}
+                className="expense-detail-image"
+                src={url}
+                alt={`Expense image ${index + 1}`}
+              />
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 };
 
-export default ExpenseDetailWithForm;
+export default ExpenseDetail;

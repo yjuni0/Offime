@@ -1,0 +1,45 @@
+.expense-detail-container {
+  padding: 20px;
+}
+
+.expense-detail-title {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.expense-detail-info {
+  margin-bottom: 20px;
+}
+
+.expense-detail-info div {
+  margin-bottom: 10px;
+}
+
+.expense-detail-images {
+  margin-top: 20px;
+}
+
+.expense-detail-image-container {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.expense-detail-image {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+}
+
+.expense-detail-edit-button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.expense-detail-edit-button:hover {
+  background-color: #45a049;
+}
