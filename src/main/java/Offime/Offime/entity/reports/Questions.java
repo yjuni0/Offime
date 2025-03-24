@@ -1,10 +1,10 @@
 package Offime.Offime.entity.reports;
 
+import Offime.Offime.common.reports.QuestionType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import practice.demo.common.reports.QuestionType;
 
 @Getter
 @Setter

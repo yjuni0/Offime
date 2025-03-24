@@ -1,12 +1,12 @@
 package Offime.Offime.entity.reports;
 
+import Offime.Offime.entity.member.Member;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import practice.demo.entity.member.Member;
 
 import java.time.LocalDateTime;
 

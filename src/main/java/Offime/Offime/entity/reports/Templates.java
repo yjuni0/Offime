@@ -1,11 +1,12 @@
 package Offime.Offime.entity.reports;
 
+import Offime.Offime.entity.member.Member;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
-import practice.demo.entity.member.Member;
+import java.util.List;
 
 import java.time.LocalDateTime;
 
@@ -33,8 +34,7 @@ public class Templates {
     @Column(name = "CREATED_AT")
     private LocalDateTime created_at;
 
-    @ManyToOne
-    @JoinColumn(name = "WRITE_POSSIBLE_MEMBER")
-    private Member member;
+    @OneToMany(mappedBy = "template", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<TemplateAccess> accessList;
 
 }

@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @NoArgsConstructor
-public class Response_files {
+public class ResponseFiles {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
