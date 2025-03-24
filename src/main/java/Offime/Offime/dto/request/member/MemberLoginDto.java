@@ -1,4 +1,14 @@
 package Offime.Offime.dto.request.member;
 
+import lombok.Builder;
+
 public class MemberLoginDto {
+    private String email;
+    private String password;
+
+    @Builder
+    public MemberLoginDto(String email, String password) {
+        this.email = email;
+        this.password = password;
+    }
 }
