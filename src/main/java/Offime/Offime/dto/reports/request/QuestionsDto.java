@@ -5,11 +5,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
-public class QuestionsListDto {
-
+public class QuestionsDto {
     private QuestionType type;
-    private String questionText;
+    private String content;
+    private List<String> optionList;
 }

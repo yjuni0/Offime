@@ -19,6 +19,7 @@ public class TemplatesController {
 
     @PostMapping("/create")
     public ResponseEntity<String> createTemplate(@RequestBody TemplatesDto templatesDto) {
+        System.out.println(templatesDto);
         templatesService.createTemplate(templatesDto);
         return ResponseEntity.status(HttpStatus.OK).body("템플릿 생성 완료");
     }

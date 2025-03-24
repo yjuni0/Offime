@@ -18,4 +18,5 @@ public class TemplatesDto {
     private List<Long> accessMemberIdList;
     private Byte icon;
     private Byte color;
+    private List<QuestionsDto> questionList;
 }

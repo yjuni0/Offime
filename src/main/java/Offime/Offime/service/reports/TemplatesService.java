@@ -1,5 +1,6 @@
 package Offime.Offime.service.reports;
 
+import Offime.Offime.dto.reports.request.QuestionsDto;
 import Offime.Offime.dto.reports.request.TemplatesDto;
 import Offime.Offime.entity.member.Member;
 import Offime.Offime.entity.reports.Questions;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -41,19 +43,26 @@ public class TemplatesService {
             accessList.add(templateAccess);
         }
 
+
+
         template.setAccessList(accessList);
 
         templatesRepository.save(template);
 
+        createQuestions(template, templatesDto.getQuestionList());
     }
 
-    public void createQuestions(Templates template, QuestionsListDto questionsList) {
+    private void createQuestions(Templates template, List<QuestionsDto> questionList) {
 
-        for (Questions questions : questionsList) {
-            questions.setTemplate(template);
+        for (QuestionsDto questionData : questionList) {
+            Questions question = new Questions();
+            question.setType(questionData.getType());
+            question.setQuestionText(questionData.getContent());
+            question.setTemplate(template);
 
+            questionsRepository.save(question);
         }
-
-
     }
+
+
 }

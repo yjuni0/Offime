@@ -20,6 +20,7 @@ public class Questions {
     @JoinColumn(name = "TEMPLATE_ID", nullable = false)
     private Templates template;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "TYPE")
     private QuestionType type;
 
