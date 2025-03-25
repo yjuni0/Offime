@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,13 +23,15 @@ import java.io.IOException;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private static final Logger logger = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
-    private static final String SECRET_KEY = System.getenv("JWT_SECRET_KEY");
+
+    @Value("${jwt.secret}") // @Value 어노테이션 사용
+    private String secretKey;
 
     @Autowired
     private UserDetailsService userDetailsService;
 
     public JwtAuthenticationFilter() {
-        logger.info("JwtAuthenticationFilter 생성됨, SECRET_KEY: {}", SECRET_KEY);
+        logger.info("JwtAuthenticationFilter 생성됨, SECRET_KEY: {}", secretKey); // secretKey 변수 사용
     }
 
     @Override
@@ -38,7 +41,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String authorizationHeader = request.getHeader("Authorization");
         logger.info("Authorization Header: {}", authorizationHeader);
 
-        if (SECRET_KEY == null || SECRET_KEY.isEmpty()) {
+        if (secretKey == null || secretKey.isEmpty()) { // secretKey 변수 사용
             logger.error("SECRET_KEY가 설정되지 않음!");
             filterChain.doFilter(request, response);
             return;
@@ -50,7 +53,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
             try {
                 Claims claims = Jwts.parser()
-                        .setSigningKey(SECRET_KEY)
+                        .setSigningKey(secretKey) // secretKey 변수 사용
                         .parseClaimsJws(token)
                         .getBody();
 

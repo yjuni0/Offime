@@ -67,7 +67,7 @@ const ExpenseList = () => {
               <p className="expense-list-content">{expense.content}</p>
               <p className="expense-list-amount">금액: {expense.amount} 원</p>
               <p className="expense-list-date">
-                날짜: {expense.date} {/* 날짜 추가 */}
+                날짜: {expense.expenseDate} {/* 날짜 추가 */}
               </p>
               <p className="expense-list-author">
                 작성자: {expense.username || localStorage.getItem("username")}

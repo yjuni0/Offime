@@ -11,9 +11,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.bind.annotation.CrossOrigin;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,13 +34,18 @@ public class ExpenseController {
     @Autowired
     private ObjectMapper objectMapper; // ObjectMapper 주입
 
+    private static final Logger logger = LoggerFactory.getLogger(ExpenseController.class);
+
+
     // 게시물 생성 (이미지와 함께)
 // 게시물 생성 (이미지와 함께)
     @PostMapping
     public ResponseEntity<ExpenseResponseDTO> createExpense(@RequestParam("expenseDTO") String expenseDTOString,
-                                                            @RequestParam("images") List<MultipartFile> images) {
+                                                            @RequestParam(value = "images", required = false) List<MultipartFile> images) {
         try {
             ExpenseRequestDTO expenseDTO = objectMapper.readValue(expenseDTOString, ExpenseRequestDTO.class);
+            logger.info("Parsed ExpenseRequestDTO in Controller: {}", expenseDTO); // 추가된 로깅
+
             Expense createdExpense = expenseService.createExpense(expenseDTO, images);
 
             // 응답에 필요한 데이터 반환
@@ -47,7 +55,7 @@ public class ExpenseController {
             responseDTO.setContent(createdExpense.getContent());
             responseDTO.setAmount(createdExpense.getAmount());
             responseDTO.setCategory(createdExpense.getCategory());
-            responseDTO.setCreatedAt(createdExpense.getCreatedAt());
+            responseDTO.setExpenseDate(createdExpense.getExpenseDate()); // 응답 DTO에 날짜 설정
 
             // 이미지 URLs 처리
             List<String> imageUrls = expenseImageRepository.findByExpenseId(createdExpense.getId()).stream()
@@ -58,7 +66,8 @@ public class ExpenseController {
             return new ResponseEntity<>(responseDTO, HttpStatus.CREATED);
 
         } catch (JsonProcessingException e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST); // JSON 파싱 오류 시 400 Bad Request 반환
+            logger.error("Error parsing ExpenseRequestDTO: {}", e.getMessage());
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -81,15 +90,29 @@ public class ExpenseController {
 
     // 게시물 수정 (id로)
     @PutMapping("/{id}")
-    public ExpenseResponseDTO updateExpense(@PathVariable Long id, @RequestBody ExpenseRequestDTO expenseDTO) {
-        Expense updatedExpense = expenseService.updateExpense(id, expenseDTO);
+    public ExpenseResponseDTO updateExpense(
+            @PathVariable Long id,
+            @RequestParam("title") String title,
+            @RequestParam("content") String content,
+            @RequestParam("amount") int amount,
+            @RequestParam("category") String category,
+            @RequestParam(value = "images", required = false) List<MultipartFile> images) {
+
+        ExpenseRequestDTO expenseDTO = new ExpenseRequestDTO();
+        expenseDTO.setTitle(title);
+        expenseDTO.setContent(content);
+        expenseDTO.setAmount(amount);
+        expenseDTO.setCategory(category);
+
+        Expense updatedExpense = expenseService.updateExpense(id, expenseDTO, images);
         return convertToResponseDTO(updatedExpense);
     }
 
     // 게시물 삭제 (id로)
     @DeleteMapping("/{id}")
-    public void deleteExpense(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteExpense(@PathVariable Long id) {
         expenseService.deleteExpense(id);
+        return ResponseEntity.noContent().build(); // HTTP 204 No Content 반환
     }
 
     // Entity를 Response DTO로 변환하는 메서드
@@ -101,7 +124,7 @@ public class ExpenseController {
         responseDTO.setUsername(expense.getUsername());
         responseDTO.setAmount(expense.getAmount());
         responseDTO.setCategory(expense.getCategory());
-        responseDTO.setCreatedAt(expense.getCreatedAt());
+        responseDTO.setExpenseDate(expense.getExpenseDate()); // 추가: 날짜 설정
 
         // 이미지 URLs 처리
         List<String> imageUrls = expenseImageRepository.findByExpenseId(expense.getId()).stream()

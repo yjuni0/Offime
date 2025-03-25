@@ -6,6 +6,7 @@ import lombok.Setter;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Getter
@@ -24,7 +25,9 @@ public class Expense {
     private String username;  // 작성자
     private double amount;  // 금액
     private String category;  // 식비, 교통, 숙박, 경조사, 기타
-    private String createdAt;  // 작성시간
+
+    @Column(name = "expense_date", nullable = false)
+    private LocalDate expenseDate;
 
     @OneToMany(mappedBy = "expense", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ExpenseImage> images;  // 여러 개의 사진

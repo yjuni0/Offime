@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
+  const navigate = useNavigate();
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -15,19 +18,16 @@ const Signup = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/auth/signup",
+        "http://localhost:3000/api/auth/register",
         {
           username,
           password,
         }
       );
 
-      if (response.status === 200) {
+      if (response.status === 201) {
         setSuccess("User registered successfully!");
-        // 성공적으로 회원가입 후 로그인 페이지로 리디렉션
-        setTimeout(() => {
-          window.location.href = "/login";
-        }, 2000);
+        navigate("/login");
       }
     } catch (err) {
       if (err.response && err.response.data) {

@@ -4,6 +4,7 @@ import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Getter
@@ -16,7 +17,7 @@ public class ExpenseResponseDTO {
     private String username;
     private double amount;
     private String category;
-    private String createdAt;
+    private LocalDate expenseDate;
     private List<String> imageUrls;  // 이미지는 URL로 응답
 
 

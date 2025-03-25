@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode"; // JWT 디코딩을 위한 라이브러리
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -13,28 +14,43 @@ const Login = () => {
     e.preventDefault();
 
     try {
+      // 백엔드에 로그인 요청
       const response = await axios.post("/api/auth/login", {
         username,
         password,
       });
-      console.log("서버 응답:", response.data);
 
-      const token = response.data; // 백엔드에서 토큰을 문자열로 반환하므로 response.data 그대로 사용
+      // 서버 응답에서 토큰 받기
+      const { token } = response.data;
+      if (!token) {
+        setError("Token is missing.");
+        return;
+      }
 
-      localStorage.setItem("access_token", token); // JWT 토큰을 로컬 스토리지에 저장
-      localStorage.setItem("username", username); // 사용자 이름을 로컬 스토리지에 저장
+      // 토큰을 로컬 스토리지에 저장
+      localStorage.setItem("access_token", token);
 
-      setError(""); // 로그인 성공 후, 원하는 페이지로 리디렉션
-      window.location.href = "/list";
+      // JWT 디코딩하여 사용자 정보 확인
+
+      const decodedToken = jwtDecode(token);
+      const { sub: decodedUsername, role } = decodedToken;
+
+      // 사용자 정보와 권한을 로컬 스토리지에 저장
+      localStorage.setItem("username", decodedUsername);
+      localStorage.setItem("role", role); // role 값 저장
+
+      setError(""); // 로그인 성공 후 오류 메시지 초기화
+
+      navigate("/list");
     } catch (err) {
-      console.log("로그인 실패:", err);
-      setError("Invalid credentials!");
+      console.log("로그인 실패:", err); // 여기서 에러만 로그로 출력하고, 토큰 정보는 출력하지 않음
+      setError("Invalid credentials!"); // 로그인 실패 시 오류 메시지
     }
   };
 
   const handleSignupRedirect = () => {
     // 회원가입 페이지로 리디렉션
-    window.location.href = "/signup";
+    navigate("/signup");
   };
 
   return (

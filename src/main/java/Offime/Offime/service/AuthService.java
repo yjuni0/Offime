@@ -20,6 +20,7 @@ public class AuthService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+
     // 회원가입 처리
     public Member register(RegisterRequest request) {
         logger.info("회원가입 요청 - 사용자 이름: {}, 비밀번호: {}", request.getUsername(), request.getPassword());

@@ -28,5 +28,15 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedHeaders("*") // 허용할 모든 헤더
                 .allowCredentials(true) // 쿠키 인증 정보를 서버로 보낼 수 있도록 허용 (필요한 경우 true로 설정)
                 .maxAge(3600); // Preflight 요청에 대한 응답을 3600초 (1시간) 동안 캐싱
+
+        // 이미지 요청에 대한 CORS 설정 추가
+        registry.addMapping("/images/**") // /images/ 경로에 대해 CORS 설정
+                .allowedOrigins("http://localhost:3000") // 허용할 Origin (프론트엔드 주소)
+                .allowedMethods("GET") // GET 메서드만 허용
+                .allowedHeaders("*") // 모든 헤더 허용
+                .allowCredentials(true) // 쿠키 인증 정보 허용
+                .maxAge(3600); // 캐싱 설정
     }
+
+
 }

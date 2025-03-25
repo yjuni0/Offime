@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import "./ExpenseDetail.css";
+import BackPage from "../BackPage";
 
 const ExpenseDetail = () => {
-  const [expense, setExpense] = useState(null); // expense 상태 관리
-  const { id } = useParams(); // URL에서 id 파라미터 가져오기
+  const [expense, setExpense] = useState(null);
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [error, setError] = useState(null); // 에러 상태 추가
+  const { id } = useParams();
   const navigate = useNavigate();
+  const role = localStorage.getItem("role");
 
   useEffect(() => {
     const fetchExpenseDetail = async () => {
@@ -26,62 +30,118 @@ const ExpenseDetail = () => {
 
         if (response.ok) {
           const data = await response.json();
-          setExpense(data); // 데이터를 상태에 저장
+          setExpense(data);
         } else {
-          console.error("Error fetching expense details:", response.status);
+          setError("데이터를 가져오는 데 실패했습니다.");
         }
       } catch (error) {
-        console.error("Error fetching expense data:", error);
+        setError("오류 발생: " + error.message);
       }
     };
 
     fetchExpenseDetail();
-  }, [id, navigate]); // id가 변경될 때마다 fetch 실행
+  }, [id, navigate]);
 
-  // 데이터를 아직 로드하지 않았으면 로딩 표시
-  if (!expense) {
-    return <div>Loading...</div>;
+  const handleDelete = async () => {
+    if (window.confirm("정말로 삭제하시겠습니까?")) {
+      try {
+        const token = localStorage.getItem("access_token");
+        if (!token) {
+          navigate("/login");
+          return;
+        }
+
+        const response = await fetch(`/api/expenses/${id}`, {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (response.ok) {
+          navigate("/list");
+        } else {
+          console.error("Error deleting expense:", response.status);
+        }
+      } catch (error) {
+        console.error("Error deleting expense:", error);
+      }
+    }
+  };
+
+  const handleEdit = () => {
+    navigate(`/update/${id}`);
+  };
+
+  if (error) {
+    return <div>{error}</div>;
   }
 
-  // 로드한 데이터를 화면에 출력
-  return (
-    <div className="expense-detail-container">
-      <h2 className="expense-detail-title">{expense.title}</h2>
-      <div className="expense-detail-info">
-        <div>
-          <strong>날짜: </strong>
-          {expense.date}
-        </div>
-        <div>
-          <strong>카테고리: </strong>
-          {expense.category}
-        </div>
-        <div>
-          <strong>내용: </strong>
-          {expense.content}
-        </div>
-        <div>
-          <strong>금액: </strong>
-          {expense.amount} 원
-        </div>
-      </div>
+  if (!expense) {
+    return <div className="loading">Loading...</div>;
+  }
 
-      {expense.photoUrls && expense.photoUrls.length > 0 && (
-        <div className="expense-detail-images">
-          <h3>사진</h3>
-          <div className="expense-detail-image-container">
-            {expense.photoUrls.map((url, index) => (
-              <img
-                key={index}
-                className="expense-detail-image"
-                src={url}
-                alt={`Expense image ${index + 1}`}
-              />
-            ))}
+  return (
+    <>
+      <BackPage />
+      <div className="expense-detail-container">
+        <h2 className="expense-detail-title">{expense.title}</h2>
+        <div className="expense-detail-info">
+          <div>
+            <strong>날짜: </strong>
+            {new Date(expense.expenseDate).toLocaleDateString()}
+          </div>
+          <div>
+            <strong>카테고리: </strong>
+            {expense.category}
+          </div>
+          <div>
+            <strong>내용: </strong> {expense.content}
+          </div>
+          <div>
+            <strong>금액: </strong> {expense.amount} 원
           </div>
         </div>
-      )}
-    </div>
+
+        {expense.imageUrls && expense.imageUrls.length > 0 && (
+          <div className="expense-detail-images">
+            <h3>사진</h3>
+            <div className="expense-detail-image-container">
+              {expense.imageUrls.map((url, index) => (
+                <img
+                  key={index}
+                  className="expense-detail-image"
+                  src={url}
+                  alt={`Expense image ${index + 1}`}
+                  onClick={() => setSelectedImage(url)}
+                />
+              ))}
+            </div>
+          </div>
+        )}
+
+        {selectedImage && (
+          <div className="image-modal" onClick={() => setSelectedImage(null)}>
+            <div className="image-modal-content">
+              <img src={selectedImage} alt="Expanded view" />
+            </div>
+          </div>
+        )}
+
+        <div className="expense-detail-buttons">
+          <button className="edit-button" onClick={handleEdit}>
+            수정
+          </button>
+
+          {role === "ADMIN" && (
+            <button className="delete-button" onClick={handleDelete}>
+              삭제
+            </button>
+          )}
+        </div>
+      </div>
+    </>
   );
 };
 

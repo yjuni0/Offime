@@ -1,0 +1,135 @@
+/* ExpenseUpdateStyles.css */
+
+.expense-update-container {
+  max-width: 500px;
+  margin: 0 auto;
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.expense-update-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.expense-update-label {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #333;
+  text-align: left;
+}
+
+.expense-update-input,
+.expense-update-textarea {
+  padding: 10px;
+  margin: 5px 0;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+}
+
+.expense-update-textarea {
+  height: 80px;
+  resize: none;
+}
+
+.expense-update-category-buttons {
+  display: flex;
+  justify-content: space-around;
+  margin: 10px 0;
+}
+
+.expense-update-category-button {
+  padding: 8px 16px;
+  font-size: 14px;
+  border: none;
+  background-color: #ddd;
+  color: #333;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.expense-update-category-button.selected {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.expense-update-file-input-wrapper {
+  display: inline-block;
+  padding: 8px 12px;
+  background-color: #007bff;
+  color: #fff;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.expense-update-hidden-input {
+  display: none;
+}
+
+.expense-update-image-preview-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.expense-update-preview-image {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+}
+
+.expense-update-amount-container {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.expense-update-amount-container input {
+  flex-grow: 1;
+}
+
+.expense-update-remove-button {
+  margin-left: 10px;
+  padding: 6px 12px;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.expense-update-add-button {
+  margin-top: 10px;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.expense-update-add-button:hover {
+  background-color: #0056b3;
+}
+
+.expense-update-submit-button {
+  margin-top: 20px;
+  background-color: #28a745;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.expense-update-submit-button:hover {
+  background-color: #218838;
+}
