@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import axios from "axios";
 
-function ReportCreateOptionBlock({type, questionId}) {
+function ReportCreateOptionBlock({type, questionId, setResponseData,}) {
 
     const [optionList, setOptionList] = useState([]);
 
@@ -17,7 +17,9 @@ function ReportCreateOptionBlock({type, questionId}) {
         <div>
             {optionList.map((option) => (
                 <div>
-                    <input type={type} value={option}/> {option}
+                    <input type={type} name={`question-${questionId}`} value={option}
+                           onChange={(e) => {}}
+                    /> {option}
                 </div>
             ))}
         </div>

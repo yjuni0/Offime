@@ -1,16 +1,20 @@
 import ReportCreateOptionBlock from "./ReportCreateOptionBlock";
+import {useEffect} from "react";
 
-function reportCreateQuestionType ({type, questionId, setResponseData}) {
+function reportCreateQuestionType ({type, questionId, responseData ,setResponseData}) {
 
+    const updateText = (value) => {
+        setResponseData((prev) => console.log(responseData));
+    };
 
     switch (type) {
         case "TEXT" :
-            return <input type={"text"} onChange={ (e) => setResponseData(e.target.value)}/>
+            return <input type={"text"} onChange={ (e) => updateText(e.target.value)}/>
         case "CHOICE" :
             return (
             <div>
                 <h1>ReportCreateQuestionType</h1>
-                <ReportCreateOptionBlock type={"radio"} questionId={questionId}/>
+                <ReportCreateOptionBlock type={"radio"} questionId={questionId} />
             </div>
         )
         case "MULTIPLE_CHOICE" :

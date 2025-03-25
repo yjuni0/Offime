@@ -1,9 +1,8 @@
 import {useEffect, useState} from "react";
 import axios from "axios";
-import ReportCreateOptionBlock from "./ReportCreateOptionBlock";
 import ReportCreateQuestionType from "./ReportCreateQuestionType";
 
-function ReportCreateQuestionBlock ({templateId, setResponseData}) {
+function ReportCreateQuestionBlock ({templateId, responseData, setResponseData}) {
 
     const [questionList, setQuestionList] = useState([]);
 
@@ -15,6 +14,7 @@ function ReportCreateQuestionBlock ({templateId, setResponseData}) {
 
     useEffect(() => {
         getQuestionList();
+
     }, []);
 
     return(
@@ -22,7 +22,7 @@ function ReportCreateQuestionBlock ({templateId, setResponseData}) {
             {questionList.map((question) => (
                 <div key={question.order}>
                     <div>질문 : {question.questionText}</div>
-                    <ReportCreateQuestionType type={question.type} questionId={question.id} setResponseData={setResponseData}/>
+                    <ReportCreateQuestionType type={question.type} questionId={question.id} setResponseData={setResponseData} responseData={responseData}/>
                 </div>
             ))}
         </div>

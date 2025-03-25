@@ -25,10 +25,14 @@ function ReportCreate() {
     const postReport = async (e) => {
         e.preventDefault();
         const data = {
-            title, templateId, writerId: 1,
+            title, templateId, writerId: 1, responseData
         }
         await axios.post('http://localhost:8080/reports/create', data)
     }
+
+    useEffect(() => {
+        console.log(responseData);
+    }, [responseData]);
 
     return (
         <div>
@@ -36,7 +40,7 @@ function ReportCreate() {
             템플릿 제목 : {templateData.title}
             <form onSubmit={postReport}>
                 <input placeholder={"제목"} type={"text"} value={title} onChange={(e) => setTitle(e.target.value)} />
-                <ReportCreateQuestionBlock templateId={templateId} setResponseData={setResponseData}/>
+                <ReportCreateQuestionBlock templateId={templateId} setResponseData={setResponseData} responseData={responseData}/>
                 <button type={"submit"}>보고서 작성</button>
             </form>
         </div>
