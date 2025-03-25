@@ -12,20 +12,20 @@ import java.time.LocalTime;
 
 @Getter
 @NoArgsConstructor
-public class RequestClockIn {
+public class RequestOutOfOffice {
 
-    private double latitude;
-    private double longitude;
     private EventType eventType;
+    private OutOfOfficeType outOfOfficeType;
 
-
-    public static EventRecord toEntity(RequestClockIn requestClockIn) {
+    public static EventRecord toEntity(RequestOutOfOffice requestOutOfOffice, LocalTime clockInTime) {
         return EventRecord.builder()
                 .date(LocalDate.now())
                 .requestTime(LocalDateTime.now())
-                .clockIn(LocalTime.now())
-                .eventType(requestClockIn.eventType)
+                .clockIn(clockInTime)
+                .eventType(requestOutOfOffice.eventType)
+                .outOfOfficeType(requestOutOfOffice.outOfOfficeType)
 //                .isLate(requestEventRecord.)
                 .build();
     }
 }
+

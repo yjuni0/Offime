@@ -13,12 +13,10 @@ import java.time.LocalTime;
 @NoArgsConstructor
 public class RequestReturnToOffice {
 
-    private LocalDate date;
-    private LocalDateTime requestTime;
-    private LocalTime clockIn;
-    private EventType eventType;
     private double latitude;
     private double longitude;
+    private EventType eventType;
+
 
     public static EventRecord toEntity(RequestReturnToOffice requestReturnToOffice, LocalTime clockInTime) {
         return EventRecord.builder()
