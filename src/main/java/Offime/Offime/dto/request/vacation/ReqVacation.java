@@ -1,9 +1,9 @@
-package Offime.Offime.dto;
+package Offime.Offime.dto.request.vacation;
 
-import Offime.Offime.entity.Member;
-import Offime.Offime.entity.Vacation;
-import Offime.Offime.entity.VacationApprovalStatus;
-import Offime.Offime.entity.VacationType;
+import Offime.Offime.entity.member.Member;
+import Offime.Offime.entity.vacation.Vacation;
+import Offime.Offime.entity.vacation.VacationApprovalStatus;
+import Offime.Offime.entity.vacation.VacationType;
 
 import java.time.LocalDate;
 
