@@ -7,7 +7,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface ScheduleReposirory extends JpaRepository<Schedule, Long> {
+public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
 
     @Query("SELECT s FROM Schedule s WHERE s.member.id = :memberId AND FUNCTION('YEAR', s.date) = :year AND FUNCTION('MONTH', s.date) = :month")
     List<Schedule> findByMemberIdAndYearAndMonth(@Param("memberId") Long memberId,@Param("year") Integer year,  @Param("month") Integer month);

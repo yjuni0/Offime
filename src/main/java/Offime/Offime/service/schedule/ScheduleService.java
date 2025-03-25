@@ -7,7 +7,7 @@ import Offime.Offime.dto.response.schedule.ResScheduleWriteDto;
 import Offime.Offime.entity.member.Member;
 import Offime.Offime.entity.schedule.Schedule;
 import Offime.Offime.repository.member.MemberRepository;
-import Offime.Offime.repository.schedule.ScheduleReposirory;
+import Offime.Offime.repository.schedule.ScheduleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,11 +19,11 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Transactional
 public class ScheduleService {
-    private ScheduleReposirory scheduleReposirory;
+    private ScheduleRepository scheduleRepository;
     private MemberRepository memberRepository;
 
     public List<ResScheduleDto> getScheduleByMemberIdAndYearAndMonth(Long memberId,Integer year, Integer month) {
-        List<Schedule> schedules = scheduleReposirory.findByMemberIdAndYearAndMonth(memberId, year, month);
+        List<Schedule> schedules = scheduleRepository.findByMemberIdAndYearAndMonth(memberId, year, month);
         List<ResScheduleDto> ListDto = schedules.stream()
                 .map(ResScheduleDto::fromEntity)
                 .collect(Collectors.toList());
@@ -34,16 +34,16 @@ public class ScheduleService {
         Member member = memberRepository.findById(dto.getMemberId())
                 .orElseThrow(()-> new IllegalArgumentException("Member not found"));
         Schedule schedule = ScheduleWriteDto.ofEntity(member,dto);
-        Schedule savedSchedule = scheduleReposirory.save(schedule);
+        Schedule savedSchedule = scheduleRepository.save(schedule);
         return ResScheduleWriteDto.fromEntity(savedSchedule);
     }
 
     public ResScheduleDto update(Long id, ScheduleUpdateDto dto) {
-        Schedule updateSchedule = scheduleReposirory.findById(id).orElseThrow(
+        Schedule updateSchedule = scheduleRepository.findById(id).orElseThrow(
                 () -> new IllegalArgumentException("Schedule not found")
         );
         updateSchedule.update(dto);
         return ResScheduleDto.fromEntity(updateSchedule);
     }
-    public void delete(Long id) { scheduleReposirory.deleteById(id); }
+    public void delete(Long id) { scheduleRepository.deleteById(id); }
 }
