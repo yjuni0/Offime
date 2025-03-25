@@ -48,7 +48,7 @@ public class MemberTokenDto implements UserDetails {
                 .phone(member.getPhone())
                 .role(member.getRole())
                 .team(member.getTeam())
-                .joinDate(member.getJoinDate())
+                .joinDate(member.getCreatedDate())
                 .token(token)
                 .build();
     }

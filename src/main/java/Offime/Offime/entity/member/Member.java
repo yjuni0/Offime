@@ -8,11 +8,12 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.data.annotation.CreatedDate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -46,8 +47,11 @@ public class Member extends BaseTimeEntity implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Team team;
 
+    @Transient
+    private String token;
+
     @Builder
-    public Member(Long id, String name, String email, String password, String phone, int vacation, String workStatus, Role role, Team team) {
+    public Member(Long id, String name, String email, String password, String phone, int vacation, String workStatus, Role role, Team team, String token) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -57,6 +61,7 @@ public class Member extends BaseTimeEntity implements UserDetails {
         this.workStatus = workStatus;
         this.role = role;
         this.team = team;
+        this.token = token;
     }
 
     @PrePersist
