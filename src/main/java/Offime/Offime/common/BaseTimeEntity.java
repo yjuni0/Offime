@@ -1,5 +1,10 @@
 package Offime.Offime.common;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.*;
 import jakarta.persistence.*;
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
@@ -18,6 +23,7 @@ import java.time.format.DateTimeFormatter;
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 public class BaseTimeEntity {
+
     @CreatedDate
     @Column(name = "create_date", updatable = false)
     private String createdDate;
