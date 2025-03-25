@@ -3,6 +3,12 @@ import { useNavigate, useParams } from "react-router-dom";
 import "./ExpenseDetail.css";
 import BackPage from "../BackPage";
 
+// 금액 형식 변환 함수
+const formatAmount = (amount) => {
+  if (!amount) return "";
+  return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+};
+
 const ExpenseDetail = () => {
   const [expense, setExpense] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
@@ -100,7 +106,7 @@ const ExpenseDetail = () => {
             <strong>내용: </strong> {expense.content}
           </div>
           <div>
-            <strong>금액: </strong> {expense.amount} 원
+            <strong>금액: </strong> {formatAmount(expense.amount)} 원
           </div>
         </div>
 

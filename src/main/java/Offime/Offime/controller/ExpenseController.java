@@ -11,7 +11,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.slf4j.Logger;
@@ -89,23 +90,32 @@ public class ExpenseController {
     }
 
     // 게시물 수정 (id로)
-    @PutMapping("/{id}")
-    public ExpenseResponseDTO updateExpense(
+    public ResponseEntity<ExpenseResponseDTO> updateExpense(
             @PathVariable Long id,
-            @RequestParam("title") String title,
-            @RequestParam("content") String content,
-            @RequestParam("amount") int amount,
-            @RequestParam("category") String category,
-            @RequestParam(value = "images", required = false) List<MultipartFile> images) {
+            @RequestPart("expenseDTO") ExpenseRequestDTO expenseDTO,
+            @RequestPart(value = "images", required = false) List<MultipartFile> images) {
 
-        ExpenseRequestDTO expenseDTO = new ExpenseRequestDTO();
-        expenseDTO.setTitle(title);
-        expenseDTO.setContent(content);
-        expenseDTO.setAmount(amount);
-        expenseDTO.setCategory(category);
+        try {
+            // 권한 검사
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            if (authentication == null || !authentication.isAuthenticated()) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build(); // 인증되지 않은 사용자
+            }
 
-        Expense updatedExpense = expenseService.updateExpense(id, expenseDTO, images);
-        return convertToResponseDTO(updatedExpense);
+            String currentUsername = authentication.getName(); // 현재 사용자 이름
+            Expense expense = expenseService.getExpense(id);
+            if (!expense.getUsername().equals(currentUsername)) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).build(); // 권한 없음
+            }
+
+            Expense updatedExpense = expenseService.updateExpense(id, expenseDTO, images);
+            ExpenseResponseDTO responseDTO = convertToResponseDTO(updatedExpense);
+            return ResponseEntity.ok(responseDTO);
+
+        } catch (Exception e) {
+            logger.error("Error updating expense: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     // 게시물 삭제 (id로)
