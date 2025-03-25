@@ -1,7 +1,6 @@
 import './App.css';
 import {BrowserRouter} from "react-router-dom";
 import Main from "./component/reports/Main";
-import {DndProvider} from "react-dnd";
 
 function App() {
   return (

@@ -1,9 +1,11 @@
 import {useEffect, useState} from "react";
 import axios from "axios";
 import {DragDropContext, Draggable, Droppable} from "@hello-pangea/dnd";
-import QuestionBlock from "./QuestionBlock";
+import TemplateQuestionBlock from "./TemplateQuestionBlock";
 
 function TemplateCreate() {
+
+
 
     const [title, setTitle] = useState("");
     const [icon, setIcon] = useState(1);
@@ -12,10 +14,20 @@ function TemplateCreate() {
     const [memberId, setMemberId] = useState("");
     const [questionList, setQuestionList] = useState([]);
 
+    // useEffect(() => {
+    //     console.log(questionList)
+    // }, [questionList]);
+
     const create = async (e) => {
         e.preventDefault();
 
-        const data = {title, icon, color, accessMemberIdList, questionList};
+        const orderedQuestionList = questionList.map((q, index) => ({
+            ...q, order: index + 1
+        }));
+
+        console.log(orderedQuestionList);
+
+        const data = {title, icon, color, accessMemberIdList, questionList: orderedQuestionList};
 
         try {
             const response = await axios.post("http://localhost:8080/templates/create", data);
@@ -37,7 +49,7 @@ function TemplateCreate() {
 
     const questionAdd = () => {
         const newId = `q${Date.now()}`
-        const newQuestion = {id: newId, type: "TEXT", content: "", optionList:[]};
+        const newQuestion = {id: newId, type: "TEXT", content: "", optionList: []};
         setQuestionList((prev) => [...prev, newQuestion]);
     }
 
@@ -104,11 +116,12 @@ function TemplateCreate() {
                                                 style={{...provided.draggableProps.style}}>
                                                 <hr {...provided.dragHandleProps}
                                                     style={{cursor: "grab", border: "4px solid white"}}/>
-                                                <QuestionBlock question={q} questionIndex={questionIndex} updateQuestion={(i, newQ) => {
-                                                    const updated = [...questionList];
-                                                    updated[i] = newQ;
-                                                    setQuestionList(updated);
-                                                }} />
+                                                <TemplateQuestionBlock question={q} questionIndex={questionIndex}
+                                                                       updateQuestion={(i, newQ) => {
+                                                                   const updated = [...questionList];
+                                                                   updated[i] = newQ;
+                                                                   setQuestionList(updated);
+                                                               }}/>
                                             </div>
                                         )}
                                     </Draggable>
@@ -118,7 +131,9 @@ function TemplateCreate() {
                         )}
                     </Droppable>
                 </DragDropContext>
-                <button type="button" onClick={questionAdd}>질문 추가</button>
+                <div>
+                    <button type="button" onClick={questionAdd}>질문 추가</button>
+                </div>
                 <input type="submit" value="템플릿 생성"/>
             </form>
         </div>

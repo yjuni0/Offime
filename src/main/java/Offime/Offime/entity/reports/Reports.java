@@ -20,12 +20,12 @@ public class Reports {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long ID;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "TEMPLATE_ID", nullable = false)
     private Templates template;
 
-    @ManyToOne
-    @JoinColumn(name = "WRITER", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "WRITER_ID", nullable = false)
     private Member writer;
 
     @Column(name = "TITLE")

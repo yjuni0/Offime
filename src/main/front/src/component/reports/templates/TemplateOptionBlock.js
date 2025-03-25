@@ -1,7 +1,8 @@
 
-function OptionBlock({value, onChange}) {
+function TemplateOptionBlock({value, onChange, type}) {
     return (
         <>
+            <input type={`${type}`} disabled={true}/>
             <input
                 type="text"
                 placeholder="옵션 입력"
@@ -12,4 +13,4 @@ function OptionBlock({value, onChange}) {
     )
 }
 
-export default OptionBlock;
+export default TemplateOptionBlock;

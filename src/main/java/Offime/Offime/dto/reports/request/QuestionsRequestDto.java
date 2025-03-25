@@ -10,8 +10,9 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-public class QuestionsDto {
+public class QuestionsRequestDto {
     private QuestionType type;
     private String content;
+    private int order;
     private List<String> optionList;
 }
