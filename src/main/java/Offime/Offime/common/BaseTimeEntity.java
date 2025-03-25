@@ -1,4 +1,4 @@
-package Offime.Offime.entity.baseTime;
+package Offime.Offime.common;
 
 
 import jakarta.persistence.Column;

@@ -1,6 +1,6 @@
 package Offime.Offime.entity.schedule;
 
-import Offime.Offime.entity.baseTime.BaseTimeEntity;
+import Offime.Offime.common.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
