@@ -1,4 +1,4 @@
-package Offime.Offime.entity;
+package Offime.Offime.entity.vacation;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.Getter;

@@ -1,7 +1,7 @@
-package Offime.Offime.controller;
+package Offime.Offime.controller.vacation;
 
-import Offime.Offime.entity.Member;
-import Offime.Offime.service.VacationService;
+import Offime.Offime.entity.member.Member;
+import Offime.Offime.service.vacation.VacationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
