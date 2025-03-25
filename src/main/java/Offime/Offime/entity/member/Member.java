@@ -3,6 +3,7 @@ package Offime.Offime.entity.member;
 import Offime.Offime.common.BaseTimeEntity;
 import Offime.Offime.common.Role;
 import Offime.Offime.common.Team;
+import Offime.Offime.entity.vacation.Vacation;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,11 +13,10 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
+import java.util.List;
 
 @Entity
 @Getter
@@ -35,8 +35,9 @@ public class Member extends BaseTimeEntity implements UserDetails {
 
     private String phone;
 
-    @Column(columnDefinition = "int default 12")
-    private int vacation;
+    @Setter
+    private int availableLeaveDays;
+
 
     @Column(name = "WORK_STATUS")
     private String workStatus;
@@ -50,23 +51,26 @@ public class Member extends BaseTimeEntity implements UserDetails {
     @Transient
     private String token;
 
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Vacation> vacations;
+
+
     @Builder
-    public Member(Long id, String name, String email, String password, String phone, int vacation, String workStatus, Role role, Team team, String token) {
+    public Member(Long id, String name, String email, String password, String phone, int availableLeaveDays, String workStatus, Role role, Team team, String token) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.password = password;
         this.phone = phone;
-        this.vacation = vacation;
+        this.availableLeaveDays = availableLeaveDays;
         this.workStatus = workStatus;
         this.role = role;
         this.team = team;
         this.token = token;
     }
 
-    @PrePersist
     public void prePersist() {
-        if (this.vacation == 0) { this.vacation = 12; }
+        if (this.availableLeaveDays == 0) { this.availableLeaveDays = 12; }
         if (this.role == null) { this.role = Role.USER; }
     }
 
