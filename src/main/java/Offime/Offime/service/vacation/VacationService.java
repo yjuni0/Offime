@@ -1,12 +1,11 @@
-package Offime.Offime.service;
+package Offime.Offime.service.vacation;
 
-import Offime.Offime.dto.ReqVacation;
-import Offime.Offime.dto.ResVacation;
-import Offime.Offime.entity.Member;
-import Offime.Offime.entity.Vacation;
-import Offime.Offime.entity.VacationApprovalStatus;
-import Offime.Offime.repository.MemberRepository;
-import Offime.Offime.repository.VacationRepository;
+import Offime.Offime.dto.request.vacation.ReqVacation;
+import Offime.Offime.dto.response.vacation.ResVacation;
+import Offime.Offime.entity.member.Member;
+import Offime.Offime.entity.vacation.Vacation;
+import Offime.Offime.repository.member.MemberRepository;
+import Offime.Offime.repository.vacation.VacationRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;

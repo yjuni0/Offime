@@ -1,7 +1,7 @@
-package Offime.Offime.dto;
+package Offime.Offime.dto.response.vacation;
 
-import Offime.Offime.entity.Member;
-import Offime.Offime.entity.Vacation;
+import Offime.Offime.entity.member.Member;
+import Offime.Offime.entity.vacation.Vacation;
 import lombok.Builder;
 
 import java.time.LocalDate;

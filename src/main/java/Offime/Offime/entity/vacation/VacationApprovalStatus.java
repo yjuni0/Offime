@@ -1,9 +1,7 @@
-package Offime.Offime.entity;
+package Offime.Offime.entity.vacation;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.Getter;
-
-import java.util.Arrays;
 
 @Getter
 public enum VacationApprovalStatus {

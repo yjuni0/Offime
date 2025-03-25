@@ -1,5 +1,6 @@
-package Offime.Offime.entity;
+package Offime.Offime.entity.vacation;
 
+import Offime.Offime.entity.member.Member;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

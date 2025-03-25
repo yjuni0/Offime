@@ -1,8 +1,7 @@
-package Offime.Offime.repository;
+package Offime.Offime.repository.vacation;
 
-import Offime.Offime.dto.ResVacation;
-import Offime.Offime.entity.Member;
-import Offime.Offime.entity.Vacation;
+import Offime.Offime.entity.member.Member;
+import Offime.Offime.entity.vacation.Vacation;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
