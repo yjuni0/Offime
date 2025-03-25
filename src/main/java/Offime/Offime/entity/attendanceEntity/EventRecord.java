@@ -68,11 +68,11 @@ public class EventRecord {
     }
 
     //==================================================================================================================
-    public void setClockIn(LocalTime clockIn) {
-        this.clockIn = clockIn;
-    }
-
-    public void setClockOut(LocalTime clockOut) {
-        this.clockOut = clockOut;
-    }
+//    public void setClockIn(LocalTime clockIn) {
+//        this.clockIn = clockIn;
+//    }
+//
+//    public void setClockOut(LocalTime clockOut) {
+//        this.clockOut = clockOut;
+//    }
 }

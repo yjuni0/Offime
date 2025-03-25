@@ -1,6 +1,7 @@
 package Offime.Offime.service.attendanceService;
 
-import Offime.Offime.dto.attendanceDto.request.RequestEventRecord;
+import Offime.Offime.dto.attendanceDto.request.RequestClockIn;
+import Offime.Offime.dto.attendanceDto.request.RequestReturnToOffice;
 import Offime.Offime.entity.attendanceEntity.EventRecord;
 import Offime.Offime.repository.attendanceRepository.EventRecordRepository;
 import Offime.Offime.repository.attendanceRepository.MemberRepository;
@@ -63,21 +64,37 @@ public class AttendanceService {
 //    }
 
     @Transactional
-    public void clockInAndReturnToOffice(RequestEventRecord dto, LocalDateTime now) {
+    public void clockIn(RequestClockIn dto, LocalDateTime now) {
         if (!isInDistance(dto.getLatitude(), dto.getLongitude())) {
-            throw new IllegalArgumentException(dto.getEventType() + " 위치 체크 실패: 허용 범위를 벗어났습니다.");
+            throw new IllegalArgumentException(" - " + dto.getEventType() + " 위치 체크 실패: 허용 범위를 벗어났습니다.");
         }
 
-        EventRecord eventRecord = dto.toEntity(dto);
+        EventRecord eventRecord = RequestClockIn.toEntity(dto);
 
         if (dto.getEventType() == 복귀) {
             LocalDate today = now.toLocalDate();
             EventRecord clockInRecord = eventRecordRepository.findByDateAndEventType(today, 출근)
                     .orElseThrow(() -> new IllegalStateException("오늘의 출근 기록이 없습니다."));
-            eventRecord.setClockIn(clockInRecord.getClockIn());
+//            eventRecord.setClockIn(clockInRecord.getClockIn());
         }
         eventRecordRepository.save(eventRecord);
     }
+
+    @Transactional
+    public void returnToOffice(RequestReturnToOffice dto, LocalDateTime now) {
+        if (!isInDistance(dto.getLatitude(), dto.getLongitude())) {
+            throw new IllegalArgumentException(" - " + dto.getEventType() + " 위치 체크 실패: 허용 범위를 벗어났습니다.");
+        }
+        LocalDate today = now.toLocalDate();
+        EventRecord clockInRecord = eventRecordRepository.findByDateAndEventType(today, 출근)
+                .orElseThrow(() -> new IllegalStateException("오늘의 출근 기록이 없습니다."));
+
+        EventRecord eventRecord = RequestReturnToOffice.toEntity(dto, clockInRecord.getClockIn());
+
+        eventRecordRepository.save(eventRecord);
+    }
+
+
 
 
 
