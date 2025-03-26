@@ -9,6 +9,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -18,7 +20,7 @@ public class Reports {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long ID;
+    private Long Id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "TEMPLATE_ID", nullable = false)
@@ -36,9 +38,15 @@ public class Reports {
 
     @CreationTimestamp
     @Column(name = "CREATED_AT")
-    private LocalDateTime created_at;
+    private LocalDateTime createdAt;
 
     @UpdateTimestamp
     @Column(name = "MODIFIED_AT")
-    private LocalDateTime modified_at;
+    private LocalDateTime modifiedAt;
+
+    @OneToMany(mappedBy = "report", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Responses> responses = new ArrayList<>();
+
+    @OneToMany(mappedBy = "report", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Replies> replies = new ArrayList<>();
 }

@@ -10,22 +10,22 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class QuestionsResponseDto {
+public class QuestionsResDto {
     private Long id;
     private QuestionType type;
     private String questionText;
     private int order;
 
     @Builder
-    public QuestionsResponseDto(Long id ,QuestionType type, String questionText, int order) {
+    public QuestionsResDto(Long id , QuestionType type, String questionText, int order) {
         this.id = id;
         this.type = type;
         this.questionText = questionText;
         this.order = order;
     }
 
-    public static QuestionsResponseDto fromEntity(Questions questions) {
-        return QuestionsResponseDto.builder()
+    public static QuestionsResDto fromEntity(Questions questions) {
+        return QuestionsResDto.builder()
                 .id(questions.getID())
                 .questionText(questions.getQuestionText())
                 .order(questions.getOrder())

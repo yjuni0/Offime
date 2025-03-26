@@ -1,4 +1,4 @@
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import axios from "axios";
 import ReportCreateQuestionBlock from "./ReportCreateQuestionBlock";
@@ -8,6 +8,7 @@ function ReportCreate() {
     const templateId = useParams().templateId;
 
     const [templateData, setTemplateData] = useState("");
+    const navigate = useNavigate();
 
     const getTemplate = async () => {
         await axios.get(`http://localhost:8080/reports/template/${templateId}`).then((res) => setTemplateData(res.data))
@@ -28,6 +29,7 @@ function ReportCreate() {
             title, templateId, writerId: 1, responseData
         }
         await axios.post('http://localhost:8080/reports/create', data)
+        navigate("/reports/read")
     }
 
     useEffect(() => {

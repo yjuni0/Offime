@@ -9,11 +9,11 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-public class ReportsRequestDto {
+public class ReportsReqDto {
 
     private String title;
     private Long writerId;
     private Long templateId;
-    private List<ReportsResponseRequestDto> responseData;
+    private List<ResponsesReqDto> responseData;
 
 }

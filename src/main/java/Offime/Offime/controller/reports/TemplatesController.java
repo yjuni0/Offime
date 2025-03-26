@@ -1,6 +1,6 @@
 package Offime.Offime.controller.reports;
 
-import Offime.Offime.dto.reports.request.TemplatesRequestDto;
+import Offime.Offime.dto.reports.request.TemplatesReqDto;
 import Offime.Offime.service.reports.TemplatesService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,9 +18,9 @@ public class TemplatesController {
     private final TemplatesService templatesService;
 
     @PostMapping("/create")
-    public ResponseEntity<String> createTemplate(@RequestBody TemplatesRequestDto templatesRequestDto) {
-        System.out.println(templatesRequestDto);
-        templatesService.createTemplate(templatesRequestDto);
+    public ResponseEntity<String> createTemplate(@RequestBody TemplatesReqDto templatesReqDto) {
+        System.out.println(templatesReqDto);
+        templatesService.createTemplate(templatesReqDto);
         return ResponseEntity.status(HttpStatus.OK).body("템플릿 생성 완료");
     }
 

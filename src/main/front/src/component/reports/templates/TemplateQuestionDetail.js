@@ -31,7 +31,7 @@ function TemplateQuestionDetail({type ,questionList, setQuestionList, questionIn
 
     switch (type) {
         case "TEXT" :
-            return <input placeholder={"텍스트박스"} disabled={true}/>
+            return <input className={"input-txt"} placeholder={"텍스트박스"} disabled={true}/>
         case "CHOICE" :
             return (
                 <>

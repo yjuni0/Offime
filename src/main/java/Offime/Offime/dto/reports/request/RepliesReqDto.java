@@ -7,7 +7,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class ReportsResponseRequestDto {
-    private Long questionId;
-    private String answerText;
+public class RepliesReqDto {
+    private String content;
+    private Long writerId;
+    private Long reportId;
 }

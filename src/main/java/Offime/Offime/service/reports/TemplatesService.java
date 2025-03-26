@@ -1,9 +1,9 @@
 package Offime.Offime.service.reports;
 
-import Offime.Offime.dto.reports.request.QuestionsRequestDto;
-import Offime.Offime.dto.reports.request.TemplatesRequestDto;
-import Offime.Offime.dto.reports.response.QuestionsResponseDto;
-import Offime.Offime.dto.reports.response.TemplatesResponseDto;
+import Offime.Offime.dto.reports.request.QuestionsReqDto;
+import Offime.Offime.dto.reports.request.TemplatesReqDto;
+import Offime.Offime.dto.reports.response.QuestionsResDto;
+import Offime.Offime.dto.reports.response.TemplatesResDto;
 import Offime.Offime.entity.member.Member;
 import Offime.Offime.entity.reports.Options;
 import Offime.Offime.entity.reports.Questions;
@@ -31,16 +31,16 @@ public class TemplatesService {
 
     // 템플릿 만들기
 
-    public void createTemplate(TemplatesRequestDto templatesRequestDto) {
+    public void createTemplate(TemplatesReqDto templatesReqDto) {
 
         Templates template = new Templates();
-        template.setTitle(templatesRequestDto.getTitle());
-        template.setColor(templatesRequestDto.getColor());
-        template.setIcon(templatesRequestDto.getIcon());
+        template.setTitle(templatesReqDto.getTitle());
+        template.setColor(templatesReqDto.getColor());
+        template.setIcon(templatesReqDto.getIcon());
 
         List<TemplateAccess> accessList = new ArrayList<>();
 
-        for (Long memberId : templatesRequestDto.getAccessMemberIdList()) {
+        for (Long memberId : templatesReqDto.getAccessMemberIdList()) {
             Member member = memberRepository.findById(memberId).orElseThrow(() -> new RuntimeException("유저를 찾을 수 없습니다 : " + memberId));
 
             TemplateAccess templateAccess = new TemplateAccess();
@@ -56,12 +56,12 @@ public class TemplatesService {
 
         templatesRepository.save(template);
 
-        createQuestions(template, templatesRequestDto.getQuestionList());
+        createQuestions(template, templatesReqDto.getQuestionList());
     }
 
-    private void createQuestions(Templates template, List<QuestionsRequestDto> questionList) {
+    private void createQuestions(Templates template, List<QuestionsReqDto> questionList) {
 
-        for (QuestionsRequestDto questionData : questionList) {
+        for (QuestionsReqDto questionData : questionList) {
             Questions question = new Questions();
             question.setOrder(questionData.getOrder());
             question.setType(questionData.getType());
@@ -85,16 +85,16 @@ public class TemplatesService {
         }
     }
 
-    public List<TemplatesResponseDto> getAllTemplates() {
-        return templatesRepository.findAll().stream().map(TemplatesResponseDto::fromEntity).toList();
+    public List<TemplatesResDto> getAllTemplates() {
+        return templatesRepository.findAll().stream().map(TemplatesResDto::fromEntity).toList();
     }
 
-    public TemplatesResponseDto getTemplate(Long templateId) {
-        return templatesRepository.findById(templateId).map(TemplatesResponseDto::fromEntity).orElseThrow(() -> new NoSuchElementException());
+    public TemplatesResDto getTemplate(Long templateId) {
+        return templatesRepository.findById(templateId).map(TemplatesResDto::fromEntity).orElseThrow(() -> new NoSuchElementException());
     }
 
-    public List<QuestionsResponseDto> getQuestions(Long templateId) {
-        return questionsRepository.getAllByTemplateId(templateId).stream().map(QuestionsResponseDto::fromEntity).toList();
+    public List<QuestionsResDto> getQuestionsByTemplateId(Long templateId) {
+        return questionsRepository.getAllByTemplateId(templateId).stream().map(QuestionsResDto::fromEntity).toList();
     }
 
     public List<String> getOptions(Long questionId) {

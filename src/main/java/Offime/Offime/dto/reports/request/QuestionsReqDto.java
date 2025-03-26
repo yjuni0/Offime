@@ -10,7 +10,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-public class QuestionsRequestDto {
+public class QuestionsReqDto {
     private QuestionType type;
     private String content;
     private int order;
