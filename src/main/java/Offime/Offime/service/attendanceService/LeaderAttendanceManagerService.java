@@ -21,19 +21,12 @@ public class LeaderAttendanceManagerService {
     private static final LocalTime COMPANY_START_TIME = LocalTime.of(9, 0);
     private static final LocalTime COMPANY_END_TIME = LocalTime.of(18, 0);
 
-    public ResAttendanceHistoryDto getWeeklyAttendanceHistory(int year, int month, int startDay) {
-        List<EventRecord> records = getWeeklyRecords(year, month, startDay);
+    public ResAttendanceHistoryDto getDailyAttendanceHistoryOfEveryone(LocalDate date) {
+        List<EventRecord> records = getDailyRecords(date);
         return ResAttendanceHistoryDto.fromEntity(records);
     }
 
-    public ResAttendanceHistoryDto getMonthlyAttendanceHistory(int year, int month) {
-        List<EventRecord> records = getMonthlyRecords(year, month);
-        return ResAttendanceHistoryDto.fromEntity(records);
-    }
-
-    private List<EventRecord> getWeeklyRecords(int year, int month, int startDay) {
-        LocalDate startOfWeek = LocalDate.of(year, month, startDay);
-        LocalDate endOfWeek = startOfWeek.plusDays(6);
-        return eventRecordRepository.findByDateBetween(startOfWeek, endOfWeek);
+    private List<EventRecord> getDailyRecords(LocalDate date) {
+        return eventRecordRepository.findByDate(date);
     }
 }
