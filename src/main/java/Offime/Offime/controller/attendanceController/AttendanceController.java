@@ -20,7 +20,8 @@ public class AttendanceController {
     @PostMapping("/clockIn")
     public ResponseEntity<String> clockIn(
 //            @RequestParam(name = "memberId") Long memberId,
-            @RequestBody ReqClockInDto dto) {
+            @RequestBody ReqClockInDto dto
+    ) {
         LocalDateTime now = LocalDateTime.now();
         try {
             attendanceService.clockIn(dto,now);
