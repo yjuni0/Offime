@@ -1,12 +1,11 @@
 package Offime.Offime.dto.response.member;
 
 import Offime.Offime.common.Role;
-import Offime.Offime.common.Team;
+import Offime.Offime.entity.member.Team;
 import Offime.Offime.entity.member.Member;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Getter
 @NoArgsConstructor
