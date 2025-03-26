@@ -1,9 +1,9 @@
 package Offime.Offime.service.attendanceService;
 
-import Offime.Offime.dto.attendanceDto.request.RequestClockIn;
-import Offime.Offime.dto.attendanceDto.request.RequestClockOut;
-import Offime.Offime.dto.attendanceDto.request.RequestOutOfOffice;
-import Offime.Offime.dto.attendanceDto.request.RequestReturnToOffice;
+import Offime.Offime.dto.attendanceDto.request.ReqClockInDto;
+import Offime.Offime.dto.attendanceDto.request.ReqClockOutDto;
+import Offime.Offime.dto.attendanceDto.request.ReqOutOfOfficeDto;
+import Offime.Offime.dto.attendanceDto.request.ReqReturnToOfficeDto;
 import Offime.Offime.entity.attendanceEntity.EventRecord;
 import Offime.Offime.repository.attendanceRepository.EventRecordRepository;
 import Offime.Offime.repository.attendanceRepository.MemberRepository;
@@ -16,7 +16,6 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.List;
 
 import static Offime.Offime.entity.attendanceEntity.EventType.*;
 import static java.time.LocalTime.now;
@@ -37,45 +36,45 @@ public class AttendanceService {
     private static final LocalTime COMPANY_END_TIME = LocalTime.of(18, 0);   // 퇴근 시간
 
     @Transactional
-    public void clockIn(RequestClockIn dto, LocalDateTime now) {
+    public void clockIn(ReqClockInDto dto, LocalDateTime now) {
         if (!isInDistance(dto.getLatitude(), dto.getLongitude())) {
-            throw new IllegalArgumentException(" - " + dto.getEventType() + "허용 범위를 벗어났습니다.");
+            throw new IllegalArgumentException(" - " + "허용 범위를 벗어났습니다.");
         }
         long lateMinutes = late(now);
-        EventRecord eventRecord = RequestClockIn.toEntity(dto, lateMinutes);
+        EventRecord eventRecord = ReqClockInDto.toEntity(lateMinutes);
         eventRecordRepository.save(eventRecord);
     }
 
     @Transactional
-    public void returnToOffice(RequestReturnToOffice dto, LocalDateTime now) {
+    public void returnToOffice(ReqReturnToOfficeDto dto, LocalDateTime now) {
         if (!isInDistance(dto.getLatitude(), dto.getLongitude())) {
-            throw new IllegalArgumentException(" - " + dto.getEventType() + "허용 범위를 벗어났습니다.");
+            throw new IllegalArgumentException(" - " + "허용 범위를 벗어났습니다.");
         }
         LocalDate today = now.toLocalDate();
         EventRecord clockInRecord = eventRecordRepository.findByDateAndEventType(today, 출근)
                 .orElseThrow(() -> new IllegalStateException("오늘의 출근 기록이 없습니다."));
-        EventRecord eventRecord = RequestReturnToOffice.toEntity(dto, clockInRecord);
+        EventRecord eventRecord = ReqReturnToOfficeDto.toEntity(clockInRecord);
         eventRecordRepository.save(eventRecord);
     }
 
     @Transactional
-    public void outOfOffice(RequestOutOfOffice dto, LocalDateTime now) {
+    public void outOfOffice(ReqOutOfOfficeDto dto, LocalDateTime now) {
         LocalDate today = now.toLocalDate();
         EventRecord clockInRecord = eventRecordRepository.findByDateAndEventType(today, 출근)
                 .orElseThrow(() -> new IllegalStateException("오늘의 출근 기록이 없습니다."));
 
-    EventRecord eventRecord = RequestOutOfOffice.toEntity(dto, clockInRecord);
+    EventRecord eventRecord = ReqOutOfOfficeDto.toEntity(dto, clockInRecord);
     eventRecordRepository.save(eventRecord);
     }
 
     @Transactional
-    public void clockOut(RequestClockOut dto, LocalDateTime now) {
+    public void clockOut(ReqClockOutDto dto, LocalDateTime now) {
         LocalDate today = now.toLocalDate();
         EventRecord clockInRecord = eventRecordRepository.findByDateAndEventType(today, 출근)
                 .orElseThrow(() -> new IllegalStateException("오늘의 출근 기록이 없습니다."));
 
         long leaveEarlyMinutes = leaveEarly(now);
-        EventRecord eventRecord = RequestClockOut.toEntity(dto, clockInRecord, leaveEarlyMinutes);
+        EventRecord eventRecord = ReqClockOutDto.toEntity(clockInRecord, leaveEarlyMinutes);
 
         eventRecordRepository.findByDateAndEventType(today, 출근)
                 .ifPresent(record -> {
@@ -94,21 +93,6 @@ public class AttendanceService {
                 });
 
         eventRecordRepository.save(eventRecord);
-    }
-
-    public List<EventRecord> getDailyRecords(LocalDate date) {
-        return eventRecordRepository.findByDate(date);
-    }
-
-    public List<EventRecord> getWeeklyRecords(LocalDate startOfWeek) {
-        LocalDate endOfWeek = startOfWeek.plusDays(6);
-        return eventRecordRepository.findByDateBetween(startOfWeek, endOfWeek);
-    }
-
-    public List<EventRecord> getMonthlyRecords(int year, int month) {
-        LocalDate startOfMonth = LocalDate.of(year, month, 1);
-        LocalDate endOfMonth = startOfMonth.plusMonths(1).minusDays(1);
-        return eventRecordRepository.findByDateBetween(startOfMonth, endOfMonth);
     }
 
     //private 메소드=========================================================================================

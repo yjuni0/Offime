@@ -3,7 +3,9 @@ package Offime.Offime.dto.attendanceDto.response;
 import Offime.Offime.entity.attendanceEntity.EventRecord;
 import Offime.Offime.entity.attendanceEntity.EventType;
 import Offime.Offime.entity.attendanceEntity.OutOfOfficeType;
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -11,7 +13,7 @@ import java.time.LocalTime;
 
 @Getter
 @NoArgsConstructor
-public class ResponseEventRecord {
+public class ResAttendanceHistoryDto {
 
     private Long id;
     private LocalDate date;
@@ -24,8 +26,8 @@ public class ResponseEventRecord {
     long leaveEarly;
 
     @Builder
-    public ResponseEventRecord(Long id, LocalDate date, LocalDateTime requestTime, LocalTime clockIn, LocalTime clockOut,
-                               EventType eventType, OutOfOfficeType outOfOfficeType, long late, long leaveEarly) {
+    public ResAttendanceHistoryDto(Long id, LocalDate date, LocalDateTime requestTime, LocalTime clockIn, LocalTime clockOut,
+                                   EventType eventType, OutOfOfficeType outOfOfficeType, long late, long leaveEarly) {
         this.id = id;
         this.date = date;
         this.requestTime = requestTime;
@@ -37,8 +39,8 @@ public class ResponseEventRecord {
         this.leaveEarly = leaveEarly;
     }
 
-    public static ResponseEventRecord fromEntity(EventRecord eventRecord) {
-        return ResponseEventRecord.builder()
+    public static ResAttendanceHistoryDto fromEntity(EventRecord eventRecord) {
+        return ResAttendanceHistoryDto.builder()
                 .id(eventRecord.getId())
                 .date(eventRecord.getDate())
                 .requestTime(eventRecord.getRequestTime())

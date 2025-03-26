@@ -2,6 +2,7 @@ package Offime.Offime.dto.attendanceDto.request;
 
 import Offime.Offime.entity.attendanceEntity.EventRecord;
 import Offime.Offime.entity.attendanceEntity.EventType;
+import Offime.Offime.entity.attendanceEntity.OutOfOfficeType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -10,18 +11,17 @@ import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
-public class RequestReturnToOffice {
+public class ReqOutOfOfficeDto {
 
-    private double latitude;
-    private double longitude;
-    private EventType eventType;
+    private OutOfOfficeType outOfOfficeType;
 
-    public static EventRecord toEntity(RequestReturnToOffice dto, EventRecord clockInRecord) {
+    public static EventRecord toEntity(ReqOutOfOfficeDto dto, EventRecord clockInRecord) {
         return EventRecord.builder()
                 .date(LocalDate.now())
                 .requestTime(LocalDateTime.now())
                 .clockIn(clockInRecord.getClockIn())
-                .eventType(dto.eventType)
+                .eventType(EventType.자리비움)
+                .outOfOfficeType(dto.outOfOfficeType)
                 .late(clockInRecord.getLate())
                 .build();
     }

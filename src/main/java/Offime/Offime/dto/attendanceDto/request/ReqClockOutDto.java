@@ -11,19 +11,18 @@ import java.time.LocalTime;
 
 @Getter
 @NoArgsConstructor
-public class RequestClockIn {
+public class ReqClockOutDto {
 
-    private double latitude;
-    private double longitude;
-    private EventType eventType;
 
-    public static EventRecord toEntity(RequestClockIn dto, long late) {
+    public static EventRecord toEntity(EventRecord clockInRecord, long leaveEarly) {
         return EventRecord.builder()
                 .date(LocalDate.now())
                 .requestTime(LocalDateTime.now())
-                .clockIn(LocalTime.now())
-                .eventType(dto.eventType)
-                .late(late)
+                .clockIn(clockInRecord.getClockIn())
+                .clockOut(LocalTime.now())
+                .eventType(EventType.퇴근)
+                .late(clockInRecord.getLate())
+                .leaveEarly(leaveEarly)
                 .build();
     }
 }
