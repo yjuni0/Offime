@@ -1,8 +1,8 @@
 import Router from "../router/Router";
 
-function Main () {
+function Main() {
     return (
-        <Router/>
+            <Router/>
     )
 }
 

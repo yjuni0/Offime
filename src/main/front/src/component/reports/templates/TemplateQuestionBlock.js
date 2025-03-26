@@ -27,12 +27,12 @@ function TemplateQuestionBlock({question, questionIndex, updateQuestion}) {
 
 
     return (
-        <div>
+        <div className={"item"}>
             <h1>QuestionBlock {question.id}</h1>
             <div>
-                <input placeholder={"질문 입력"} type={"text"} value={questionList.content}
+                <input className={"input-txt"} placeholder={"질문 입력"} type={"text"} value={questionList.content}
                        onChange={(e) => updateContent(e.target.value)}/>
-                <select value={questionList.type} onChange={(e) => updateType(e.target.value)}>
+                <select className={"select"} value={questionList.type} onChange={(e) => updateType(e.target.value)}>
                     <option value={"TEXT"}>텍스트박스</option>
                     <option value={"CHOICE"}>객관식</option>
                     <option value={"MULTIPLE_CHOICE"}>체크박스</option>

@@ -7,11 +7,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class ReportsRequestDto {
-
-    private String title;
+public class RepliesReqDto {
+    private String content;
     private Long writerId;
-    private Long templateId;
-
-
+    private Long reportId;
 }

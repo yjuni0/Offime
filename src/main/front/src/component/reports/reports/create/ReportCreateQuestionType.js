@@ -1,20 +1,32 @@
 import ReportCreateOptionBlock from "./ReportCreateOptionBlock";
 import {useEffect} from "react";
 
-function reportCreateQuestionType ({type, questionId, responseData ,setResponseData}) {
+function reportCreateQuestionType ({type, questionId,setResponseData}) {
 
-    const updateText = (value) => {
-        setResponseData((prev) => console.log(responseData));
+    const updateAnswer = (questionId, value) => {
+        setResponseData((prev) => {
+            const exists = prev.find((r) => r.questionId === questionId);
+
+            if (exists) {
+                // 이미 있으면 수정
+                return prev.map((r) =>
+                    r.questionId === questionId ? { ...r, answerText: value } : r
+                );
+            } else {
+                // 없으면 추가
+                return [...prev, { questionId, answerText: value }];
+            }
+        });
     };
 
     switch (type) {
         case "TEXT" :
-            return <input type={"text"} onChange={ (e) => updateText(e.target.value)}/>
+            return <input type={"text"} onChange={ (e) => updateAnswer(questionId, e.target.value)}/>
         case "CHOICE" :
             return (
             <div>
                 <h1>ReportCreateQuestionType</h1>
-                <ReportCreateOptionBlock type={"radio"} questionId={questionId} />
+                <ReportCreateOptionBlock type={"radio"} questionId={questionId} updateAnswer={updateAnswer} />
             </div>
         )
         case "MULTIPLE_CHOICE" :

@@ -14,7 +14,6 @@ function ReportCreateQuestionBlock ({templateId, responseData, setResponseData})
 
     useEffect(() => {
         getQuestionList();
-
     }, []);
 
     return(
@@ -22,7 +21,7 @@ function ReportCreateQuestionBlock ({templateId, responseData, setResponseData})
             {questionList.map((question) => (
                 <div key={question.order}>
                     <div>질문 : {question.questionText}</div>
-                    <ReportCreateQuestionType type={question.type} questionId={question.id} setResponseData={setResponseData} responseData={responseData}/>
+                    <ReportCreateQuestionType type={question.type} questionId={question.id} setResponseData={setResponseData}/>
                 </div>
             ))}
         </div>

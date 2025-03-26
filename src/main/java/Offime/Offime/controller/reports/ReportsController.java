@@ -1,9 +1,10 @@
 package Offime.Offime.controller.reports;
 
-import Offime.Offime.dto.reports.request.ReportsRequestDto;
-import Offime.Offime.dto.reports.response.QuestionsResponseDto;
-import Offime.Offime.dto.reports.response.TemplatesResponseDto;
-import Offime.Offime.entity.reports.Templates;
+import Offime.Offime.dto.reports.request.ReportsReqDto;
+import Offime.Offime.dto.reports.response.QuestionsResDto;
+import Offime.Offime.dto.reports.response.ReportsResDto;
+import Offime.Offime.dto.reports.response.ResponseResDto;
+import Offime.Offime.dto.reports.response.TemplatesResDto;
 import Offime.Offime.service.reports.ReportsService;
 import Offime.Offime.service.reports.TemplatesService;
 import lombok.RequiredArgsConstructor;
@@ -20,19 +21,21 @@ public class ReportsController {
     private final TemplatesService templatesService;
     private final ReportsService reportsService;
 
+    // create
+
     @GetMapping("/templateSelectList")
-    public ResponseEntity<List<TemplatesResponseDto>> templateSelectList() {
+    public ResponseEntity<List<TemplatesResDto>> templateSelectList() {
         return ResponseEntity.status(200).body(templatesService.getAllTemplates());
     }
 
     @GetMapping("/template/{templateId}")
-    public ResponseEntity<TemplatesResponseDto> getTemplate(@PathVariable("templateId") Long templateId) {
+    public ResponseEntity<TemplatesResDto> getTemplateById (@PathVariable("templateId") Long templateId) {
         return ResponseEntity.status(200).body(templatesService.getTemplate(templateId));
     }
 
     @GetMapping("/template/{templateId}/questions")
-    public ResponseEntity<List<QuestionsResponseDto>> getQuestions(@PathVariable("templateId") Long templateId) {
-        return ResponseEntity.status(200).body(templatesService.getQuestions(templateId));
+    public ResponseEntity<List<QuestionsResDto>> getQuestionsByTemplateId (@PathVariable("templateId") Long templateId) {
+        return ResponseEntity.status(200).body(templatesService.getQuestionsByTemplateId(templateId));
     }
 
     @GetMapping("/template/questions/{questionId}")
@@ -41,8 +44,34 @@ public class ReportsController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<String> createReport (@RequestBody ReportsRequestDto reportsRequestDto) {
-        reportsService.createReport(reportsRequestDto);
+    public ResponseEntity<String> createReport (@RequestBody ReportsReqDto reportsReqDto) {
+        reportsService.createReport(reportsReqDto);
         return ResponseEntity.status(200).body("success");
     }
+
+    // read
+
+    @GetMapping("/read")
+    public ResponseEntity<List<ReportsResDto>> readReportList() {
+        return ResponseEntity.status(200).body(reportsService.getAllReports());
+    }
+
+    @GetMapping("/read/{id}")
+    public ResponseEntity<ReportsResDto> readReport(@PathVariable("id") Long id) {
+        return ResponseEntity.status(200).body(reportsService.getReport(id));
+    }
+
+    @GetMapping("/read/response/{questionId}")
+    public ResponseEntity<List<ResponseResDto>> readReportResponsesListByQuestion(@PathVariable("questionId") Long questionId) {
+        return ResponseEntity.status(200).body(reportsService.getReportResponsesListByQuestion(questionId));
+    }
+
+    // delete
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> deleteReport(@PathVariable("id") Long id) {
+        reportsService.deleteReport(id);
+        return ResponseEntity.status(200).body("success");
+    }
+
 }

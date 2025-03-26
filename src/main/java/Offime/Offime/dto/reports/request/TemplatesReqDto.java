@@ -10,11 +10,11 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-public class TemplatesRequestDto {
+public class TemplatesReqDto {
 
     private String title;
     private List<Long> accessMemberIdList;
     private Byte icon;
     private Byte color;
-    private List<QuestionsRequestDto> questionList;
+    private List<QuestionsReqDto> questionList;
 }
