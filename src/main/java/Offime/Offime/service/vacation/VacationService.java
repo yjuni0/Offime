@@ -1,9 +1,12 @@
 package Offime.Offime.service.vacation;
 
+import Offime.Offime.common.Role;
 import Offime.Offime.dto.request.vacation.ReqVacation;
 import Offime.Offime.dto.response.vacation.ResVacation;
 import Offime.Offime.entity.member.Member;
 import Offime.Offime.entity.vacation.Vacation;
+import Offime.Offime.entity.vacation.VacationApprovalStatus;
+import Offime.Offime.entity.vacation.VacationType;
 import Offime.Offime.repository.member.MemberRepository;
 import Offime.Offime.repository.vacation.VacationRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -54,6 +58,70 @@ public class VacationService {
     }
 
     // 승인 반려
+    @Transactional
+    public String approveVacation(Member member, Long vacationId) {
+        try {
+            if (member.getRole().equals(Role.ADMIN)) {
+                // 휴가 조회
+                Vacation vacation = vacationRepository.findById(vacationId)
+                        .orElseThrow(() -> new IllegalArgumentException("해당 신청 휴가 없음"));
+
+                // 승인 처리
+                vacation.setStatus(VacationApprovalStatus.APPROVED);
+
+                BigDecimal availableDays = vacation.getMember().getAvailableLeaveDays();
+                BigDecimal useDays = BigDecimal.ZERO;
+
+                // 휴가 종류에 따른 사용 일수 처리
+                if (vacation.getType().equals(VacationType.FULL)) {
+                    useDays = new BigDecimal("1.00");
+                } else if (vacation.getType().equals(VacationType.HALF)) {
+                    useDays = new BigDecimal("0.50");
+                } else if (vacation.getType().equals(VacationType.QUATER)) {
+                    useDays = new BigDecimal("0.25");
+                }
+
+                // 잔여 연차가 충분한지 체크
+                if (availableDays.compareTo(useDays) < 0) {
+                    return "잔여 연차가 부족합니다.";
+                }
+
+                // 연차 차감
+                vacation.getMember().setAvailableLeaveDays(availableDays.subtract(useDays));
+                vacationRepository.save(vacation); // 변경 사항 저장
+                log.info("휴가 id {} 승인 처리됨", vacationId);
+            }
+            return "승인 완료";
+        } catch (IllegalArgumentException iae) {
+            log.error("휴가 조회 실패: ", iae);
+            throw new IllegalArgumentException("휴가 조회 실패");
+        } catch (Exception e) {
+            log.error("서버 오류 발생: ", e);
+            throw new RuntimeException("서버 오류 발생");
+        }
+    }
+    @Transactional
+    public String rejectVacation(Member member, Long vacationId) {
+        try {
+            if (member.getRole().equals(Role.ADMIN)) {
+                Vacation vacation = vacationRepository.findById(vacationId).orElseThrow(() -> new IllegalArgumentException("해당 신청 휴가 없음"));
+                vacation.setStatus(VacationApprovalStatus.REJECTED);
+                vacationRepository.save(vacation);
+                log.info("휴가 id {} 반려 처리됨", vacationId);
+            }else {
+                throw new IllegalArgumentException("관리자만 가능");
+            }
+            return "휴가 반려";
+        }catch (IllegalArgumentException iae) {
+            log.error("휴가 조회 실패");
+            throw new IllegalArgumentException("휴가 조회 실패 ");
+        }catch (Exception e) {
+            log.error("서버 오류 발생",e);
+            throw new RuntimeException("서버 오류 발생");
+        }
+
+    }
+
     // 취소 ( 삭제 )
     public void deleteVacation(Member member,Long id){
         log.info("휴가 삭제 요청 id {} 멤버 id : {}",id,member.getId());
