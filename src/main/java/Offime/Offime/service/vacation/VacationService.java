@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -30,6 +31,7 @@ public class VacationService {
     private final NotificationProducer notificationProducer;
     private final MemberRepository memberRepository;
     // 조회
+    @Transactional
     public Page<ResVacation> getAllVacations(Member member, Pageable pageable) {
         log.info("요청 멤버{} 페이징{} : ", member.getId(),pageable);
         Page<Vacation> vacations = vacationRepository.findAllByMember(member,pageable);
@@ -38,7 +40,7 @@ public class VacationService {
 
         return new PageImpl<>(list,pageable,list.size());
     }
-
+    @Transactional
     public ResVacation getVacationById(Member member,Long id) {
         Vacation vacation = vacationRepository.findByMemberAndId(member,id);
         log.info("요청 멤버{} 휴가 id {} : ", member.getId(),id);
@@ -51,17 +53,29 @@ public class VacationService {
     }
 
     // 신청
+    @Transactional
     public ResVacation applyVacation(Member member, ReqVacation reqVacation) {
-//        log.info("휴가 신청 멤버 id {} 요청 데이터 : {} ", member.getId(),reqVacation);
-        Vacation vacation = vacationMapper.toEntity(member, reqVacation);
+        // 1. 이메일로 멤버 찾기
+        Member reqMember = memberRepository.findByEmail(member.getEmail())
+                .orElseThrow(() -> new IllegalArgumentException("없어"));
+
+        // 2. 신청된 휴가의 시작일과 종료일을 받아옴
+        LocalDate startDate = reqVacation.startDate();
+        LocalDate endDate = reqVacation.endDate();
+        boolean existApplyVacation = vacationRepository.existsVacationOverlap(startDate,endDate,reqMember);
+        if(existApplyVacation){
+            throw new IllegalArgumentException("중복 날짜는 휴가 신청이 불가능");
+        }
+        // 4. 휴가 신청 처리
+        Vacation vacation = vacationMapper.toEntity(reqMember, reqVacation);
         vacationRepository.save(vacation);
-//        log.info("휴가 신청 성공 멤버{} , 휴가 id{} ",member.getId(),vacation.getId());
-        // 2. 휴가 신청 후 알림 전송 (RabbitMQ)
+
+        // 5. 알림 전송
         String message = "새로운 휴가 신청이 있습니다: " + vacation.getReason() + " (" + vacation.getStartDate() + " ~ " + vacation.getEndDate() + ")";
         notificationProducer.sendMessage(message);  // 알림 전송
+
         return vacationMapper.fromEntity(vacation);
     }
-
     // 승인 반려
     @Transactional
     public String approveVacation(Member member, Long vacationId) {
@@ -123,6 +137,7 @@ public class VacationService {
     }
 
     // 취소 ( 삭제 )
+    @Transactional
     public void deleteVacation(Member member,Long id){
         log.info("휴가 삭제 요청 id {} 멤버 id : {}",id,member.getId());
         Vacation vacation = vacationRepository.findByMemberAndId(member,id);

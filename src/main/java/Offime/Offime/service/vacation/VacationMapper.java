@@ -16,8 +16,8 @@ public class VacationMapper {
         return Vacation.builder()
                 .member(member)
                 .type(VacationType.fromDescription(reqVacation.type()))
-                .startDate(LocalDate.parse(reqVacation.startDate()))
-                .endDate(LocalDate.parse(reqVacation.endDate()))
+                .startDate(reqVacation.startDate())
+                .endDate(reqVacation.endDate())
                 .reason(reqVacation.reason())
                 .status(VacationApprovalStatus.WAITING)
                 .build();
@@ -25,7 +25,6 @@ public class VacationMapper {
     public ResVacation fromEntity(Vacation vacation) {
         return ResVacation.builder()
                 .id(vacation.getId())
-                .member(vacation.getMember())
                 .type(vacation.getType().getDescription())
                 .startDate(vacation.getStartDate())
                 .endDate(vacation.getEndDate())
