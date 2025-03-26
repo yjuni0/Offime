@@ -2,10 +2,7 @@ package Offime.Offime.entity.vacation;
 
 import Offime.Offime.entity.member.Member;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 
@@ -34,5 +31,6 @@ public class Vacation {
     private String reason;
 
     @Enumerated(EnumType.STRING)
+    @Setter
     private VacationApprovalStatus status;
 }
