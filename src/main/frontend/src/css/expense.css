@@ -1,0 +1,81 @@
+:root {
+  --primary_m: #3299fe;
+  --primary_l: #d1e7fc;
+  --primary_k: #35485b;
+
+  --primary_02: #6979f8;
+  --primary_03: #ffda75;
+  --primary_04: #4dc9aa;
+  --primary_05: #ff6666;
+  --error: #f93827;
+
+  /*disable or lighten = opacity:80*/
+  /*darken = filter: brightness(.7)*/
+
+  --natural_100: #000;
+  --natural_80: #161616;
+  --natural_70: #1d1d1d;
+  --natural_60: #646464;
+  --natural_50: #8d8d8d;
+  --natural_40: #dedede;
+  --natural_30: #dee2e6;
+  --natural_20: #e9ecef;
+  --natural_10: #f2f4f6;
+  --natural_0: #fff;
+
+  --space_xlg: 3rem;
+  --space_lg: 2rem;
+  --space_md: 1rem;
+  --space_sm: 0.5rem;
+  --space_xsm: 0.25rem;
+
+  --font_xlg: 3rem;
+  --font_lg: 2rem;
+  --font_md: 1rem;
+  --font_sm: 0.875rem;
+  --font_xsm: 0.6875rem;
+
+  --round-xlg: 3rem;
+  --round-lg: 1rem;
+  --round-md: 0.625rem;
+  --round-sm: 0.3125rem;
+
+  --header-height: 2.5rem;
+}
+
+/* ExpenseList.css */
+
+.expense-list-add-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  border: none;
+  border-radius: 100%;
+}
+.expense-list-form {
+  border-bottom: 1px solid #dedede;
+}
+.expense-list-box {
+  border: 0.5px solid #dedede;
+  border-radius: 10px;
+}
+
+.flex {
+  display: flex;
+}
+
+.space-between {
+  justify-content: space-between;
+}
+
+.tc-pk {
+  color: var(--primary_k);
+}
+
+.bg_n20 {
+  background-color: var(--natural_20);
+}
+
+.bg_n0 {
+  background-color: var(--natural_0);
+}
