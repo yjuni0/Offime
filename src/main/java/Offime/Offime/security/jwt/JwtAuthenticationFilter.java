@@ -31,7 +31,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Value("${jwt.header}") private String HEADER_STRING;
 
     //Bearer
-    @Value("${jwt.prefix}") private String TOKEN_PREFIX;
+    @Value("${jwt.prefix} ") private String TOKEN_PREFIX;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -46,9 +46,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         //토큰이 있는 경우
         if (header != null && header.startsWith(TOKEN_PREFIX)) {
-            authToken = header.replace(TOKEN_PREFIX," ");
+            authToken = header.replace(TOKEN_PREFIX,"");
+            log.info("authToken:{}",authToken);
             try {
                 username = this.jwtTokenUtil.getUsernameFromToken(authToken); //JWT로 부터 사용자 아이디(username)를 추출
+                log.info("username:{}",username);
             } catch (IllegalArgumentException ex) {
                 log.info("fail get user id");
                 ex.printStackTrace();
@@ -91,7 +93,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 log.info("Invalid JWT Token !!");
             }
         } else {
-            log.info("Username is null or context is not null !!");
+            log.info("JWT Token is either missing or already authenticated.");
         }
         filterChain.doFilter(request, response);
     }

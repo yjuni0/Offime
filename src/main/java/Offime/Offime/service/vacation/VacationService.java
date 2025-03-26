@@ -6,9 +6,9 @@ import Offime.Offime.dto.response.vacation.ResVacation;
 import Offime.Offime.entity.member.Member;
 import Offime.Offime.entity.vacation.Vacation;
 import Offime.Offime.entity.vacation.VacationApprovalStatus;
-import Offime.Offime.entity.vacation.VacationType;
 import Offime.Offime.repository.member.MemberRepository;
 import Offime.Offime.repository.vacation.VacationRepository;
+import Offime.Offime.service.notifications.NotificationProducer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -27,6 +27,7 @@ import java.util.List;
 public class VacationService {
     private final VacationRepository vacationRepository;
     private final VacationMapper vacationMapper;
+    private final NotificationProducer notificationProducer;
     private final MemberRepository memberRepository;
     // 조회
     public Page<ResVacation> getAllVacations(Member member, Pageable pageable) {
@@ -51,10 +52,13 @@ public class VacationService {
 
     // 신청
     public ResVacation applyVacation(Member member, ReqVacation reqVacation) {
-        log.info("휴가 신청 멤버 id {} 요청 데이터 : {} ", member.getId(),reqVacation);
+//        log.info("휴가 신청 멤버 id {} 요청 데이터 : {} ", member.getId(),reqVacation);
         Vacation vacation = vacationMapper.toEntity(member, reqVacation);
         vacationRepository.save(vacation);
-        log.info("휴가 신청 성공 멤버{} , 휴가 id{} ",member.getId(),vacation.getId());
+//        log.info("휴가 신청 성공 멤버{} , 휴가 id{} ",member.getId(),vacation.getId());
+        // 2. 휴가 신청 후 알림 전송 (RabbitMQ)
+        String message = "새로운 휴가 신청이 있습니다: " + vacation.getReason() + " (" + vacation.getStartDate() + " ~ " + vacation.getEndDate() + ")";
+        notificationProducer.sendMessage(message);  // 알림 전송
         return vacationMapper.fromEntity(vacation);
     }
 
