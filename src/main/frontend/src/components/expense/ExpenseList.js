@@ -79,28 +79,32 @@ const ExpenseList = () => {
     <>
       <BackPage />
       <main id="main" class="경비관리 목록">
-        <section className="sec">
-          <div className="inner">
+        <section className="sec bg_n20 ">
+          <div className="inner ">
             <h4 className="">경비 관리</h4>
             <ExpenseSearch onSearch={handleSearch} />
-            <ul className="item">
+            <ul className="item ">
               {filteredExpenses && filteredExpenses.length > 0 ? (
                 filteredExpenses.map((expense) => (
                   <li
-                    className=""
+                    className="mb_md expense-list-form bg_n0"
                     key={expense.id}
                     onClick={() => handleTitleClick(expense.id)}
                   >
-                    <div className="flex space-between">
-                      <p className="fs_md">
+                    <div className="flex space-between mb_md expense-list-box">
+                      <p className="fs_md m_sm">
                         {expense.username || localStorage.getItem("username")}
                       </p>
-                      <p className="fs_sm"> {expense.expenseDate}</p>
+                      <p className="fs_xsm m_sm"> {expense.expenseDate}</p>
                     </div>
-                    <h3 className="fs_md">{expense.title}</h3>
-                    <p className="fs_sm"> {expense.category}</p>{" "}
-                    <p className="fs_md">{expense.content}</p>
-                    <p className="fs_md">금액: {expense.amount} 원</p>
+
+                    <h3 className="">{expense.title}</h3>
+
+                    <div className="flex space-between pb_md">
+                      <p className="fs_sm tc-pk"> {expense.category}</p>
+                      <p className="fs_md">{expense.amount} 원</p>
+                    </div>
+                    <p className="fs_md ">{expense.content}</p>
                   </li>
                 ))
               ) : (
