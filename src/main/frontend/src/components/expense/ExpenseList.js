@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../../css/common.css";
 import "../../css/reset.css";
-import "../../css/ExpenseList.css";
+import "../../css/expense.css";
 import ExpenseSearch from "./ExpenseSearch";
 import BackPage from "../BackPage";
 
@@ -78,40 +78,44 @@ const ExpenseList = () => {
   return (
     <>
       <BackPage />
-      <section className="sec">
-        <div className="inner">
-          <h4 className="">경비 관리</h4>
-          <ExpenseSearch onSearch={handleSearch} />
-          <ul className="item">
-            {filteredExpenses && filteredExpenses.length > 0 ? (
-              filteredExpenses.map((expense) => (
-                <li className="" key={expense.id}>
-                  <div>
-                    <p className="fs_sm">
-                      {expense.username || localStorage.getItem("username")}
-                    </p>
-                    <p className="fs_sm"> {expense.expenseDate}</p>
-                  </div>
-                  <h3 className="" onClick={() => handleTitleClick(expense.id)}>
-                    {expense.title}
-                  </h3>
-                  <p className="fs_sm"> {expense.category}</p>{" "}
-                  <p className="fs_md">{expense.content}</p>
-                  <p className="fs_sm">금액: {expense.amount} 원</p>
-                </li>
-              ))
-            ) : (
-              <p>등록된 게시글이 없습니다.</p>
-            )}
-          </ul>
-          <button
-            className="expense-list-add-button"
-            onClick={() => navigate("/create")}
-          >
-            +
-          </button>
-        </div>
-      </section>
+      <main id="main" class="경비관리 목록">
+        <section className="sec">
+          <div className="inner">
+            <h4 className="">경비 관리</h4>
+            <ExpenseSearch onSearch={handleSearch} />
+            <ul className="item">
+              {filteredExpenses && filteredExpenses.length > 0 ? (
+                filteredExpenses.map((expense) => (
+                  <li
+                    className=""
+                    key={expense.id}
+                    onClick={() => handleTitleClick(expense.id)}
+                  >
+                    <div className="flex space-between">
+                      <p className="fs_md">
+                        {expense.username || localStorage.getItem("username")}
+                      </p>
+                      <p className="fs_sm"> {expense.expenseDate}</p>
+                    </div>
+                    <h3 className="fs_md">{expense.title}</h3>
+                    <p className="fs_sm"> {expense.category}</p>{" "}
+                    <p className="fs_md">{expense.content}</p>
+                    <p className="fs_md">금액: {expense.amount} 원</p>
+                  </li>
+                ))
+              ) : (
+                <p>등록된 게시글이 없습니다.</p>
+              )}
+            </ul>
+            <button
+              className="expense-list-add-button bg_pm tc-w fs_md p_md btn"
+              onClick={() => navigate("/create")}
+            >
+              +
+            </button>
+          </div>
+        </section>
+      </main>
     </>
   );
 };

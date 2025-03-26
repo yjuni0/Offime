@@ -49,18 +49,19 @@
   font-style: italic;
 }
 
+/* ExpenseList.css */
 .expense-list-add-button {
   position: fixed;
-  z-index: 99;
-  padding: 10px 15px;
-  background: #3498db;
-  color: white;
+  bottom: 20px;
+  right: 20px;
   border: none;
   border-radius: 100%;
-  font-size: 16px;
-  transition: background 0.3s;
 }
 
-.expense-list-add-button:hover {
-  background: #2980b9;
+.flex {
+  display: flex;
+}
+
+.space-between {
+  justify-content: space-between;
 }
