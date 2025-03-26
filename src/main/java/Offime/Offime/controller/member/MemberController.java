@@ -27,11 +27,7 @@ public class MemberController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody MemberLoginDto memberLoginDto) {
         MemberTokenDto memberTokenDto = memberService.login(memberLoginDto);
-        if (memberTokenDto.isEnabled()) {
             return ResponseEntity.status(HttpStatus.OK).header(memberTokenDto.getToken()).body(memberTokenDto);
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 실패: 탈퇴한 회원입니다.");
-        }
     }
 
 

@@ -2,18 +2,19 @@ package Offime.Offime.entity.member;
 
 import Offime.Offime.common.BaseTimeEntity;
 import Offime.Offime.common.Role;
-import Offime.Offime.common.Team;
 import Offime.Offime.entity.vacation.Vacation;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -24,7 +25,8 @@ import java.util.List;
 @NoArgsConstructor
 public class Member extends BaseTimeEntity implements UserDetails {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
@@ -36,7 +38,8 @@ public class Member extends BaseTimeEntity implements UserDetails {
     private String phone;
 
     @Setter
-    private int availableLeaveDays;
+    @Column(precision = 4,scale=2)
+    private BigDecimal availableLeaveDays;
 
 
     @Column(name = "WORK_STATUS")
@@ -48,15 +51,12 @@ public class Member extends BaseTimeEntity implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Team team;
 
-    @Transient
-    private String token;
-
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Vacation> vacations;
 
 
     @Builder
-    public Member(Long id, String name, String email, String password, String phone, int availableLeaveDays, String workStatus, Role role, Team team, String token) {
+    public Member(Long id, String name, String email, String password, String phone, BigDecimal availableLeaveDays, String workStatus, Role role, Team team) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -66,11 +66,11 @@ public class Member extends BaseTimeEntity implements UserDetails {
         this.workStatus = workStatus;
         this.role = role;
         this.team = team;
-        this.token = token;
     }
 
+    @PrePersist
     public void prePersist() {
-        if (this.availableLeaveDays == 0) { this.availableLeaveDays = 12; }
+        if (this.availableLeaveDays.compareTo(BigDecimal.ZERO) == 0) { this.availableLeaveDays = new BigDecimal("12.00"); }
         if (this.role == null) { this.role = Role.USER; }
     }
 

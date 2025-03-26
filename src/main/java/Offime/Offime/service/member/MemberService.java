@@ -52,12 +52,11 @@ public class MemberService {
     public MemberTokenDto login (MemberLoginDto memberLoginDto) {
         Member member = memberRepository.findByEmail(memberLoginDto.getEmail()).orElseThrow(
                 () -> new ResourceNotFoundException("Member", "Member Email", memberLoginDto.getEmail()));
-        UserDetails userDetails = userDetailsService.loadUserByUsername(memberLoginDto.getEmail());
         authenticate(memberLoginDto.getEmail(), memberLoginDto.getPassword());
         String password = memberLoginDto.getPassword();
-        if (passwordEncoder.matches(password, userDetails.getPassword())) {
-            String token = jwtTokenUtil.generateToken(userDetails);
-            return MemberTokenDto.fromEntity(userDetails, token);
+        if (passwordEncoder.matches(password, member.getPassword())) {
+            String token = jwtTokenUtil.generateToken(member);
+            return MemberTokenDto.fromEntity(member, token);
         } else {
             throw new IllegalArgumentException("잘못된 비밀번호 입니다.");
         }
