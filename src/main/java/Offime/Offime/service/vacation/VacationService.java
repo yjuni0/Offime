@@ -6,6 +6,7 @@ import Offime.Offime.dto.response.vacation.ResVacation;
 import Offime.Offime.entity.member.Member;
 import Offime.Offime.entity.vacation.Vacation;
 import Offime.Offime.entity.vacation.VacationApprovalStatus;
+import Offime.Offime.exception.VacationException;
 import Offime.Offime.repository.member.MemberRepository;
 import Offime.Offime.repository.vacation.VacationRepository;
 import Offime.Offime.service.notifications.NotificationProducer;
@@ -64,7 +65,7 @@ public class VacationService {
         LocalDate endDate = reqVacation.endDate();
         boolean existApplyVacation = vacationRepository.existsVacationOverlap(startDate,endDate,reqMember);
         if(existApplyVacation){
-            throw new IllegalArgumentException("중복 날짜는 휴가 신청이 불가능");
+            throw new VacationException("중복 날짜는 휴가 신청이 불가능");
         }
         // 4. 휴가 신청 처리
         Vacation vacation = vacationMapper.toEntity(reqMember, reqVacation);
