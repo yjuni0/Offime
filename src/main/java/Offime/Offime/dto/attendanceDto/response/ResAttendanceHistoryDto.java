@@ -2,54 +2,49 @@ package Offime.Offime.dto.attendanceDto.response;
 
 import Offime.Offime.entity.attendanceEntity.EventRecord;
 import Offime.Offime.entity.attendanceEntity.EventType;
-import Offime.Offime.entity.attendanceEntity.OutOfOfficeType;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
 public class ResAttendanceHistoryDto {
 
-    private Long id;
-    private LocalDate date;
-    private LocalDateTime requestTime;
-    private LocalTime clockIn;
-    private LocalTime clockOut;
-    private EventType eventType;
-    private OutOfOfficeType outOfOfficeType;
-    long late;
-    long leaveEarly;
+    private long clockInCount;
+    private long lateCount;
+    private long totalLateMinutes;
+    private long leaveEarlyCount;
+    private long totalLeaveEarlyMinutes;
 
     @Builder
-    public ResAttendanceHistoryDto(Long id, LocalDate date, LocalDateTime requestTime, LocalTime clockIn, LocalTime clockOut,
-                                   EventType eventType, OutOfOfficeType outOfOfficeType, long late, long leaveEarly) {
-        this.id = id;
-        this.date = date;
-        this.requestTime = requestTime;
-        this.clockIn = clockIn;
-        this.clockOut = clockOut;
-        this.eventType = eventType;
-        this.outOfOfficeType = outOfOfficeType;
-        this.late = late;
-        this.leaveEarly = leaveEarly;
+    public ResAttendanceHistoryDto(long clockInCount, long lateCount, long totalLateMinutes, long leaveEarlyCount, long totalLeaveEarlyMinutes) {
+        this.clockInCount = clockInCount;
+        this.lateCount = lateCount;
+        this.totalLateMinutes = totalLateMinutes;
+        this.leaveEarlyCount = leaveEarlyCount;
+        this.totalLeaveEarlyMinutes = totalLeaveEarlyMinutes;
     }
 
-    public static ResAttendanceHistoryDto fromEntity(EventRecord eventRecord) {
+    public static ResAttendanceHistoryDto fromEntity(List<EventRecord> eventRecord){
         return ResAttendanceHistoryDto.builder()
-                .id(eventRecord.getId())
-                .date(eventRecord.getDate())
-                .requestTime(eventRecord.getRequestTime())
-                .clockIn(eventRecord.getClockIn())
-                .clockOut(eventRecord.getClockOut())
-                .eventType(eventRecord.getEventType())
-                .outOfOfficeType(eventRecord.getOutOfOfficeType())
-                .late(eventRecord.getLate())
-                .leaveEarly(eventRecord.getLeaveEarly())
+                .clockInCount(eventRecord.stream()
+                        .filter(r -> r.getEventType() == EventType.출근).count())
+                .lateCount(eventRecord.stream()
+                        .filter(r -> r.getEventType() == EventType.출근)
+                        .filter(r -> r.getLate() > 0)
+                        .count())
+                .totalLateMinutes(eventRecord.stream()
+                        .filter(r -> r.getEventType() == EventType.출근)
+                        .mapToLong(EventRecord::getLate)
+                        .sum())
+                .leaveEarlyCount(eventRecord.stream()
+                        .filter(r -> r.getEventType() == EventType.퇴근)
+                        .filter(r -> r.getLeaveEarly() > 0).count())
+                .totalLeaveEarlyMinutes(eventRecord.stream()
+                        .filter(r -> r.getEventType() == EventType.퇴근)
+                        .mapToLong(EventRecord::getLeaveEarly).sum())
                 .build();
     }
 }
