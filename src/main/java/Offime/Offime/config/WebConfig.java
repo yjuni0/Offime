@@ -1,12 +1,13 @@
 package Offime.Offime.config;
 
-import jakarta.servlet.MultipartConfigElement;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.boot.web.servlet.MultipartConfigFactory;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.util.unit.DataSize;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import jakarta.servlet.MultipartConfigElement;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
@@ -14,7 +15,6 @@ public class WebConfig implements WebMvcConfigurer {
     @Bean
     public MultipartConfigElement multipartConfigElement() {
         MultipartConfigFactory factory = new MultipartConfigFactory();
-        // 파일 크기 설정 (필요에 따라 수정)
         factory.setMaxFileSize(DataSize.parse("10MB"));
         factory.setMaxRequestSize(DataSize.parse("10MB"));
         return factory.createMultipartConfig();
@@ -22,21 +22,29 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/api/**") // CORS를 적용할 URL 패턴 (여기서는 /api/로 시작하는 모든 엔드포인트)
-                .allowedOrigins("http://localhost:3000") // 허용할 Origin (프론트엔드 주소)
-                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // 허용할 HTTP 메서드
-                .allowedHeaders("*") // 허용할 모든 헤더
-                .allowCredentials(true) // 쿠키 인증 정보를 서버로 보낼 수 있도록 허용 (필요한 경우 true로 설정)
-                .maxAge(3600); // Preflight 요청에 대한 응답을 3600초 (1시간) 동안 캐싱
+        registry.addMapping("/api/**")
+                .allowedOrigins("http://localhost:3000")
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                .allowedHeaders("*")
+                .allowCredentials(true)
+                .maxAge(3600);
 
-        // 이미지 요청에 대한 CORS 설정 추가
-        registry.addMapping("/images/**") // /images/ 경로에 대해 CORS 설정
-                .allowedOrigins("http://localhost:3000") // 허용할 Origin (프론트엔드 주소)
-                .allowedMethods("GET") // GET 메서드만 허용
-                .allowedHeaders("*") // 모든 헤더 허용
-                .allowCredentials(true) // 쿠키 인증 정보 허용
-                .maxAge(3600); // 캐싱 설정
+        registry.addMapping("/images/**")
+                .allowedOrigins("http://localhost:3000")
+                .allowedMethods("GET")
+                .allowedHeaders("*")
+                .allowCredentials(true)
+                .maxAge(3600);
     }
 
+    // 🛠 추가: 정적 리소스 핸들러 설정
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        // 이미지 저장 경로를 실제 경로로 변경
+        String uploadDir = "file:/C:/IntelliJ/Offime-main/src/main/resources/static/images/";
+
+        registry.addResourceHandler("/images/**")
+                .addResourceLocations(uploadDir); // 실제 경로를 통해 이미지 서빙
+    }
 
 }

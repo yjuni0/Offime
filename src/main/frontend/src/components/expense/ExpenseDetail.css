@@ -29,18 +29,18 @@
 
 .expense-detail-image-container {
   display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  justify-content: center;
+  flex-direction: column; /* 이미지를 세로로 정렬 */
+  align-items: center; /* 가운데 정렬 */
+  gap: 10px; /* 이미지 간 간격 */
 }
 
 .expense-detail-image {
-  width: 100px;
-  height: 100px;
-  object-fit: cover;
-  border-radius: 8px;
+  width: 100%;
+  max-width: 200px; /* 이미지 크기 최대값 설정 */
+  height: auto; /* 비율 유지 */
+  object-fit: cover; /* 이미지 비율 유지하며 잘림 방지 */
+  border-radius: 8px; /* 원하는 경우 둥근 모서리 */
   cursor: pointer;
-  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 }
 
 .expense-detail-image:hover {

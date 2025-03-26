@@ -1,7 +1,6 @@
 package Offime.Offime.service;
 
-import Offime.Offime.ExpenseNotFoundException;
-import Offime.Offime.controller.ExpenseController;
+import Offime.Offime.exception.ExpenseNotFoundException;
 import Offime.Offime.dto.request.ExpenseRequestDTO;
 import Offime.Offime.dto.response.ExpenseResponseDTO;
 import Offime.Offime.entity.Expense;
@@ -36,7 +35,15 @@ public class ExpenseService {
     @Value("${file.upload.path}")
     private String uploadDir;
 
-    private static final Logger logger = LoggerFactory.getLogger(ExpenseController.class);
+    @Value("${file.upload.url}")
+    private String serverUrl; // application.properties에서 읽어올 URL
+
+    private static final Logger logger = LoggerFactory.getLogger(ExpenseService.class);
+
+    // 검색 기능 추가
+    public List<Expense> searchExpenses(String searchTerm) {
+        return expenseRepository.searchExpenses(searchTerm);
+    }
 
     // 게시물 생성 (이미지와 함께)
     public Expense createExpense(ExpenseRequestDTO expenseDTO, List<MultipartFile> images) {
@@ -76,40 +83,45 @@ public class ExpenseService {
     // 이미지 파일을 저장하는 메서드
     private String saveImage(MultipartFile image) {
         try {
-            File uploadDirFile = new File(uploadDir);
+            // 이미지 저장 디렉토리 (파일 시스템 상 경로)
+            File uploadDirFile = new File(uploadDir); // 수정된 부분
             if (!uploadDirFile.exists()) {
                 if (!uploadDirFile.mkdirs()) {
-                    logger.error("이미지 업로드 디렉토리 생성 실패: {}", uploadDir);
+                    logger.error("이미지 업로드 디렉토리 생성 실패: {}", uploadDirFile.getPath());
                     throw new RuntimeException("이미지 업로드 디렉토리 생성 실패");
                 }
             }
-            String fileName = System.currentTimeMillis() + "-" + image.getOriginalFilename();
-            File uploadFile = new File(uploadDir, fileName);
+
+            // 이미지 파일 이름 생성 (시간 + 원본 파일명 + 랜덤 값)
+            String fileName = System.currentTimeMillis() + "-" + Math.random() + "-" + image.getOriginalFilename(); // 수정된 부분
+            File uploadFile = new File(uploadDirFile, fileName);
+
+            // 파일을 디스크에 저장
             image.transferTo(uploadFile);
 
-            // 이미지 URL을 반환 (절대 경로 사용)
-            String serverUrl;
-            if (System.getenv("ENV") != null && System.getenv("ENV").equals("production")) {
-                serverUrl = "http://localhost:8080";
-            } else {
-                serverUrl = "http://localhost:3000";
-            } // 실제 백엔드 서버 주소와 포트로 변경
-            return serverUrl + "/images/" + fileName;
+            // 반환할 URL 경로
+            return serverUrl + "/" + fileName; // 동적으로 읽어온 URL 경로 사용
         } catch (IOException e) {
+            logger.error("이미지 업로드 실패: {}", e.getMessage());
             throw new RuntimeException("Image upload failed: " + e.getMessage());
         }
     }
 
-    // 게시물 조회 (작성자만 조회 가능)
+
+
+
+    // 게시물 조회 (작성자 또는 관리자만 조회 가능)
     public Expense getExpense(Long id) {
         Expense expense = expenseRepository.findById(id)
                 .orElseThrow(() -> new ExpenseNotFoundException("Expense not found with id: " + id));
 
-        // 현재 인증된 사용자의 username 가져오기
-        String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+        // 현재 인증된 사용자의 권한 가져오기
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        boolean isAdmin = authentication.getAuthorities().stream()
+                .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ADMIN"));
 
-        // 게시물 작성자와 현재 사용자가 다르면 권한 없음 예외 발생 (또는 다른 처리)
-        if (!expense.getUsername().equals(currentUsername)) {
+        // 게시물 작성자와 현재 사용자가 다르면서 관리자도 아니면 권한 없음 예외 발생 (또는 다른 처리)
+        if (!expense.getUsername().equals(authentication.getName()) && !isAdmin) {
             throw new org.springframework.security.access.AccessDeniedException("You do not have permission to access this expense.");
         }
 
@@ -123,7 +135,7 @@ public class ExpenseService {
 
         // 관리자 권한 확인
         boolean isAdmin = authentication.getAuthorities().stream()
-                .anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN")); // 'ROLE_ADMIN'은 실제 관리자 역할 이름으로 변경해야 합니다.
+                .anyMatch(authority -> authority.getAuthority().equals("ADMIN")); // 'ROLE_ADMIN'은 실제 관리자 역할 이름으로 변경해야 합니다.
 
         if (isAdmin) {
             // 관리자는 모든 게시물 조회
@@ -154,6 +166,7 @@ public class ExpenseService {
 
     @Transactional
     public Expense updateExpense(Long id, ExpenseRequestDTO expenseDTO, List<MultipartFile> images) {
+        logger.info("Updating expense with id: {}", id);
         Expense expense = expenseRepository.findById(id)
                 .orElseThrow(() -> new ExpenseNotFoundException("Expense not found with id: " + id));
 
@@ -164,7 +177,7 @@ public class ExpenseService {
         expense.setCategory(expenseDTO.getCategory());
         expense.setExpenseDate(expenseDTO.getExpenseDate());
 
-        // 이미지가 있을 경우 처리
+        // 새 이미지 추가 (기존 이미지 유지)
         if (images != null && !images.isEmpty()) {
             for (MultipartFile image : images) {
                 String imageUrl = saveImage(image);
@@ -175,6 +188,8 @@ public class ExpenseService {
             }
         }
 
+        // 변경된 게시글 저장
+        logger.info("Expense updated: {}", expense);
         return expenseRepository.save(expense);
     }
 
@@ -194,4 +209,31 @@ public class ExpenseService {
 
         expenseRepository.delete(expense);
     }
+
+    @Transactional
+    public void deleteImage(Long imageId) {
+        logger.info("Deleting image with id: {}", imageId);
+        // 이미지 엔티티 찾기
+        ExpenseImage expenseImage = expenseImageRepository.findById(imageId)
+                .orElseThrow(() -> new RuntimeException("Image not found with id: " + imageId));
+
+        // 로컬 디렉토리에서 이미지 파일 삭제
+        String imageUrl = expenseImage.getImageUrl();
+        String fileName = imageUrl.substring(imageUrl.lastIndexOf("/") + 1);
+        File imageFile = new File(uploadDir, fileName);
+
+        if (imageFile.exists()) {
+            if (!imageFile.delete()) {
+                logger.error("이미지 삭제 실패: {}", imageFile.getAbsolutePath());
+                throw new RuntimeException("이미지 파일 삭제 실패");
+            }
+        }
+
+        // `ExpenseImage` 엔티티 삭제
+        logger.info("Image deleted: {}", imageId);
+        expenseImageRepository.delete(expenseImage);
+    }
+
+
+
 }

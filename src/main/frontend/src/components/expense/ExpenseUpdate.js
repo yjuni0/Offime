@@ -22,11 +22,14 @@ const ExpenseUpdate = () => {
   });
   const [previewImages, setPreviewImages] = useState([]);
   const [files, setFiles] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchExpenseData = async () => {
-      const token = localStorage.getItem("access_token");
-      if (!token) {
+      const accessToken = localStorage.getItem("access_token");
+      if (!accessToken) {
+        console.error("No access token found. Redirecting to login.");
         navigate("/login");
         return;
       }
@@ -39,6 +42,12 @@ const ExpenseUpdate = () => {
           },
         });
 
+        if (response.status === 403) {
+          console.error("Access denied. Redirecting to login...");
+          navigate("/login");
+          return;
+        }
+
         if (response.ok) {
           const data = await response.json();
           setExpense({
@@ -47,17 +56,19 @@ const ExpenseUpdate = () => {
             category: data.category,
             expenseDate: data.expenseDate,
             photoUrls: data.imageUrls,
-            totalAmount: data.amount || 0, // 서버에서 amount로 내려옴.
+            totalAmount: data.amount || 0,
           });
 
-          if (data.imageUrls && data.imageUrls.length > 0) {
-            setPreviewImages(data.imageUrls); // 서버에서 내려오는 url을 그대로 사용
+          if (data.imageUrls) {
+            setPreviewImages(data.imageUrls);
           }
+          setLoading(false);
         } else {
           throw new Error("Failed to fetch expense data");
         }
       } catch (error) {
-        console.error("Error fetching data:", error);
+        setError("데이터를 가져오는 데 실패했습니다.");
+        setLoading(false);
       }
     };
 
@@ -72,14 +83,29 @@ const ExpenseUpdate = () => {
   const handleFileChange = (e) => {
     const selectedFiles = Array.from(e.target.files);
     const imageUrls = selectedFiles.map((file) => URL.createObjectURL(file));
-    setPreviewImages((prevImages) => [...prevImages, ...imageUrls]);
-    setFiles((prevFiles) => [...prevFiles, ...selectedFiles]);
+
+    setPreviewImages((prevImages) => [...prevImages, ...imageUrls]); // 기존 이미지에 새 이미지 추가
+    setFiles((prevFiles) => [...prevFiles, ...selectedFiles]); // 기존 파일에 새 파일 추가
   };
+
+  const handleRemoveImage = (index) => {
+    const updatedImages = previewImages.filter((_, i) => i !== index);
+    const updatedFiles = files.filter((_, i) => i !== index);
+    setPreviewImages(updatedImages);
+    setFiles(updatedFiles);
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const formData = new FormData();
 
-    // expenseDTO를 한 번만 추가
+    const accessToken = localStorage.getItem("access_token");
+    if (!accessToken) {
+      console.error("No access token found. Redirecting to login.");
+      navigate("/login");
+      return;
+    }
+
+    const formData = new FormData();
     formData.append(
       "expenseDTO",
       JSON.stringify({
@@ -91,33 +117,34 @@ const ExpenseUpdate = () => {
       })
     );
 
+    // 기존 이미지를 포함한 새로운 이미지 파일들 추가
     files.forEach((file) => {
       formData.append("images", file);
     });
 
-    // 토큰 처리
-    const accessToken = localStorage.getItem("access_token");
-    if (!accessToken) {
-      console.error("No access token found");
-      return;
+    // 삭제된 이미지 목록을 서버로 전달
+    const deletedImages = expense.photoUrls.filter(
+      (url) => !previewImages.includes(url) // 기존 이미지 중 삭제된 이미지 찾기
+    );
+
+    // 삭제된 이미지가 있다면 이를 서버에 전달
+    if (deletedImages.length > 0) {
+      formData.append("deletedImages", JSON.stringify(deletedImages));
     }
 
     try {
       const response = await fetch(`/api/expenses/${id}`, {
         method: "PUT",
         headers: {
-          Authorization: `Bearer ${accessToken}`, // 토큰 추가
+          Authorization: `Bearer ${accessToken}`,
         },
         body: formData,
       });
 
       if (response.ok) {
-        const data = await response.json();
-        console.log("Expense updated successfully", data);
-        navigate(`/expenses/${id}`);
+        navigate(`/detail/${id}`); // 수정된 후 상세 페이지로 이동
       } else {
-        const errorDetails = await response.text();
-        console.error("Failed to update expense", errorDetails);
+        console.error("Failed to update expense", await response.text());
       }
     } catch (error) {
       console.error("Error:", error);
@@ -181,12 +208,23 @@ const ExpenseUpdate = () => {
         {previewImages.length > 0 && (
           <div className="expense-update-image-preview-container">
             {previewImages.map((src, index) => (
-              <img
-                key={index}
-                className="expense-update-preview-image"
-                src={src}
-                alt={`미리보기 ${index + 1}`}
-              />
+              <div key={index} className="expense-update-image-preview-item">
+                <img
+                  className="expense-update-preview-image"
+                  src={src}
+                  alt={`미리보기 ${index + 1}`}
+                  onError={
+                    (e) => (e.target.src = "/path/to/your/default-image.jpg") // 이미지 오류시 기본 이미지로 변경
+                  }
+                />
+                <button
+                  className="expense-update-remove-image-button"
+                  type="button"
+                  onClick={() => handleRemoveImage(index)}
+                >
+                  X
+                </button>
+              </div>
             ))}
           </div>
         )}

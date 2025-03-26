@@ -1,4 +1,4 @@
-package Offime.Offime;
+package Offime.Offime.security.jwt;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

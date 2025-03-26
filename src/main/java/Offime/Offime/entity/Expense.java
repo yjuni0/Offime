@@ -29,7 +29,7 @@ public class Expense {
     @Column(name = "expense_date", nullable = false)
     private LocalDate expenseDate;
 
-    @OneToMany(mappedBy = "expense", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "expense", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = false) // 수정된 부분
     private List<ExpenseImage> images;  // 여러 개의 사진
 
     // 기본 생성자, 모든 필드를 받는 생성자가 자동 생성됩니다.

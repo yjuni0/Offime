@@ -17,6 +17,19 @@ const ExpenseDetail = () => {
   const navigate = useNavigate();
   const role = localStorage.getItem("role");
 
+  // 이미지 URL 처리 함수
+  const getImageUrl = (url) => {
+    const backendUrl = "http://localhost:8080";
+
+    // 만약 URL이 상대 경로라면, 백엔드 URL을 붙여서 절대 경로로 반환
+    if (url && url.startsWith("/uploads")) {
+      return `${backendUrl}${url}`;
+    }
+
+    // 이미 절대 경로가 포함된 경우 그대로 반환
+    return url;
+  };
+
   useEffect(() => {
     const fetchExpenseDetail = async () => {
       try {
@@ -118,19 +131,11 @@ const ExpenseDetail = () => {
                 <img
                   key={index}
                   className="expense-detail-image"
-                  src={url}
+                  src={getImageUrl(url)} // 이미지 URL 처리 함수 사용
                   alt={`Expense image ${index + 1}`}
                   onClick={() => setSelectedImage(url)}
                 />
               ))}
-            </div>
-          </div>
-        )}
-
-        {selectedImage && (
-          <div className="image-modal" onClick={() => setSelectedImage(null)}>
-            <div className="image-modal-content">
-              <img src={selectedImage} alt="Expanded view" />
             </div>
           </div>
         )}

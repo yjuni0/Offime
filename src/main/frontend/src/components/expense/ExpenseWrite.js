@@ -10,14 +10,14 @@ const formatAmount = (amount) => {
 
 const ExpenseWrite = () => {
   const navigate = useNavigate();
-  const [previewImages, setPreviewImages] = useState(); // 빈 배열로 초기화
-  const [files, setFiles] = useState(); // 빈 배열로 초기화
+  const [previewImages, setPreviewImages] = useState([]); // 빈 배열로 초기화
+  const [files, setFiles] = useState([]); // 빈 배열로 초기화
   const [expense, setExpense] = useState({
     title: "",
     content: "",
     category: "",
     date: "",
-    photoUrls: ``, // 빈 배열로 초기화
+    photoUrls: [], // 빈 배열로 초기화
     amounts: [{ amount: "" }],
     totalAmount: 0,
   });
@@ -59,6 +59,13 @@ const ExpenseWrite = () => {
     setExpense({ ...expense, date: e.target.value });
   };
 
+  const handleRemoveImage = (index) => {
+    const updatedImages = previewImages.filter((_, i) => i !== index);
+    const updatedFiles = files.filter((_, i) => i !== index);
+    setPreviewImages(updatedImages);
+    setFiles(updatedFiles);
+  };
+
   const handleFileChange = (e) => {
     const selectedFiles = Array.from(e.target.files);
     const imageUrls = selectedFiles.map((file) => URL.createObjectURL(file));
@@ -70,13 +77,8 @@ const ExpenseWrite = () => {
         ? [...prevFiles, ...selectedFiles]
         : [...selectedFiles]
     );
-    setExpense((prevExpense) => ({
-      ...prevExpense,
-      photoUrls: Array.isArray(prevExpense.photoUrls)
-        ? [...prevExpense.photoUrls, ...selectedFiles]
-        : [...selectedFiles],
-    }));
   };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = new FormData();
@@ -91,18 +93,15 @@ const ExpenseWrite = () => {
       amount: totalAmount,
     };
 
-    console.log("expenseDto JSON:", JSON.stringify(expenseDto));
     formData.append("expenseDTO", JSON.stringify(expenseDto));
 
     if (files && files.length > 0) {
       files.forEach((file) => {
-        console.log("추가되는 파일:", file);
-        formData.append("images", file);
+        formData.append("images", file); // 파일 추가
       });
     }
 
     const accessToken = localStorage.getItem("access_token");
-    console.log("액세스 토큰:", accessToken);
     if (!accessToken) {
       console.error("No access token found");
       return;
@@ -116,11 +115,12 @@ const ExpenseWrite = () => {
         },
         body: formData,
       });
-      console.log("서버 응답 상태:", response.status);
+
       if (response.ok) {
         const data = await response.json();
-        console.log("Expense created successfully", data);
-        navigate("/list");
+        // 백엔드에서 반환된 photoUrls 배열을 업데이트
+        setExpense({ ...expense, photoUrls: data.photoUrls });
+        navigate("/list"); // 리스트 페이지로 이동
       } else {
         const errorDetails = await response.text();
         console.error("Failed to create expense", errorDetails);
@@ -129,6 +129,7 @@ const ExpenseWrite = () => {
       console.error("Error:", error);
     }
   };
+
   return (
     <div className="expense-write-container">
       <BackPage />
@@ -180,20 +181,26 @@ const ExpenseWrite = () => {
           id="fileInput"
           accept="image/*"
         />
-
-        {previewImages &&
-          previewImages.length > 0 && ( // previewImages가 undefined일 경우를 대비한 조건 추가
-            <div className="expense-write-image-preview-container">
-              {previewImages.map((src, index) => (
+        {previewImages && previewImages.length > 0 && (
+          <div className="expense-write-image-preview-container">
+            {previewImages.map((src, index) => (
+              <div key={index} className="expense-write-image-preview-item">
                 <img
-                  key={index}
                   className="expense-write-preview-image"
                   src={src}
                   alt={`미리보기 ${index + 1}`}
                 />
-              ))}
-            </div>
-          )}
+                <button
+                  className="expense-write-remove-image-button"
+                  type="button"
+                  onClick={() => handleRemoveImage(index)}
+                >
+                  X
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
 
         <label className="expense-write-label">금액</label>
         {expense.amounts.map((amountItem, index) => (

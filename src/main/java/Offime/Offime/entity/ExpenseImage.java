@@ -3,23 +3,28 @@ package Offime.Offime.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Setter
 @Getter
+@NoArgsConstructor
 @Entity
+@ToString(exclude = "expense")
 public class ExpenseImage {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // Getter, Setter 추가
+    private String imageUrl;
 
-    private String imageUrl;  // 이미지 URL
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE}) // 수정된 부분
+    @JoinColumn(name = "expense_id", nullable = false)
+    private Expense expense;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "expense_id")
-    private Expense expense;  // 해당 비용 게시물과 연결
-
-    // 기타 필요한 생성자나 메서드들
+    public ExpenseImage(String imageUrl, Expense expense) {
+        this.imageUrl = imageUrl;
+        this.expense = expense;
+    }
 }
