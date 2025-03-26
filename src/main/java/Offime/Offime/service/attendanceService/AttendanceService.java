@@ -96,7 +96,6 @@ public class AttendanceService {
     }
 
     //private 메소드=========================================================================================
-
     private long late(LocalDateTime clockInTime) {
         LocalTime Time = clockInTime.toLocalTime();
         if (Time.isAfter(COMPANY_START_TIME)) {

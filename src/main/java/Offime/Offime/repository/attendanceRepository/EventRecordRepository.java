@@ -10,10 +10,6 @@ import java.util.Optional;
 
 public interface EventRecordRepository extends JpaRepository<EventRecord, Long> {
 
-    List<EventRecord> findByDate(LocalDate date);
-
     Optional<EventRecord> findByDateAndEventType(LocalDate date, EventType eventType);
-
     List<EventRecord> findByDateBetween(LocalDate startDate, LocalDate endDate);
-
 }

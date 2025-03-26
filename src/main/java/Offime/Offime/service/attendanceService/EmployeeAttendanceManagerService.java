@@ -12,15 +12,14 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class EmployeeAttendanceManagerService {
+
     private final EventRecordRepository eventRecordRepository;
 
-    // 주별 통계 조회
     public ResAttendanceHistoryDto getWeeklyAttendanceHistory(int year, int month, int startDay) {
         List<EventRecord> records = getWeeklyRecords(year, month, startDay);
         return ResAttendanceHistoryDto.fromEntity(records);
     }
 
-    // 월별 통계 조회
     public ResAttendanceHistoryDto getMonthlyAttendanceHistory(int year, int month) {
         List<EventRecord> records = getMonthlyRecords(year, month);
         return ResAttendanceHistoryDto.fromEntity(records);

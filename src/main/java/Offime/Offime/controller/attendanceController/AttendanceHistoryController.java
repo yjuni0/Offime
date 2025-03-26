@@ -19,14 +19,16 @@ public class AttendanceHistoryController {
     @GetMapping("/weekly")
     public ResponseEntity<ResAttendanceHistoryDto> getWeeklyAttendance(
             @RequestBody ReqAttendanceWeeklyHistoryDto request) {
-        ResAttendanceHistoryDto weeklyStats = employeeAttendanceManagerService.getWeeklyAttendanceHistory(request.getYear(), request.getMonth(), request.getStartDay());
+        ResAttendanceHistoryDto weeklyStats = employeeAttendanceManagerService.getWeeklyAttendanceHistory(
+                request.getYear(), request.getMonth(), request.getStartDay());
         return ResponseEntity.ok(weeklyStats);
     }
 
     @GetMapping("/monthly")
     public ResponseEntity<ResAttendanceHistoryDto> getMonthlyAttendance(
             @RequestBody ReqAttendanceMonthlyHistoryDto request) {
-        ResAttendanceHistoryDto monthlyStats = employeeAttendanceManagerService.getMonthlyAttendanceHistory(request.getYear(), request.getMonth());
+        ResAttendanceHistoryDto monthlyStats = employeeAttendanceManagerService.getMonthlyAttendanceHistory(
+                request.getYear(), request.getMonth());
         return ResponseEntity.ok(monthlyStats);
     }
 }
