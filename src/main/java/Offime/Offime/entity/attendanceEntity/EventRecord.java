@@ -43,11 +43,11 @@ public class EventRecord {
     @Column(name = "OUT_OF_OFFICE_TYPE")
     private OutOfOfficeType outOfOfficeType;
 
-    @Column(name = "IS_LATE")
-    private boolean isLate;
+    @Column(name = "LATE")
+    private long late;
 
-    @Column(name = "IS_LEAVE_EARLY")
-    private boolean isLeaveEarly;
+    @Column(name = "LEAVE_EARLY")
+    private long leaveEarly;
 
 //    @ManyToOne
 //    @JoinColumn(name = "MEMBER_ID", nullable = false)
@@ -55,7 +55,7 @@ public class EventRecord {
 
     @Builder
     public EventRecord(Long id, LocalDate date, LocalDateTime requestTime, LocalTime clockIn, LocalTime clockOut,
-                       EventType eventType, OutOfOfficeType outOfOfficeType, boolean isLate, boolean isLeaveEarly) {
+                       EventType eventType, OutOfOfficeType outOfOfficeType, long late, long leaveEarly) {
         this.id = id;
         this.date = date;
         this.requestTime = requestTime;
@@ -63,16 +63,15 @@ public class EventRecord {
         this.clockOut = clockOut;
         this.eventType = eventType;
         this.outOfOfficeType = outOfOfficeType;
-        this.isLate = isLate;
-        this.isLeaveEarly = isLeaveEarly;
+        this.late = late;
+        this.leaveEarly = leaveEarly;
+    }
+    //==================================================================================================================
+    public void updateClockOut(LocalTime clockOut) {
+        this.clockOut = clockOut;
     }
 
-    //==================================================================================================================
-//    public void setClockIn(LocalTime clockIn) {
-//        this.clockIn = clockIn;
-//    }
-//
-//    public void setClockOut(LocalTime clockOut) {
-//        this.clockOut = clockOut;
-//    }
+    public void updateLeaveEarly(long leaveEarly) {
+        this.leaveEarly = leaveEarly;
+    }
 }
