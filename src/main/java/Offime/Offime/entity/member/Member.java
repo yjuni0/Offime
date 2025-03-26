@@ -41,7 +41,6 @@ public class Member extends BaseTimeEntity implements UserDetails {
     @Column(precision = 4,scale=2)
     private BigDecimal availableLeaveDays;
 
-
     @Column(name = "WORK_STATUS")
     private String workStatus;
 
