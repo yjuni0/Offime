@@ -1,15 +1,19 @@
 package Offime.Offime.service.attendanceService;
 
+import Offime.Offime.common.MemberException;
 import Offime.Offime.dto.attendanceDto.request.ReqClockInDto;
 import Offime.Offime.dto.attendanceDto.request.ReqClockOutDto;
 import Offime.Offime.dto.attendanceDto.request.ReqOutOfOfficeDto;
 import Offime.Offime.dto.attendanceDto.request.ReqReturnToOfficeDto;
 import Offime.Offime.entity.attendanceEntity.EventRecord;
+import Offime.Offime.entity.attendanceEntity.Member;
+import Offime.Offime.entity.attendanceEntity.WorkStatus;
 import Offime.Offime.repository.attendanceRepository.EventRecordRepository;
 import Offime.Offime.repository.attendanceRepository.MemberRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
@@ -32,17 +36,23 @@ public class AttendanceService {
     private static final double COMPANY_LATITUDE = 37.482175;   // 구트 아카데미 위도
     private static final double COMPANY_LONGITUDE = 126.898233; // 구트 아카데미 경도
     private static final int MAX_DISTANCE = 50;                 // 허용할 최대 거리(m)
-    private static final LocalTime COMPANY_START_TIME = LocalTime.of(9, 0);  // 출근 시간
-    private static final LocalTime COMPANY_END_TIME = LocalTime.of(18, 0);   // 퇴근 시간
+    private static final LocalTime COMPANY_START_TIME = LocalTime.of(9, 0);
+    private static final LocalTime COMPANY_END_TIME = LocalTime.of(18, 0);
 
     @Transactional
-    public void clockIn(ReqClockInDto dto, LocalDateTime now) {
+    public void clockIn(ReqClockInDto dto, LocalDateTime now
+//            ,Member member
+    ) {
         if (!isInDistance(dto.getLatitude(), dto.getLongitude())) {
             throw new IllegalArgumentException(" - " + "허용 범위를 벗어났습니다.");
         }
+//        Member currentMember = memberRepository.findByEmail(member.getEmail()).orElseThrow(
+//                () -> new MemberException("확인된 사용자가 아닙니다.", HttpStatus.BAD_REQUEST)
+//        );
         long lateMinutes = late(now);
         EventRecord eventRecord = ReqClockInDto.toEntity(lateMinutes);
         eventRecordRepository.save(eventRecord);
+//        currentMember.updateWorkStatus(WorkStatus.근무중);
     }
 
     @Transactional

@@ -46,6 +46,11 @@ public class Member {
     @Column(name = "VACATION")
     private Integer vacation;
 
-    @Column(name = "WORK_STATUS", length = 100)
-    private String workStatus;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "WORK_STATUS")
+    private WorkStatus workStatus;
+
+    public void updateWorkStatus(WorkStatus workStatus){
+        this.workStatus = workStatus;
+    }
 }
