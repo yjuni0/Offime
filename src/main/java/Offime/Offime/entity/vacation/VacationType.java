@@ -8,7 +8,10 @@ import java.util.Arrays;
 @Getter
 public enum VacationType {
     FULL("연차"),
-    HALF("반차");
+    HALF("반차"),
+    QUATER("반반차");
+
+
 
     private final String description;
 
