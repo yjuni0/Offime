@@ -1,5 +1,6 @@
 package Offime.Offime.dto.request.member;
 
+import Offime.Offime.common.Role;
 import Offime.Offime.entity.member.Member;
 import lombok.Builder;
 import lombok.Getter;
