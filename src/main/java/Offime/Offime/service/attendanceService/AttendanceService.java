@@ -36,8 +36,8 @@ public class AttendanceService {
     private static final double COMPANY_LATITUDE = 37.482175;   // 구트 아카데미 위도
     private static final double COMPANY_LONGITUDE = 126.898233; // 구트 아카데미 경도
     private static final int MAX_DISTANCE = 50;                 // 허용할 최대 거리(m)
-    private static final LocalTime COMPANY_START_TIME = LocalTime.of(9, 0);  // 출근 시간
-    private static final LocalTime COMPANY_END_TIME = LocalTime.of(18, 0);   // 퇴근 시간
+    private static final LocalTime COMPANY_START_TIME = LocalTime.of(9, 0);
+    private static final LocalTime COMPANY_END_TIME = LocalTime.of(18, 0);
 
     @Transactional
     public void clockIn(ReqClockInDto dto, LocalDateTime now
