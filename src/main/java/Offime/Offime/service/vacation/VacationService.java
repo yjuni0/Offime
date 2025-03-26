@@ -67,20 +67,13 @@ public class VacationService {
                 Vacation vacation = vacationRepository.findById(vacationId)
                         .orElseThrow(() -> new IllegalArgumentException("해당 신청 휴가 없음"));
 
-                // 승인 처리
-                vacation.setStatus(VacationApprovalStatus.APPROVED);
-
                 BigDecimal availableDays = vacation.getMember().getAvailableLeaveDays();
-                BigDecimal useDays = BigDecimal.ZERO;
-
-                // 휴가 종류에 따른 사용 일수 처리
-                if (vacation.getType().equals(VacationType.FULL)) {
-                    useDays = new BigDecimal("1.00");
-                } else if (vacation.getType().equals(VacationType.HALF)) {
-                    useDays = new BigDecimal("0.50");
-                } else if (vacation.getType().equals(VacationType.QUATER)) {
-                    useDays = new BigDecimal("0.25");
-                }
+                BigDecimal useDays = switch (vacation.getType()) {
+                    case FULL -> new BigDecimal("1.00");
+                    case HALF -> new BigDecimal("0.50");
+                    case QUATER -> new BigDecimal("0.25");
+                    default -> throw new IllegalArgumentException("알 수 없는 휴가 유형");
+                };
 
                 // 잔여 연차가 충분한지 체크
                 if (availableDays.compareTo(useDays) < 0) {
@@ -89,6 +82,8 @@ public class VacationService {
 
                 // 연차 차감
                 vacation.getMember().setAvailableLeaveDays(availableDays.subtract(useDays));
+                // 승인 처리
+                vacation.setStatus(VacationApprovalStatus.APPROVED);
                 vacationRepository.save(vacation); // 변경 사항 저장
                 log.info("휴가 id {} 승인 처리됨", vacationId);
             }
