@@ -1,10 +1,10 @@
-package Offime.Offime.repository.member;
+package Offime.Offime.repository;
 
-import Offime.Offime.entity.member.Member;
+import Offime.Offime.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
 public interface MemberRepository extends JpaRepository<Member, Long> {
-    Optional<Member> findByEmail(String email);
+    Optional<Member> findByUsername(String username);
 }

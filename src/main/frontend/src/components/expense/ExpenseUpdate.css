@@ -1,0 +1,159 @@
+/* 컨테이너 */
+.expense-update-container {
+  max-width: 600px;
+  margin: 0 auto;
+  background-color: #f8f9fa;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+/* 폼 레이아웃 */
+.expense-update-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* 라벨 스타일 */
+.expense-update-label {
+  margin-top: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+  text-align: left;
+}
+
+/* 입력 필드 스타일 */
+.expense-update-input,
+.expense-update-textarea {
+  padding: 12px;
+  margin: 5px 0;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+/* 텍스트영역 */
+.expense-update-textarea {
+  height: 100px;
+  resize: none;
+}
+
+/* 카테고리 버튼 그룹 */
+.expense-update-category-buttons {
+  display: flex;
+  justify-content: space-around;
+  margin: 10px 0;
+}
+
+.expense-update-category-button {
+  padding: 10px 20px;
+  font-size: 14px;
+  border: none;
+  background-color: #ddd;
+  color: #333;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.expense-update-category-button.selected {
+  background-color: #007bff;
+  color: #fff;
+}
+
+/* 이미지 업로드 버튼 */
+.expense-update-file-input-wrapper {
+  display: inline-block;
+  padding: 8px 16px;
+  background-color: #007bff;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+/* 숨겨진 파일 입력 필드 */
+.expense-update-hidden-input {
+  display: none;
+}
+
+/* 이미지 미리보기 */
+.expense-update-image-preview-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.expense-update-preview-image {
+  width: 100%;
+  height: auto;
+  max-width: 600px; /* 이미지를 화면에 맞게 크게 표시 */
+  object-fit: cover;
+  margin: 20px 0;
+}
+
+/* 금액 입력 필드 */
+.expense-update-amount-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.expense-update-amount-container input {
+  flex-grow: 1;
+  padding: 12px;
+  font-size: 16px;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+  text-align: right;
+}
+
+/* 버튼 스타일 */
+.expense-update-submit-button {
+  margin-top: 20px;
+  padding: 12px 24px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.expense-update-submit-button:hover {
+  background-color: #218838;
+}
+
+.expense-update-add-button {
+  margin-top: 20px;
+  padding: 12px 24px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.expense-update-add-button:hover {
+  background-color: #0056b3;
+}
+
+.expense-update-remove-button {
+  margin-left: 10px;
+  padding: 8px 16px;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.expense-update-remove-button:hover {
+  background-color: #c82333;
+}
