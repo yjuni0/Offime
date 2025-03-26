@@ -9,5 +9,4 @@ public class OffimeApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(OffimeApplication.class, args);
 	}
-
 }
