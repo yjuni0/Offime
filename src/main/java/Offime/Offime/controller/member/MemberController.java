@@ -17,7 +17,7 @@ public class MemberController {
     private final MemberService memberService;
 
     // 회원가입
-    @PostMapping("/register")
+    @PostMapping("/signUp")
     public ResponseEntity<String> register(@RequestBody MemberRegisterDto memberRegisterDto){
         memberService.register(memberRegisterDto);
         return ResponseEntity.status(HttpStatus.OK).body("가입 완료");
