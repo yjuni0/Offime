@@ -37,15 +37,26 @@ function ReportCreate() {
     }, [responseData]);
 
     return (
-        <div>
-            <h1>보고서 작성 페이지</h1>
-            템플릿 제목 : {templateData.title}
-            <form onSubmit={postReport}>
-                <input placeholder={"제목"} type={"text"} value={title} onChange={(e) => setTitle(e.target.value)} />
-                <ReportCreateQuestionBlock templateId={templateId} setResponseData={setResponseData} responseData={responseData}/>
-                <button type={"submit"}>보고서 작성</button>
-            </form>
-        </div>
+
+
+                    <section className={"sec"}>
+                        <div className={"inner"}>
+                            <div className={"item"}>
+                                <img onClick={() => navigate("/reports/templateList")} style={{cursor: "pointer", width: "1.5rem"}} src={"/image/backArrow.png"}/>
+                                <div className={"btn bg_pm mt_md"}>
+                                    <p className={"txt-a-c"}>{templateData.title}</p>
+                                </div>
+                                <form onSubmit={postReport}>
+                                    <input className={"mlr-a input-txt mt_md input-max"} placeholder={"제목"} type={"text"} value={title}
+                                           onChange={(e) => setTitle(e.target.value)}/>
+                                    <ReportCreateQuestionBlock templateId={templateId} setResponseData={setResponseData}
+                                                               responseData={responseData}/>
+                                    <button className={"btn btn-lg btn-pm mt_md mlr-a"} type={"submit"}>보고서 작성</button>
+                                </form>
+                            </div>
+                        </div>
+                    </section>
+
     )
 }
 

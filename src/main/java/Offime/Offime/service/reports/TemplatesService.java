@@ -101,4 +101,7 @@ public class TemplatesService {
         return optionsRepository.getAllOptionTextByQuestionId(questionId);
     }
 
+    public void deleteTemplate(Long id) {
+        templatesRepository.deleteById(id);
+    }
 }

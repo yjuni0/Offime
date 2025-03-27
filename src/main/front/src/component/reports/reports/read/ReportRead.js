@@ -12,7 +12,8 @@ function ReportRead() {
     const [templateData, setTemplateData] = useState("")
     const [templateId, setTemplateId] = useState("")
 
-    const [responseData, setResponseData] = useState([]);
+    const [isUpdate, setIsUpdate] = useState(false);
+
     const [questionData, setQuestionData] = useState([])
 
     const navigate = useNavigate();
@@ -33,7 +34,6 @@ function ReportRead() {
     }
 
 
-
     useEffect(() => {
         getReport();
     }, []);
@@ -52,24 +52,34 @@ function ReportRead() {
     }
 
     return (
-        <div>
-            <h1>ReportRead</h1>
-            <button onClick={reportDelete}>삭제</button>
-            <div key={templateData.id}>
-                <p>{templateData.title}</p>
-                <div>
-                    <p>{reportData.title}</p>
-                    <p>{reportData.modifiedAt}</p>
-                    {questionData.map((question) => (
-                        <div key={question.order}>
-                            <p>질문 : {question.questionText}</p>
-                        <ReportAnswer questionId={question.id} reportId={reportData.id}/>
+        <section className={"sec"}>
+            <div className={"inner"}>
+                <div className={"item"}>
+                    <img style={{cursor: "pointer", width: "1.5rem", display: "inline"}}
+                         src={"/image/backArrow.png"}
+                         onClick={() => navigate(`/reports/read`)}/>
+                    <button onClick={reportDelete}>삭제</button>
+                    <div key={templateData.id}>
+                        <p>{templateData.title}</p>
+                        <div>
+                                    <p>{reportData.title}</p>
+                                    <p>{reportData.modifiedAt}</p>
+                                    {questionData.map((question) => (
+                                        <div key={question.order}>
+                                            <p>질문 : {question.questionText}</p>
+                                            <ReportAnswer questionId={question.id} reportId={reportData.id}/>
+                                        </div>
+                                    ))}
+
+                                    <Link to={`/replies/${reportData.id}`}>댓글보기</Link>
+                            <Link to={`/reports/update/${reportData.id}`}>수정</Link>
+
                         </div>
-                    ))}
-                    <Link to={`/replies/${reportData.id}`}>댓글보기</Link>
+                    </div>
                 </div>
             </div>
-        </div>
+        </section>
+
     )
 }
 

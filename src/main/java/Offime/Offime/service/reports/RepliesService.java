@@ -46,6 +46,12 @@ public class RepliesService {
 
     // update
 
+    public void updateReply(Long replyId, RepliesReqDto repliesReqDto) {
+        Replies replies = repliesRepository.findById(replyId).get();
+        replies.setContent(repliesReqDto.getContent());
+        repliesRepository.save(replies);
+    }
+
     // delete
 
     public void deleteReply(Long replyId) {

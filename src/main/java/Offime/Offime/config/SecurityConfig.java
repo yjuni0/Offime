@@ -49,6 +49,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize
                         -> authorize
                         .requestMatchers(
+                                "/**",
                                 "/signUp",
                                 "/login","/images/**"
 
@@ -62,9 +63,5 @@ public class SecurityConfig {
                 .exceptionHandling(excep -> excep.authenticationEntryPoint(jwtAuthenticationEntryPoint))
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
-
     }
-
-
 }
-

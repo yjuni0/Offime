@@ -21,18 +21,16 @@ function reportCreateQuestionType ({type, questionId,setResponseData}) {
 
     switch (type) {
         case "TEXT" :
-            return <input type={"text"} onChange={ (e) => updateAnswer(questionId, e.target.value)}/>
+            return <input className={"mlr-a input-txt mt_md input-max"} type={"text"} placeholder={"입력"} onChange={ (e) => updateAnswer(questionId, e.target.value)}/>
         case "CHOICE" :
             return (
-            <div>
-                <h1>ReportCreateQuestionType</h1>
-                <ReportCreateOptionBlock type={"radio"} questionId={questionId} updateAnswer={updateAnswer} />
-            </div>
-        )
+                <div>
+                    <ReportCreateOptionBlock type={"radio"} questionId={questionId} updateAnswer={updateAnswer} />
+                </div>
+            )
         case "MULTIPLE_CHOICE" :
             return (
                 <div>
-                    <h1>ReportCreateQuestionType</h1>
                     <ReportCreateOptionBlock type={"checkbox"} questionId={questionId}/>
                 </div>
             )

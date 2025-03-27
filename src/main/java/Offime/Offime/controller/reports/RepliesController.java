@@ -32,4 +32,10 @@ public class RepliesController {
          repliesService.deleteReply(id);
          return ResponseEntity.status(200).body("success");
      }
+
+     @PutMapping("/update/{id}")
+     public ResponseEntity<String> updateReply(@PathVariable("id") Long id, @RequestBody RepliesReqDto repliesReqDto) {
+         repliesService.updateReply(id, repliesReqDto);
+         return ResponseEntity.status(200).body("success");
+     }
 }
