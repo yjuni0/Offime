@@ -2,10 +2,11 @@ package Offime.Offime.repository;
 
 import Offime.Offime.entity.ExpenseImage;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-
+@Repository
 public interface ExpenseImageRepository extends JpaRepository<ExpenseImage, Long> {
     // 기존의 다른 메서드들
 
