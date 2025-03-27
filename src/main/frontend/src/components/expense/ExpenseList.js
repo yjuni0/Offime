@@ -43,7 +43,7 @@ const ExpenseList = () => {
 
         if (expenseResponse.ok) {
           const expenseData = await expenseResponse.json();
-          console.log(expenseData); // 서버에서 받은 데이터 확인
+
           if (Array.isArray(expenseData)) {
             setExpenses(expenseData); // 데이터가 배열이라면 상태 업데이트
             setFilteredExpenses(expenseData); // 필터링된 목록도 초기화
@@ -75,7 +75,20 @@ const ExpenseList = () => {
     setError(null); // 이전 에러 상태 초기화
     setHasNoResults(false); // 검색 결과 없음을 초기화
 
+    if (!searchTerm) {
+      setError("Search term is required.");
+      setIsLoading(false);
+      return;
+    }
+
     try {
+      const token = localStorage.getItem("access_token"); // 토큰 가져오기
+      if (!token) {
+        setError("Authorization token is missing.");
+        setIsLoading(false);
+        return;
+      }
+
       const searchResponse = await fetch(
         `/api/expenses/search?searchTerm=${searchTerm}`,
         {
@@ -90,6 +103,7 @@ const ExpenseList = () => {
       if (searchResponse.ok) {
         const searchData = await searchResponse.json();
         setFilteredExpenses(searchData); // 검색 결과를 필터링된 목록으로 설정
+
         if (searchData.length === 0) {
           setHasNoResults(true); // 검색 결과가 없으면 상태 업데이트
         }
@@ -107,7 +121,6 @@ const ExpenseList = () => {
 
   // 상태에 따른 색상, 텍스트 등을 추가하는 함수
   const getStatusLabel = (status) => {
-    console.log(status); // status 값을 확인
     switch (status) {
       case "PENDING":
         return <span className="status pending">대기중</span>;

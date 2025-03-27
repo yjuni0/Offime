@@ -8,13 +8,13 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+
 @Repository
 public interface ExpenseRepository extends JpaRepository<Expense, Long> {
     List<Expense> findByUsername(String username);
     List<Expense> findByStatus(ExpenseStatus status);
 
-
-    // 검색 기능을 위한 쿼리 메서드
+    // 검색 기능을 위한 쿼리 메서드 (특정 상태의 경비만 검색)
     @Query("SELECT e FROM Expense e WHERE " +
             "(:searchTerm IS NULL OR " +
             "e.title LIKE %:searchTerm% OR " +
@@ -22,7 +22,6 @@ public interface ExpenseRepository extends JpaRepository<Expense, Long> {
             "e.category LIKE %:searchTerm% OR " +
             "e.content LIKE %:searchTerm% OR " +
             "CAST(e.amount AS string) LIKE %:searchTerm%) AND " +
-            "(:status IS NULL OR e.status = :status)")
+            "e.status = :status") // status가 null인 경우 검색하지 않음
     List<Expense> searchExpenses(@Param("searchTerm") String searchTerm, @Param("status") ExpenseStatus status);
-
 }

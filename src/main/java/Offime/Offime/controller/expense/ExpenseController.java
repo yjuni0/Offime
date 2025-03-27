@@ -54,11 +54,28 @@ public class ExpenseController {
 
     // 검색 기능
     @GetMapping("/search")
-    public List<Expense> searchExpenses(
+    public ResponseEntity<?> searchExpenses(
             @RequestParam(required = false) String searchTerm,
-            @RequestParam(required = false) ExpenseStatus status) {
-        return expenseService.searchExpenses(searchTerm, status);
+            @RequestParam(required = true) String status) {
+        try {
+            ExpenseStatus expenseStatus = ExpenseStatus.valueOf(status.toUpperCase());
+
+            List<Expense> expenses = expenseService.searchExpenses(searchTerm, expenseStatus);
+            List<ExpenseResponseDTO> responseDTOs = expenses.stream()
+                    .map(this::convertToResponseDTO)
+                    .collect(Collectors.toList());
+
+            logger.info("Search results: {}", responseDTOs);
+            return ResponseEntity.ok(responseDTOs); // 수정된 부분
+        } catch (IllegalArgumentException e) {
+            logger.error("Invalid status value: {}", status);
+            return ResponseEntity.badRequest().body("Invalid status value"); // String 반환
+        } catch (Exception e) {
+            logger.error("Error searching expenses: {}", e.getMessage(), e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred while searching");
+        }
     }
+
 
     // 게시물 생성 (이미지와 함께)
     @PostMapping
