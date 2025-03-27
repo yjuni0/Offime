@@ -1,15 +1,13 @@
 import React, { useState } from "react";
 
 const ExpenseSearch = ({ onSearch }) => {
-  const [searchTerm, setSearchTerm] = useState(""); // 하나의 검색어
+  const [searchTerm, setSearchTerm] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // 검색어를 모든 항목에 적용
-    onSearch({
-      searchTerm,
-    });
+    // 검색어를 부모 컴포넌트로 전달
+    onSearch(searchTerm);
   };
 
   return (
@@ -17,7 +15,7 @@ const ExpenseSearch = ({ onSearch }) => {
       <form onSubmit={handleSubmit}>
         <input
           type="text"
-          placeholder="검색어 "
+          placeholder="검색어"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />

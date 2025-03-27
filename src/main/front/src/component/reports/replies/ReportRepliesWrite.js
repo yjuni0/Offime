@@ -14,9 +14,9 @@ function ReportRepliesWrite({reportId}) {
     }
 
     return (
-        <form onSubmit={repliesWrite}>
-            <input placeholder={"댓글 입력"} value={content} onChange={(e) => setContent(e.target.value)}/>
-            <button type={"submit"}>댓글 입력</button>
+        <form className={"item"} onSubmit={repliesWrite}>
+            <input className={"input-txt input-max mb_sm"} placeholder={"댓글 입력"} value={content} onChange={(e) => setContent(e.target.value)}/>
+            <button className={"submit btn btn-pm btn-max"} type={"submit"}>댓글 입력</button>
         </form>
     )
 }

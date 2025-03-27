@@ -1,13 +1,14 @@
 package Offime.Offime.controller.attendance;
 
-
 import Offime.Offime.dto.request.attendance.ReqClockInDto;
 import Offime.Offime.dto.request.attendance.ReqClockOutDto;
 import Offime.Offime.dto.request.attendance.ReqOutOfOfficeDto;
 import Offime.Offime.dto.request.attendance.ReqReturnToOfficeDto;
+import Offime.Offime.entity.member.Member;
 import Offime.Offime.service.attendance.AttendanceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -20,12 +21,10 @@ public class AttendanceController {
 
     @PostMapping("/clockIn")
     public ResponseEntity<String> clockIn(
-//            @RequestParam(name = "memberId") Long memberId,
-            @RequestBody ReqClockInDto dto
-    ) {
+            @AuthenticationPrincipal Member member, @RequestBody ReqClockInDto dto) {
         LocalDateTime now = LocalDateTime.now();
         try {
-            attendanceService.clockIn(dto,now);
+            attendanceService.clockIn(member, dto, now);
             return ResponseEntity.ok("출근 성공");
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body("출근 실패" + e.getMessage());
@@ -34,11 +33,10 @@ public class AttendanceController {
 
     @PostMapping("/outOfOffice")
     public ResponseEntity<String> outOfOffice(
-//            @RequestParam(name = "memberId") Long memberId,
-            @RequestBody ReqOutOfOfficeDto dto) {
+            @AuthenticationPrincipal Member member, @RequestBody ReqOutOfOfficeDto dto) {
         LocalDateTime now = LocalDateTime.now();
         try {
-            attendanceService.outOfOffice(dto, now);
+            attendanceService.outOfOffice(member, dto, now);
             return ResponseEntity.ok("자리비움 성공");
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body("자리비움 실패" + e.getMessage());
@@ -47,11 +45,10 @@ public class AttendanceController {
 
     @PostMapping("/returnToOffice")
     public ResponseEntity<String> returnToOffice(
-//            @RequestParam(name = "memberId") Long memberId,
-            @RequestBody ReqReturnToOfficeDto dto) {
+            @AuthenticationPrincipal Member member, @RequestBody ReqReturnToOfficeDto dto) {
         LocalDateTime now = LocalDateTime.now();
         try {
-            attendanceService.returnToOffice(dto, now);
+            attendanceService.returnToOffice(member, dto, now);
             return ResponseEntity.ok("복귀 성공");
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body("복귀 실패" + e.getMessage());
@@ -60,11 +57,10 @@ public class AttendanceController {
 
     @PostMapping("/clockOut")
     public ResponseEntity<String> clockOut(
-//            @RequestParam(name = "memberId") Long memberId,
-            @RequestBody ReqClockOutDto dto) {
+            @AuthenticationPrincipal Member member, @RequestBody ReqClockOutDto dto) {
         LocalDateTime now = LocalDateTime.now();
         try {
-            attendanceService.clockOut(dto, now);
+            attendanceService.clockOut(member, dto, now);
             return ResponseEntity.ok("퇴근 성공");
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body("퇴근 실패" + e.getMessage());

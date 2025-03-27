@@ -9,8 +9,13 @@ function ReportReplies() {
 
     return (
         <>
-            <ReportRepliesList reportId={reportId}/>
-            <ReportRepliesWrite reportId={reportId}/>
+                        <section className={"sec"}>
+                            <div className={"inner"}>
+                                <ReportRepliesList reportId={reportId}/>
+                                <ReportRepliesWrite reportId={reportId}/>
+                            </div>
+                        </section>
+
         </>
     )
 }
