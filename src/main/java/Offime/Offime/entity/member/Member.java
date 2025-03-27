@@ -2,6 +2,7 @@ package Offime.Offime.entity.member;
 
 import Offime.Offime.common.BaseTimeEntity;
 import Offime.Offime.common.Role;
+import Offime.Offime.entity.attendance.WorkStatus;
 import Offime.Offime.entity.vacation.Vacation;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -41,9 +42,13 @@ public class Member extends BaseTimeEntity implements UserDetails {
     @Column(precision = 4,scale=2)
     private BigDecimal availableLeaveDays;
 
-
+    @Enumerated(EnumType.STRING)
     @Column(name = "WORK_STATUS")
-    private String workStatus;
+    private WorkStatus workStatus;
+
+    public void updateWorkStatus(WorkStatus workStatus){
+        this.workStatus = workStatus;
+    }
 
     @Enumerated(EnumType.STRING)
     private Role role;
@@ -56,7 +61,7 @@ public class Member extends BaseTimeEntity implements UserDetails {
 
 
     @Builder
-    public Member(Long id, String name, String email, String password, String phone, BigDecimal availableLeaveDays, String workStatus, Role role, Team team) {
+    public Member(Long id, String name, String email, String password, String phone, BigDecimal availableLeaveDays, WorkStatus workStatus, Role role, Team team) {
         this.id = id;
         this.name = name;
         this.email = email;

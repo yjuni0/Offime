@@ -6,29 +6,30 @@ import Offime.Offime.entity.member.Member;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
-public class MemberTokenDto  {
+public class MemberTokenDto implements UserDetails  {
     private Long id;
     private String name;
     private String email;
-    private String password;
-    private String phone;
     private Role role;
     private Team team;
     private String createdDate;
     private String token;
 
     @Builder
-    public MemberTokenDto(Long id, String name, String email, String password, String phone, Role role, Team team, String createdDate, String token) {
+    public MemberTokenDto(Long id, String name, String email, Role role, Team team, String createdDate, String token) {
+
         this.id = id;
         this.name = name;
         this.email = email;
-        this.password = password;
-        this.phone = phone;
         this.role = role;
         this.team = team;
         this.createdDate = createdDate;
@@ -40,8 +41,6 @@ public class MemberTokenDto  {
                 .id(member.getId())
                 .name(member.getName())
                 .email(member.getEmail())
-                .password(member.getPassword())
-                .phone(member.getPhone())
                 .role(member.getRole())
                 .team(member.getTeam())
                 .createdDate(member.getCreatedDate())
@@ -49,4 +48,35 @@ public class MemberTokenDto  {
                 .build();
     }
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of();
+    }
+
+    @Override
+    public String getPassword() {
+        return "";
+    }
+
+    @Override
+    public String getUsername() {
+        return "";
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return UserDetails.super.isAccountNonExpired();
+    }
+    @Override
+    public boolean isAccountNonLocked() {
+        return UserDetails.super.isAccountNonLocked();
+    }
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return UserDetails.super.isCredentialsNonExpired();
+    }
+    @Override
+    public boolean isEnabled() {
+        return UserDetails.super.isEnabled();
+    }
 }
