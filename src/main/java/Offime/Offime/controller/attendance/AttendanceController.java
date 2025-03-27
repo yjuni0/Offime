@@ -1,9 +1,10 @@
 package Offime.Offime.controller.attendance;
 
-import Offime.Offime.dto.request.attendance.ReqClockInDto;
-import Offime.Offime.dto.request.attendance.ReqClockOutDto;
-import Offime.Offime.dto.request.attendance.ReqOutOfOfficeDto;
-import Offime.Offime.dto.request.attendance.ReqReturnToOfficeDto;
+
+import Offime.Offime.dto.attendance.request.ReqClockInDto;
+import Offime.Offime.dto.attendance.request.ReqClockOutDto;
+import Offime.Offime.dto.attendance.request.ReqOutOfOfficeDto;
+import Offime.Offime.dto.attendance.request.ReqReturnToOfficeDto;
 import Offime.Offime.service.attendance.AttendanceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
