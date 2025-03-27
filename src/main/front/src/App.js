@@ -1,5 +1,5 @@
 import {BrowserRouter} from "react-router-dom";
-import Main from "./component/reports/Main";
+import Main from "./component/Main";
 
 import "./css/reset.css";
 import "./css/common.css";
