@@ -1,4 +1,4 @@
-package Offime.Offime.service.attendanceService;
+package Offime.Offime.service.attendance;
 
 import Offime.Offime.dto.attendanceDto.response.ResAttendanceHistoryDto;
 import Offime.Offime.entity.attendanceEntity.EventRecord;
