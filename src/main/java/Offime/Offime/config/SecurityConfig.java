@@ -45,14 +45,18 @@ public class SecurityConfig {
                 .httpBasic(httpBasic -> httpBasic.disable())
                 .csrf(csrf -> csrf.disable())
                 .cors(cors -> cors.configurationSource(corsConfigurationSource))
-
                 .authorizeHttpRequests(authorize
-                        -> authorize
-                        .requestMatchers(
-                                "/signUp",
-                                "/login"
-                        ).permitAll()
-                        .anyRequest().authenticated()  // 나머지 모든 요청은 인증 필요
+                                -> authorize
+                                .requestMatchers("/**").permitAll()
+
+
+//                .authorizeHttpRequests(authorize
+//                        -> authorize
+//                        .requestMatchers(
+//                                "/signUp",
+//                                "/login"
+//                        ).permitAll()
+//                        .anyRequest().authenticated()  // 나머지 모든 요청은 인증 필요
                 )
 
 

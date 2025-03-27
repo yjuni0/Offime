@@ -49,6 +49,14 @@ public class ReportsController {
         return ResponseEntity.status(200).body("success");
     }
 
+    // update
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<String> updateReport(@PathVariable("id") Long id, @RequestBody ReportsReqDto reportsReqDto) {
+        reportsService.updateReport(id, reportsReqDto);
+        return ResponseEntity.status(200).body("success");
+    }
+
     // read
 
     @GetMapping("/read")
