@@ -1,6 +1,6 @@
 package Offime.Offime.controller.reports;
 
-import Offime.Offime.dto.reports.request.TemplatesReqDto;
+import Offime.Offime.dto.request.reports.TemplatesReqDto;
 import Offime.Offime.service.reports.TemplatesService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

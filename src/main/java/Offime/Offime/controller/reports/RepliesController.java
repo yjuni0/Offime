@@ -1,7 +1,7 @@
 package Offime.Offime.controller.reports;
 
-import Offime.Offime.dto.reports.request.RepliesReqDto;
-import Offime.Offime.dto.reports.response.RepliesResDto;
+import Offime.Offime.dto.request.reports.RepliesReqDto;
+import Offime.Offime.dto.response.reports.RepliesResDto;
 import Offime.Offime.service.reports.RepliesService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
