@@ -1,7 +1,7 @@
 package Offime.Offime.service.reports;
 
-import Offime.Offime.dto.reports.request.RepliesReqDto;
-import Offime.Offime.dto.reports.response.RepliesResDto;
+import Offime.Offime.dto.request.reports.RepliesReqDto;
+import Offime.Offime.dto.response.reports.RepliesResDto;
 import Offime.Offime.entity.member.Member;
 import Offime.Offime.entity.reports.Replies;
 import Offime.Offime.entity.reports.Reports;
@@ -45,6 +45,12 @@ public class RepliesService {
     }
 
     // update
+
+    public void updateReply(Long replyId, RepliesReqDto repliesReqDto) {
+        Replies replies = repliesRepository.findById(replyId).get();
+        replies.setContent(repliesReqDto.getContent());
+        repliesRepository.save(replies);
+    }
 
     // delete
 

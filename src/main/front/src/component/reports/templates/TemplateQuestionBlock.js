@@ -28,9 +28,8 @@ function TemplateQuestionBlock({question, questionIndex, updateQuestion}) {
 
     return (
         <div className={"item"}>
-            <h1>QuestionBlock {question.id}</h1>
-            <div>
-                <input className={"input-txt"} placeholder={"질문 입력"} type={"text"} value={questionList.content}
+            <div style={{display:"flex"}}>
+                <input className={"input-txt input-max mlr-a"} placeholder={"질문 입력"} type={"text"} value={questionList.content}
                        onChange={(e) => updateContent(e.target.value)}/>
                 <select className={"select"} value={questionList.type} onChange={(e) => updateType(e.target.value)}>
                     <option value={"TEXT"}>텍스트박스</option>

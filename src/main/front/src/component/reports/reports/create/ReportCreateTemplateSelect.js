@@ -18,19 +18,18 @@ function ReportCreateTemplateSelect() {
     const navigate = useNavigate();
 
     return (
-        <div id={"container"}>
-            <div id={"device"}>
-                <main id={"main"}>
                     <section className={"sec"}>
                         <div className={"inner"}>
                             <div className={"item"}>
-                                <p className={"txt-a-r fs_lg"} onClick={() => navigate("/")} style={{cursor: "pointer"}}>X</p>
+                                <img style={{cursor: "pointer", width: "1.5rem", display: "inline"}}
+                                     src={"/image/backArrow.png"}
+                                     onClick={() => navigate(`/`)}/>
                             </div>
                             <input className={"input-txt mlr-a"} type="text" placeholder={"템플릿명"}></input>
 
 
-                                {templateList.map(template => (
-                                        <div className={"item bg_pm mt_md"} key={template.id}
+                            {templateList.map(template => (
+                                <div className={"item bg_pm mt_md"} key={template.id}
                                             onClick={() => navigate(`/reports/create/${template.id}`)}
                                             style={{cursor: "pointer"}}>
                                             <p className={"txt-a-l"}>{template.title}</p>
@@ -41,10 +40,6 @@ function ReportCreateTemplateSelect() {
 
                         </div>
                     </section>
-                </main>
-            </div>
-        </div>
-
     )
 }
 

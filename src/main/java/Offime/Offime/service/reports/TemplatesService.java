@@ -1,9 +1,9 @@
 package Offime.Offime.service.reports;
 
-import Offime.Offime.dto.reports.request.QuestionsReqDto;
-import Offime.Offime.dto.reports.request.TemplatesReqDto;
-import Offime.Offime.dto.reports.response.QuestionsResDto;
-import Offime.Offime.dto.reports.response.TemplatesResDto;
+import Offime.Offime.dto.request.reports.QuestionsReqDto;
+import Offime.Offime.dto.request.reports.TemplatesReqDto;
+import Offime.Offime.dto.response.reports.QuestionsResDto;
+import Offime.Offime.dto.response.reports.TemplatesResDto;
 import Offime.Offime.entity.member.Member;
 import Offime.Offime.entity.reports.Options;
 import Offime.Offime.entity.reports.Questions;
@@ -101,4 +101,7 @@ public class TemplatesService {
         return optionsRepository.getAllOptionTextByQuestionId(questionId);
     }
 
+    public void deleteTemplate(Long id) {
+        templatesRepository.deleteById(id);
+    }
 }

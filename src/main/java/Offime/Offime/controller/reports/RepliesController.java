@@ -1,7 +1,7 @@
 package Offime.Offime.controller.reports;
 
-import Offime.Offime.dto.reports.request.RepliesReqDto;
-import Offime.Offime.dto.reports.response.RepliesResDto;
+import Offime.Offime.dto.request.reports.RepliesReqDto;
+import Offime.Offime.dto.response.reports.RepliesResDto;
 import Offime.Offime.service.reports.RepliesService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +30,12 @@ public class RepliesController {
      @DeleteMapping("/delete/{id}")
      public ResponseEntity<String> deleteReply(@PathVariable("id") Long id) {
          repliesService.deleteReply(id);
+         return ResponseEntity.status(200).body("success");
+     }
+
+     @PutMapping("/update/{id}")
+     public ResponseEntity<String> updateReply(@PathVariable("id") Long id, @RequestBody RepliesReqDto repliesReqDto) {
+         repliesService.updateReply(id, repliesReqDto);
          return ResponseEntity.status(200).body("success");
      }
 }

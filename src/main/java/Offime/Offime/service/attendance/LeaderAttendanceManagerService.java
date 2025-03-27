@@ -1,6 +1,6 @@
 package Offime.Offime.service.attendance;
 
-import Offime.Offime.dto.attendance.response.ResAttendanceHistoryDto;
+import Offime.Offime.dto.response.attendance.ResAttendanceHistoryDto;
 import Offime.Offime.entity.attendance.EventRecord;
 import Offime.Offime.repository.attendance.EventRecordRepository;
 import Offime.Offime.repository.member.MemberRepository;

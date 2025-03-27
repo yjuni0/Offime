@@ -1,9 +1,9 @@
 package Offime.Offime.service.reports;
 
-import Offime.Offime.dto.reports.request.ReportsReqDto;
-import Offime.Offime.dto.reports.request.ResponsesReqDto;
-import Offime.Offime.dto.reports.response.ReportsResDto;
-import Offime.Offime.dto.reports.response.ResponseResDto;
+import Offime.Offime.dto.request.reports.ReportsReqDto;
+import Offime.Offime.dto.request.reports.ResponsesReqDto;
+import Offime.Offime.dto.response.reports.ReportsResDto;
+import Offime.Offime.dto.response.reports.ResponseResDto;
 import Offime.Offime.entity.member.Member;
 import Offime.Offime.entity.reports.Questions;
 import Offime.Offime.entity.reports.Reports;
@@ -80,5 +80,14 @@ public class ReportsService {
 
     public void deleteReport(Long reportId) {
         reportsRepository.deleteById(reportId);
+    }
+
+    public void updateReport(Long id, ReportsReqDto reportsReqDto) {
+
+        Reports reports = reportsRepository.findById(id).orElseThrow(() -> new NoSuchElementException());
+
+        reports.setTitle(reportsReqDto.getTitle());
+
+        reportsRepository.save(reports);
     }
 }

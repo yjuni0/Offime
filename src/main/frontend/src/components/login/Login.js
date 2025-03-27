@@ -2,10 +2,9 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { jwtDecode } from "jwt-decode"; // JWT 디코딩을 위한 라이브러리
 
 const Login = () => {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
@@ -14,42 +13,32 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      // 백엔드에 로그인 요청
-      const response = await axios.post("/api/auth/login", {
-        username,
+      const response = await axios.post("/login", {
+        email,
         password,
       });
 
-      // 서버 응답에서 토큰 받기
-      const { token } = response.data;
-      if (!token) {
-        setError("Token is missing.");
+      const { token, email: userEmail, role } = response.data;
+
+      if (!token || !userEmail || !role) {
+        setError("Token, email, or role is missing.");
         return;
       }
 
-      // 토큰을 로컬 스토리지에 저장
-      localStorage.setItem("access_token", token);
+      // 토큰과 이메일, role을 로컬 스토리지에 저장
+      localStorage.setItem("access_token", token); // 토큰 저장
+      localStorage.setItem("email", userEmail); // 이메일 저장
+      localStorage.setItem("role", role); // role 저장
 
-      // JWT 디코딩하여 사용자 정보 확인
-
-      const decodedToken = jwtDecode(token);
-      const { sub: decodedUsername, role } = decodedToken;
-
-      // 사용자 정보와 권한을 로컬 스토리지에 저장
-      localStorage.setItem("username", decodedUsername);
-      localStorage.setItem("role", role); // role 값 저장
-
-      setError(""); // 로그인 성공 후 오류 메시지 초기화
-
-      navigate("/list");
+      setError(""); // 에러 초기화
+      navigate("/list"); // 로그인 성공 후 이동
     } catch (err) {
-      console.log("로그인 실패:", err); // 여기서 에러만 로그로 출력하고, 토큰 정보는 출력하지 않음
-      setError("Invalid credentials!"); // 로그인 실패 시 오류 메시지
+      console.log("로그인 실패:", err);
+      setError("Invalid credentials!");
     }
   };
 
   const handleSignupRedirect = () => {
-    // 회원가입 페이지로 리디렉션
     navigate("/signup");
   };
 
@@ -58,10 +47,10 @@ const Login = () => {
       <Form onSubmit={handleLogin}>
         <h2>Login</h2>
         <Input
-          type="text"
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
         />
         <Input
           type="password"
@@ -78,7 +67,6 @@ const Login = () => {
     </LoginContainer>
   );
 };
-
 const LoginContainer = styled.div`
   display: flex;
   justify-content: center;
