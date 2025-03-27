@@ -18,6 +18,6 @@ public class ExpenseResponseDTO {
     private String category;
     private LocalDate expenseDate;
     private List<String> imageUrls;  // 이미지는 URL로 응답
-
+    private String status;
 
 }

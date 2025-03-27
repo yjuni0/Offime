@@ -18,5 +18,6 @@ public class ExpenseRequestDTO {
     private String category;
     private List<MultipartFile> images;  // 이미지 파일들
     private LocalDate expenseDate;
+    private String status;
 
 }
