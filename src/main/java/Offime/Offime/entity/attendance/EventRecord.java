@@ -1,4 +1,4 @@
-package Offime.Offime.entity.attendanceEntity;
+package Offime.Offime.entity.attendance;
 
 import Offime.Offime.common.LocalTimeConverter;
 import jakarta.persistence.*;
