@@ -11,11 +11,13 @@ import java.util.List;
 @Setter
 public class ExpenseRequestDTO {
 
+
     private String title;
     private String content;
     private double amount;
     private String category;
     private List<MultipartFile> images;  // 이미지 파일들
     private LocalDate expenseDate;
+    private String status;
 
 }

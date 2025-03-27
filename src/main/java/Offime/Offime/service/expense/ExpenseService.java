@@ -1,5 +1,6 @@
-package Offime.Offime.service;
+package Offime.Offime.service.expense;
 
+import Offime.Offime.entity.expense.ExpenseStatus;
 import Offime.Offime.exception.ExpenseNotFoundException;
 import Offime.Offime.dto.request.expense.ExpenseRequestDTO;
 import Offime.Offime.dto.response.expense.ExpenseResponseDTO;
@@ -19,12 +20,13 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class ExpenseService {
+
+    private static final Logger logger = LoggerFactory.getLogger(ExpenseService.class);
 
     @Autowired
     private ExpenseRepository expenseRepository;
@@ -36,40 +38,63 @@ public class ExpenseService {
     private String uploadDir;
 
     @Value("${file.upload.url}")
-    private String serverUrl; // application.properties에서 읽어올 URL
+    private String serverUrl;
 
-    private static final Logger logger = LoggerFactory.getLogger(ExpenseService.class);
-
-    // 검색 기능 추가
-    public List<Expense> searchExpenses(String searchTerm) {
-        return expenseRepository.searchExpenses(searchTerm);
+    public long getPendingExpensesCount() {
+        List<Expense> pendingExpenses = expenseRepository.findByStatus(ExpenseStatus.PENDING);
+        return pendingExpenses.size();
     }
 
-    // 게시물 생성 (이미지와 함께)
+    // 게시물 검색
+    public List<Expense> searchExpenses(String searchTerm, ExpenseStatus status) {
+        return expenseRepository.searchExpenses(searchTerm, status);
+    }
+
+    // 대기 중인 게시물 가져오기
+    public List<Expense> getPendingExpenses() {
+        return expenseRepository.findByStatus(ExpenseStatus.PENDING);
+    }
+
+    // 게시물 승인
+    public Expense approveExpense(Long id) {
+        return updateExpenseStatus(id, ExpenseStatus.APPROVED);
+    }
+
+    // 게시물 거절
+    public Expense rejectExpense(Long id) {
+        return updateExpenseStatus(id, ExpenseStatus.REJECTED);
+    }
+
+    // 상태별 게시물 조회
+    public List<Expense> getExpensesByStatus(ExpenseStatus status) {
+        return expenseRepository.findByStatus(status);
+    }
+
+    // 게시물 저장
+    public void saveExpense(Expense expense) {
+        expenseRepository.save(expense);
+    }
+
+    // 게시물 생성 (이미지 포함)
     public Expense createExpense(ExpenseRequestDTO expenseDTO, List<MultipartFile> images) {
         Expense expense = new Expense();
         expense.setTitle(expenseDTO.getTitle());
         expense.setContent(expenseDTO.getContent());
         expense.setAmount(expenseDTO.getAmount());
         expense.setCategory(expenseDTO.getCategory());
+        expense.setExpenseDate(expenseDTO.getExpenseDate());
 
-        // 사용자가 선택한 날짜 처리
-        LocalDate expenseDate = expenseDTO.getExpenseDate();
-        if (expenseDate != null) {
-            expense.setExpenseDate(expenseDate);
-        }
+        expense.setStatus(ExpenseStatus.PENDING);
 
-        // 현재 인증된 사용자의 username을 가져와 작성자로 설정
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         expense.setUsername(username);
 
-        // Expense 저장
         Expense savedExpense = expenseRepository.save(expense);
 
-        // 이미지가 있을 경우에만 이미지 처리
+        // 이미지가 있으면 저장
         if (images != null && !images.isEmpty()) {
             for (MultipartFile image : images) {
-                String imageUrl = saveImage(image);  // 이미지 파일 저장 후 URL 얻기
+                String imageUrl = saveImage(image);
                 ExpenseImage expenseImage = new ExpenseImage();
                 expenseImage.setImageUrl(imageUrl);
                 expenseImage.setExpense(savedExpense);
@@ -80,47 +105,35 @@ public class ExpenseService {
         return savedExpense;
     }
 
-    // 이미지 파일을 저장하는 메서드
+    // 이미지 저장
     private String saveImage(MultipartFile image) {
         try {
-            // 이미지 저장 디렉토리 (파일 시스템 상 경로)
-            File uploadDirFile = new File(uploadDir); // 수정된 부분
-            if (!uploadDirFile.exists()) {
-                if (!uploadDirFile.mkdirs()) {
-                    logger.error("이미지 업로드 디렉토리 생성 실패: {}", uploadDirFile.getPath());
-                    throw new RuntimeException("이미지 업로드 디렉토리 생성 실패");
-                }
+            File uploadDirFile = new File(uploadDir);
+            if (!uploadDirFile.exists() && !uploadDirFile.mkdirs()) {
+                logger.error("이미지 업로드 디렉토리 생성 실패: {}", uploadDirFile.getPath());
+                throw new RuntimeException("이미지 업로드 디렉토리 생성 실패");
             }
 
-            // 이미지 파일 이름 생성 (시간 + 원본 파일명 + 랜덤 값)
-            String fileName = System.currentTimeMillis() + "-" + Math.random() + "-" + image.getOriginalFilename(); // 수정된 부분
+            String fileName = System.currentTimeMillis() + "-" + Math.random() + "-" + image.getOriginalFilename();
             File uploadFile = new File(uploadDirFile, fileName);
 
-            // 파일을 디스크에 저장
             image.transferTo(uploadFile);
 
-            // 반환할 URL 경로
-            return serverUrl + "/" + fileName; // 동적으로 읽어온 URL 경로 사용
+            return serverUrl + "/" + fileName;
         } catch (IOException e) {
             logger.error("이미지 업로드 실패: {}", e.getMessage());
             throw new RuntimeException("Image upload failed: " + e.getMessage());
         }
     }
 
-
-
-
-    // 게시물 조회 (작성자 또는 관리자만 조회 가능)
+    // 게시물 조회 (작성자 또는 관리자만 접근 가능)
     public Expense getExpense(Long id) {
         Expense expense = expenseRepository.findById(id)
                 .orElseThrow(() -> new ExpenseNotFoundException("Expense not found with id: " + id));
 
-        // 현재 인증된 사용자의 권한 가져오기
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        boolean isAdmin = authentication.getAuthorities().stream()
-                .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ADMIN"));
+        boolean isAdmin = authentication.getAuthorities().stream().anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"));
 
-        // 게시물 작성자와 현재 사용자가 다르면서 관리자도 아니면 권한 없음 예외 발생 (또는 다른 처리)
         if (!expense.getUsername().equals(authentication.getName()) && !isAdmin) {
             throw new org.springframework.security.access.AccessDeniedException("You do not have permission to access this expense.");
         }
@@ -128,31 +141,26 @@ public class ExpenseService {
         return expense;
     }
 
-    // 게시물 목록 조회 (현재 사용자 기준, 관리자는 전체 조회)
+    // 게시물 목록 조회 (관리자는 전체, 일반 사용자는 자신의 게시물만)
     public List<Expense> getExpenses() {
-        // 현재 인증된 사용자 정보 가져오기
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        // 관리자 권한 확인
-        boolean isAdmin = authentication.getAuthorities().stream()
-                .anyMatch(authority -> authority.getAuthority().equals("ADMIN")); // 'ROLE_ADMIN'은 실제 관리자 역할 이름으로 변경해야 합니다.
+        boolean isAdmin = authentication.getAuthorities().stream().anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"));
 
         if (isAdmin) {
-            // 관리자는 모든 게시물 조회
             return expenseRepository.findAll();
         } else {
-            // 일반 사용자는 자신의 게시물만 조회
             String currentUsername = authentication.getName();
             return expenseRepository.findByUsername(currentUsername);
         }
     }
 
+    // 게시물 DTO 변환
     private ExpenseResponseDTO convertToResponseDTO(Expense expense) {
         ExpenseResponseDTO responseDTO = new ExpenseResponseDTO();
         responseDTO.setId(expense.getId());
         responseDTO.setTitle(expense.getTitle());
         responseDTO.setContent(expense.getContent());
-        responseDTO.setUsername(expense.getUsername()); // 변경됨
+        responseDTO.setUsername(expense.getUsername());
         responseDTO.setAmount(expense.getAmount());
         responseDTO.setCategory(expense.getCategory());
 
@@ -164,20 +172,19 @@ public class ExpenseService {
         return responseDTO;
     }
 
+    // 게시물 수정
     @Transactional
     public Expense updateExpense(Long id, ExpenseRequestDTO expenseDTO, List<MultipartFile> images) {
         logger.info("Updating expense with id: {}", id);
         Expense expense = expenseRepository.findById(id)
                 .orElseThrow(() -> new ExpenseNotFoundException("Expense not found with id: " + id));
 
-        // 게시물 수정 (권한 확인 없이 모든 사용자가 수정 가능)
         expense.setTitle(expenseDTO.getTitle());
         expense.setContent(expenseDTO.getContent());
         expense.setAmount(expenseDTO.getAmount());
         expense.setCategory(expenseDTO.getCategory());
         expense.setExpenseDate(expenseDTO.getExpenseDate());
 
-        // 새 이미지 추가 (기존 이미지 유지)
         if (images != null && !images.isEmpty()) {
             for (MultipartFile image : images) {
                 String imageUrl = saveImage(image);
@@ -188,21 +195,18 @@ public class ExpenseService {
             }
         }
 
-        // 변경된 게시글 저장
-        logger.info("Expense updated: {}", expense);
         return expenseRepository.save(expense);
     }
 
+    // 게시물 삭제 (관리자만 가능)
     @Transactional
     public void deleteExpense(Long id) {
         Expense expense = expenseRepository.findById(id)
                 .orElseThrow(() -> new ExpenseNotFoundException("Expense not found with id: " + id));
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        boolean isAdmin = authentication.getAuthorities().stream()
-                .anyMatch(authority -> authority.getAuthority().equals("ADMIN")); // 'ROLE_ADMIN'로 권한 확인
+        boolean isAdmin = authentication.getAuthorities().stream().anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"));
 
-        // 관리자가 아니면 삭제 권한 없음
         if (!isAdmin) {
             throw new org.springframework.security.access.AccessDeniedException("Only administrators have permission to delete expenses.");
         }
@@ -210,30 +214,31 @@ public class ExpenseService {
         expenseRepository.delete(expense);
     }
 
+    // 이미지 삭제
     @Transactional
     public void deleteImage(Long imageId) {
         logger.info("Deleting image with id: {}", imageId);
-        // 이미지 엔티티 찾기
         ExpenseImage expenseImage = expenseImageRepository.findById(imageId)
                 .orElseThrow(() -> new RuntimeException("Image not found with id: " + imageId));
 
-        // 로컬 디렉토리에서 이미지 파일 삭제
         String imageUrl = expenseImage.getImageUrl();
         String fileName = imageUrl.substring(imageUrl.lastIndexOf("/") + 1);
         File imageFile = new File(uploadDir, fileName);
 
-        if (imageFile.exists()) {
-            if (!imageFile.delete()) {
-                logger.error("이미지 삭제 실패: {}", imageFile.getAbsolutePath());
-                throw new RuntimeException("이미지 파일 삭제 실패");
-            }
+        if (imageFile.exists() && !imageFile.delete()) {
+            logger.error("이미지 삭제 실패: {}", imageFile.getAbsolutePath());
+            throw new RuntimeException("이미지 파일 삭제 실패");
         }
 
-        // `ExpenseImage` 엔티티 삭제
-        logger.info("Image deleted: {}", imageId);
         expenseImageRepository.delete(expenseImage);
     }
 
+    // 상태 업데이트 (공통 로직)
+    private Expense updateExpenseStatus(Long id, ExpenseStatus status) {
+        Expense expense = expenseRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Expense not found"));
 
-
+        expense.setStatus(status);
+        return expenseRepository.save(expense);
+    }
 }
