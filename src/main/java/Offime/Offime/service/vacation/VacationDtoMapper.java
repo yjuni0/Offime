@@ -8,10 +8,8 @@ import Offime.Offime.entity.vacation.VacationApprovalStatus;
 import Offime.Offime.entity.vacation.VacationType;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-
 @Service
-public class VacationMapper {
+public class VacationDtoMapper {
     public Vacation toEntity(Member member, ReqVacation reqVacation) {
         return Vacation.builder()
                 .member(member)
