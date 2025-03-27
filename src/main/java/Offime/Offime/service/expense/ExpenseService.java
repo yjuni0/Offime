@@ -1,12 +1,12 @@
 package Offime.Offime.service.expense;
 
 import Offime.Offime.exception.ExpenseNotFoundException;
-import Offime.Offime.dto.request.ExpenseRequestDTO;
-import Offime.Offime.dto.response.ExpenseResponseDTO;
-import Offime.Offime.entity.Expense;
-import Offime.Offime.entity.ExpenseImage;
-import Offime.Offime.repository.ExpenseImageRepository;
-import Offime.Offime.repository.ExpenseRepository;
+import Offime.Offime.dto.request.expense.ExpenseRequestDTO;
+import Offime.Offime.dto.response.expense.ExpenseResponseDTO;
+import Offime.Offime.entity.expense.Expense;
+import Offime.Offime.entity.expense.ExpenseImage;
+import Offime.Offime.repository.expense.ExpenseImageRepository;
+import Offime.Offime.repository.expense.ExpenseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;

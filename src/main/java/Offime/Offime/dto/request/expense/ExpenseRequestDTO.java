@@ -1,4 +1,4 @@
-package Offime.Offime.dto.request;
+package Offime.Offime.dto.request.expense;
 
 import lombok.Getter;
 import lombok.Setter;

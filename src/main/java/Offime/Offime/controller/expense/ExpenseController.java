@@ -1,10 +1,10 @@
 package Offime.Offime.controller.expense;
 
-import Offime.Offime.dto.request.ExpenseRequestDTO;
-import Offime.Offime.dto.response.ExpenseResponseDTO;
-import Offime.Offime.entity.Expense;
-import Offime.Offime.entity.ExpenseImage;
-import Offime.Offime.repository.ExpenseImageRepository;
+import Offime.Offime.dto.request.expense.ExpenseRequestDTO;
+import Offime.Offime.dto.response.expense.ExpenseResponseDTO;
+import Offime.Offime.entity.expense.Expense;
+import Offime.Offime.entity.expense.ExpenseImage;
+import Offime.Offime.repository.expense.ExpenseImageRepository;
 import Offime.Offime.service.expense.ExpenseService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;

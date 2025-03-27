@@ -1,6 +1,5 @@
-package Offime.Offime.dto.response;
+package Offime.Offime.dto.response.expense;
 
-import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.Setter;
 

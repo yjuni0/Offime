@@ -1,4 +1,4 @@
-package Offime.Offime.entity;
+package Offime.Offime.entity.expense;
 
 import jakarta.persistence.*;
 import lombok.Getter;

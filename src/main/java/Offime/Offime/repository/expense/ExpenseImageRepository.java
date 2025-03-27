@@ -1,6 +1,6 @@
-package Offime.Offime.repository;
+package Offime.Offime.repository.expense;
 
-import Offime.Offime.entity.ExpenseImage;
+import Offime.Offime.entity.expense.ExpenseImage;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
