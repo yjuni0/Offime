@@ -5,6 +5,7 @@ import Offime.Offime.dto.attendance.request.ReqClockOutDto;
 import Offime.Offime.dto.attendance.request.ReqOutOfOfficeDto;
 import Offime.Offime.dto.attendance.request.ReqReturnToOfficeDto;
 import Offime.Offime.entity.attendance.EventRecord;
+import Offime.Offime.entity.member.Member;
 import Offime.Offime.repository.attendance.EventRecordRepository;
 import Offime.Offime.repository.member.MemberRepository;
 import jakarta.transaction.Transactional;
@@ -37,7 +38,7 @@ public class AttendanceService {
 
     @Transactional
     public void clockIn(ReqClockInDto dto, LocalDateTime now
-//            ,Member member
+//                        Member member
     ) {
         if (!isInDistance(dto.getLatitude(), dto.getLongitude())) {
             throw new IllegalArgumentException(" - " + "허용 범위를 벗어났습니다.");
