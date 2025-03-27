@@ -5,6 +5,7 @@ import {useEffect, useState} from "react";
 function ReportAnswer({questionId, reportId}) {
 
     const [responseData, setResponseData] = useState([]);
+    const [isUpdate, setIsUpdate] = useState(false);
 
     const getResponse = async () => {
         await axios.get(`http://localhost:8080/reports/read/response/${questionId}`).then((res) => setResponseData(res.data))
