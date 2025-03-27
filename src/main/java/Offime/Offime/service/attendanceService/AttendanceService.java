@@ -1,19 +1,15 @@
 package Offime.Offime.service.attendanceService;
 
-import Offime.Offime.common.MemberException;
 import Offime.Offime.dto.attendanceDto.request.ReqClockInDto;
 import Offime.Offime.dto.attendanceDto.request.ReqClockOutDto;
 import Offime.Offime.dto.attendanceDto.request.ReqOutOfOfficeDto;
 import Offime.Offime.dto.attendanceDto.request.ReqReturnToOfficeDto;
 import Offime.Offime.entity.attendanceEntity.EventRecord;
-import Offime.Offime.entity.attendanceEntity.Member;
-import Offime.Offime.entity.attendanceEntity.WorkStatus;
 import Offime.Offime.repository.attendanceRepository.EventRecordRepository;
-import Offime.Offime.repository.attendanceRepository.MemberRepository;
+import Offime.Offime.repository.member.MemberRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;

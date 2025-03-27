@@ -30,7 +30,7 @@ public class RepliesResDto {
                 .id(replies.getID())
                 .content(replies.getContent())
                 .createdAt(replies.getCreated_at())
-                .writerId(replies.getWriter().getID())
+                .writerId(replies.getWriter().getId())
                 .build();
     }
 }

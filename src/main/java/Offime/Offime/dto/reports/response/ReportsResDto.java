@@ -36,7 +36,7 @@ public class ReportsResDto {
                 .title(reports.getTitle())
                 .createdAt(reports.getCreatedAt())
                 .modifiedAt(reports.getModifiedAt())
-                .writerId(reports.getWriter().getID())
+                .writerId(reports.getWriter().getId())
                 .templateId(reports.getTemplate().getId())
                 .build();
     }

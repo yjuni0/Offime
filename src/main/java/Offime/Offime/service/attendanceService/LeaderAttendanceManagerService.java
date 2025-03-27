@@ -3,7 +3,7 @@ package Offime.Offime.service.attendanceService;
 import Offime.Offime.dto.attendanceDto.response.ResAttendanceHistoryDto;
 import Offime.Offime.entity.attendanceEntity.EventRecord;
 import Offime.Offime.repository.attendanceRepository.EventRecordRepository;
-import Offime.Offime.repository.attendanceRepository.MemberRepository;
+import Offime.Offime.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
