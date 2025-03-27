@@ -72,13 +72,27 @@ public class Member extends BaseTimeEntity implements UserDetails {
         this.role = role;
         this.team = team;
     }
+    
+    // 회원가입에 오류가 있어 주석 처리
+//    @PrePersist
+//    public void prePersist() {
+//        if (this.availableLeaveDays.compareTo(BigDecimal.ZERO) == 0) { this.availableLeaveDays = new BigDecimal("12.00"); }
+//        if (this.role == null) { this.role = Role.USER; }
+//    }
 
+    // 회원가입 가능한 상태를 임시로 만들어서 사용 중. 추후 제거
     @PrePersist
     public void prePersist() {
-        if (this.availableLeaveDays.compareTo(BigDecimal.ZERO) == 0) { this.availableLeaveDays = new BigDecimal("12.00"); }
-        if (this.role == null) { this.role = Role.USER; }
+        if (this.availableLeaveDays == null) {
+            this.availableLeaveDays = new BigDecimal("12.00");
+        } else if (this.availableLeaveDays.compareTo(BigDecimal.ZERO) == 0) {
+            this.availableLeaveDays = new BigDecimal("12.00");
+        }
+        if (this.role == null) {
+            this.role = Role.USER;
+        }
     }
-
+    
     @Override
     public String getUsername() {
         return email;
