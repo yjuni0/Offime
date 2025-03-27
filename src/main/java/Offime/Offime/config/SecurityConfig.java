@@ -60,5 +60,9 @@ public class SecurityConfig {
                 .exceptionHandling(excep -> excep.authenticationEntryPoint(jwtAuthenticationEntryPoint))
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
+
     }
+
+
 }
+

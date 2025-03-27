@@ -78,7 +78,7 @@ const ExpenseList = () => {
   return (
     <>
       <BackPage />
-      <main id="main" class="경비관리 목록">
+      <main id="main" className="경비관리 목록">
         <section className="sec bg_n20 ">
           <div className="inner ">
             <h4 className="">경비 관리</h4>

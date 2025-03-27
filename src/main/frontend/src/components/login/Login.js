@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { jwtDecode } from "jwt-decode"; // JWT 디코딩을 위한 라이브러리
+import { jwtDecode } from "jwt-decode";
 
 const Login = () => {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
@@ -14,42 +14,41 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      // 백엔드에 로그인 요청
-      const response = await axios.post("/api/auth/login", {
-        username,
+      const response = await axios.post("/login", {
+        email,
         password,
       });
 
-      // 서버 응답에서 토큰 받기
       const { token } = response.data;
       if (!token) {
         setError("Token is missing.");
         return;
       }
 
-      // 토큰을 로컬 스토리지에 저장
       localStorage.setItem("access_token", token);
 
-      // JWT 디코딩하여 사용자 정보 확인
+      try {
+        // jwtDecode 오류 처리 추가
+        const decodedToken = jwtDecode(token);
+        const { sub: decodedEmail, role } = decodedToken;
 
-      const decodedToken = jwtDecode(token);
-      const { sub: decodedUsername, role } = decodedToken;
+        localStorage.setItem("email", decodedEmail);
+        localStorage.setItem("role", role);
 
-      // 사용자 정보와 권한을 로컬 스토리지에 저장
-      localStorage.setItem("username", decodedUsername);
-      localStorage.setItem("role", role); // role 값 저장
+        setError("");
 
-      setError(""); // 로그인 성공 후 오류 메시지 초기화
-
-      navigate("/list");
+        navigate("/list");
+      } catch (decodeError) {
+        console.error("Token decoding error:", decodeError);
+        setError("Invalid token format.");
+      }
     } catch (err) {
-      console.log("로그인 실패:", err); // 여기서 에러만 로그로 출력하고, 토큰 정보는 출력하지 않음
-      setError("Invalid credentials!"); // 로그인 실패 시 오류 메시지
+      console.log("로그인 실패:", err);
+      setError("Invalid credentials!");
     }
   };
 
   const handleSignupRedirect = () => {
-    // 회원가입 페이지로 리디렉션
     navigate("/signup");
   };
 
@@ -58,10 +57,10 @@ const Login = () => {
       <Form onSubmit={handleLogin}>
         <h2>Login</h2>
         <Input
-          type="text"
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
         />
         <Input
           type="password"
