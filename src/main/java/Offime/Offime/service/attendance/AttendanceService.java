@@ -1,12 +1,12 @@
 package Offime.Offime.service.attendance;
 
-import Offime.Offime.dto.attendanceDto.request.ReqClockInDto;
-import Offime.Offime.dto.attendanceDto.request.ReqClockOutDto;
-import Offime.Offime.dto.attendanceDto.request.ReqOutOfOfficeDto;
-import Offime.Offime.dto.attendanceDto.request.ReqReturnToOfficeDto;
-import Offime.Offime.entity.attendanceEntity.EventRecord;
-import Offime.Offime.repository.attendanceRepository.EventRecordRepository;
-import Offime.Offime.repository.attendanceRepository.MemberRepository;
+import Offime.Offime.dto.attendance.request.ReqClockInDto;
+import Offime.Offime.dto.attendance.request.ReqClockOutDto;
+import Offime.Offime.dto.attendance.request.ReqOutOfOfficeDto;
+import Offime.Offime.dto.attendance.request.ReqReturnToOfficeDto;
+import Offime.Offime.entity.attendance.EventRecord;
+import Offime.Offime.repository.attendance.EventRecordRepository;
+import Offime.Offime.repository.member.MemberRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +17,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
-import static Offime.Offime.entity.attendanceEntity.EventType.*;
+import static Offime.Offime.entity.attendance.EventType.*;
 import static java.time.LocalTime.now;
 
 @Slf4j

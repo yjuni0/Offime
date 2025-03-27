@@ -1,9 +1,9 @@
-package Offime.Offime.controller.attendanceController;
+package Offime.Offime.controller.attendance;
 
-import Offime.Offime.dto.attendanceDto.response.ResAttendanceHistoryDto;
-import Offime.Offime.dto.attendanceDto.request.ReqAttendanceMonthlyHistoryDto;
-import Offime.Offime.dto.attendanceDto.request.ReqAttendanceWeeklyHistoryDto;
-import Offime.Offime.service.attendanceService.EmployeeAttendanceManagerService;
+import Offime.Offime.dto.response.attendance.ResAttendanceHistoryDto;
+import Offime.Offime.dto.request.attendance.ReqAttendanceMonthlyHistoryDto;
+import Offime.Offime.dto.request.attendance.ReqAttendanceWeeklyHistoryDto;
+import Offime.Offime.service.attendance.EmployeeAttendanceManagerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

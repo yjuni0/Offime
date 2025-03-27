@@ -1,8 +1,8 @@
-package Offime.Offime.dto.attendanceDto.request;
+package Offime.Offime.dto.attendance.request;
 
-import Offime.Offime.entity.attendanceEntity.EventRecord;
-import Offime.Offime.entity.attendanceEntity.EventType;
-import Offime.Offime.entity.attendanceEntity.OutOfOfficeType;
+import Offime.Offime.entity.attendance.EventRecord;
+import Offime.Offime.entity.attendance.EventType;
+import Offime.Offime.entity.attendance.OutOfOfficeType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

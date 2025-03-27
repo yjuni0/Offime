@@ -1,4 +1,4 @@
-package Offime.Offime.dto.attendanceDto.request;
+package Offime.Offime.dto.attendance.request;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

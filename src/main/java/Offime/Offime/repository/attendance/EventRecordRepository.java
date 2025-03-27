@@ -1,7 +1,7 @@
-package Offime.Offime.repository.attendanceRepository;
+package Offime.Offime.repository.attendance;
 
-import Offime.Offime.entity.attendanceEntity.EventRecord;
-import Offime.Offime.entity.attendanceEntity.EventType;
+import Offime.Offime.entity.attendance.EventRecord;
+import Offime.Offime.entity.attendance.EventType;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDate;
