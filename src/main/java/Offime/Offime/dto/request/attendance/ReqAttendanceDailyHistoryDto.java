@@ -3,10 +3,11 @@ package Offime.Offime.dto.request.attendance;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 @Getter
 @NoArgsConstructor
-public class ReqAttendanceMonthlyHistoryDto {
+public class ReqAttendanceDailyHistoryDto {
 
-    private int year;
-    private int month;
+    private LocalDate date;
 }

@@ -11,6 +11,8 @@ import Offime.Offime.repository.member.MemberRepository;
 import Offime.Offime.security.jwt.JwtTokenUtil;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -70,5 +72,10 @@ public class MemberService {
         } catch (BadCredentialsException e) {
             throw new MemberException("비밀번호가 일치하지 않습니다.", HttpStatus.BAD_REQUEST);
         }
+    }
+
+    // 모든 직원 조회
+    public Page<MemberResponseDto> getAllMembers(Pageable pageable) {
+        return memberRepository.findAll(pageable).map(MemberResponseDto::fromEntity);
     }
 }

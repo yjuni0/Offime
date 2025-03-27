@@ -51,8 +51,9 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/**",
                                 "/signUp",
-                                "/login","/images/**"
-
+                                "/images/**",
+                                "/login",
+                                "/member"
                         ).permitAll()
 
                         .anyRequest().authenticated()  // 나머지 모든 요청은 인증 필요
