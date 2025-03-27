@@ -10,6 +10,7 @@ import Offime.Offime.service.expense.ExpenseService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -26,7 +27,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -206,6 +209,27 @@ public class ExpenseController {
                     throw new RuntimeException("Failed to delete image: " + imageUrl, e);
                 }
             }
+        }
+    }
+
+    @GetMapping("/pending/count")
+    public ResponseEntity<?> getPendingExpensesCount(HttpServletRequest request) {
+        String token = request.getHeader("Authorization");
+        if (token == null || !token.startsWith("Bearer ")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("인증 토큰이 없습니다.");
+        }
+        token = token.substring(7); // "Bearer " 제거
+
+        // 토큰 검증 로직...
+        try {
+            // 토큰 검증 성공
+            long count = expenseService.getPendingExpensesCount();
+            Map<String, Long> response = new HashMap<>();
+            response.put("count", count);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            // 토큰 검증 실패
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유효하지 않은 토큰입니다.");
         }
     }
 

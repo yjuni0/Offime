@@ -5,6 +5,7 @@ import "../../css/reset.css";
 import "../../css/expense.css";
 import ExpenseSearch from "./ExpenseSearch";
 import BackPage from "../BackPage";
+import PendingExpensesCount from "./PendingExpensesCount ";
 
 const ExpenseList = () => {
   const [expenses, setExpenses] = useState([]); // 전체 경비 목록
@@ -121,6 +122,7 @@ const ExpenseList = () => {
   return (
     <>
       <BackPage />
+      <PendingExpensesCount />
       <main id="main" className="경비관리 목록">
         <section className="sec bg_n20">
           <div className="inner">

@@ -13,6 +13,7 @@ public interface ExpenseRepository extends JpaRepository<Expense, Long> {
     List<Expense> findByUsername(String username);
     List<Expense> findByStatus(ExpenseStatus status);
 
+
     // 검색 기능을 위한 쿼리 메서드
     @Query("SELECT e FROM Expense e WHERE " +
             "(:searchTerm IS NULL OR " +

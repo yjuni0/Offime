@@ -40,6 +40,11 @@ public class ExpenseService {
     @Value("${file.upload.url}")
     private String serverUrl;
 
+    public long getPendingExpensesCount() {
+        List<Expense> pendingExpenses = expenseRepository.findByStatus(ExpenseStatus.PENDING);
+        return pendingExpenses.size();
+    }
+
     // 게시물 검색
     public List<Expense> searchExpenses(String searchTerm, ExpenseStatus status) {
         return expenseRepository.searchExpenses(searchTerm, status);
