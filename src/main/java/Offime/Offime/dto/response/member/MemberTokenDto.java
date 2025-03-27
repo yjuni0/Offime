@@ -6,12 +6,16 @@ import Offime.Offime.entity.member.Member;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
-public class MemberTokenDto  {
+public class MemberTokenDto implements UserDetails  {
     private Long id;
     private String name;
     private String email;
@@ -21,7 +25,7 @@ public class MemberTokenDto  {
     private String token;
 
     @Builder
-    public MemberTokenDto(Long id, String name, String email, Role role, Team team, String joinDate, String token) {
+    public MemberTokenDto(Long id, String name, String email, Role role, Team team, String createdDate, String token) {
 
         this.id = id;
         this.name = name;

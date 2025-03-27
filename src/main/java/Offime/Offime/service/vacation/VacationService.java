@@ -1,14 +1,16 @@
 package Offime.Offime.service.vacation;
 
 import Offime.Offime.common.Role;
+import Offime.Offime.config.rabbitMQ.MessagePublisher;
 import Offime.Offime.dto.request.vacation.ReqVacation;
 import Offime.Offime.dto.response.vacation.ResVacation;
 import Offime.Offime.entity.member.Member;
+import Offime.Offime.entity.notifications.NotificationMessage;
 import Offime.Offime.entity.vacation.Vacation;
 import Offime.Offime.entity.vacation.VacationApprovalStatus;
+import Offime.Offime.exception.VacationException;
 import Offime.Offime.repository.member.MemberRepository;
 import Offime.Offime.repository.vacation.VacationRepository;
-import Offime.Offime.service.notifications.NotificationProducer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -26,14 +28,14 @@ import java.util.List;
 @Transactional
 public class VacationService {
     private final VacationRepository vacationRepository;
-    private final VacationMapper vacationMapper;
-    private final NotificationProducer notificationProducer;
+    private final VacationDtoMapper vacationDtoMapper;
+    private final MessagePublisher messagePublisher;
     private final MemberRepository memberRepository;
     // 조회
     public Page<ResVacation> getAllVacations(Member member, Pageable pageable) {
         log.info("요청 멤버{} 페이징{} : ", member.getId(),pageable);
         Page<Vacation> vacations = vacationRepository.findAllByMember(member,pageable);
-        List<ResVacation> list = vacations.stream().map(vacationMapper::fromEntity).toList();
+        List<ResVacation> list = vacations.stream().map(vacationDtoMapper::fromEntity).toList();
         log.info("해당 멤버 {} 가 신청한 휴가 {}",member.getId(),list.size());
 
         return new PageImpl<>(list,pageable,list.size());
@@ -47,23 +49,25 @@ public class VacationService {
             throw new IllegalArgumentException("해당 멤버만 조회 가능 "+member.getId());
         }
         log.info("요청 휴가 {} 멤버 id {} ",id,member.getId());
-        return vacationMapper.fromEntity(vacation);
+        return vacationDtoMapper.fromEntity(vacation);
     }
 
     // 신청
     public ResVacation applyVacation(Member member, ReqVacation reqVacation) {
-//        log.info("휴가 신청 멤버 id {} 요청 데이터 : {} ", member.getId(),reqVacation);
-        Vacation vacation = vacationMapper.toEntity(member, reqVacation);
+        if (vacationRepository.existsVacationOverlap(reqVacation.startDate(),reqVacation.endDate(),member)){
+            throw new VacationException("중복된 기간 휴가 신청은 불가.");
+        }
+        log.info("휴가 신청 멤버 id {} 요청 데이터 : {} ", member.getId(),reqVacation);
+        Vacation vacation = vacationDtoMapper.toEntity(member, reqVacation);
         vacationRepository.save(vacation);
-//        log.info("휴가 신청 성공 멤버{} , 휴가 id{} ",member.getId(),vacation.getId());
+        log.info("휴가 신청 성공 멤버{} , 휴가 id{} ",member.getId(),vacation.getId());
         // 2. 휴가 신청 후 알림 전송 (RabbitMQ)
-        String message = "새로운 휴가 신청이 있습니다: " + vacation.getReason() + " (" + vacation.getStartDate() + " ~ " + vacation.getEndDate() + ")";
-        notificationProducer.sendMessage(message);  // 알림 전송
-        return vacationMapper.fromEntity(vacation);
+        NotificationMessage notificationMessage = new NotificationMessage(member.getId(),"휴가 신청 건이 있습니다.");
+        messagePublisher.sendVacationMessage("vacation.request",notificationMessage);  // 알림 전송
+        return vacationDtoMapper.fromEntity(vacation);
     }
 
     // 승인 반려
-    @Transactional
     public String approveVacation(Member member, Long vacationId) {
         try {
             if (member.getRole().equals(Role.ADMIN)) {
@@ -83,14 +87,17 @@ public class VacationService {
                 if (availableDays.compareTo(useDays) < 0) {
                     return "잔여 연차가 부족합니다.";
                 }
-
+                Member requstMember = vacation.getMember();
                 // 연차 차감
-                vacation.getMember().setAvailableLeaveDays(availableDays.subtract(useDays));
+                requstMember.setAvailableLeaveDays(availableDays.subtract(useDays));
                 // 승인 처리
                 vacation.setStatus(VacationApprovalStatus.APPROVED);
                 vacationRepository.save(vacation); // 변경 사항 저장
+                NotificationMessage notificationMessage = new NotificationMessage(requstMember.getId(),"휴가 신청이 승인되었습니다.");
+                messagePublisher.sendVacationApprovedMessage("vacation.approve",notificationMessage);  // 알림 전송
                 log.info("휴가 id {} 승인 처리됨", vacationId);
             }
+
             return "승인 완료";
         } catch (IllegalArgumentException iae) {
             log.error("휴가 조회 실패: ", iae);
@@ -100,13 +107,15 @@ public class VacationService {
             throw new RuntimeException("서버 오류 발생");
         }
     }
-    @Transactional
     public String rejectVacation(Member member, Long vacationId) {
         try {
             if (member.getRole().equals(Role.ADMIN)) {
                 Vacation vacation = vacationRepository.findById(vacationId).orElseThrow(() -> new IllegalArgumentException("해당 신청 휴가 없음"));
                 vacation.setStatus(VacationApprovalStatus.REJECTED);
+                Member requstMember = vacation.getMember();
                 vacationRepository.save(vacation);
+                NotificationMessage notificationMessage = new NotificationMessage(requstMember.getId(),"휴가 신청이 반려되었습니다.");
+                messagePublisher.sendVacationRejectedMessage("vacation.reject",notificationMessage);  // 알림 전송
                 log.info("휴가 id {} 반려 처리됨", vacationId);
             }else {
                 throw new IllegalArgumentException("관리자만 가능");

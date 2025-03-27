@@ -37,16 +37,26 @@ public class VacationController {
 
     // 휴가 신청 (POST)
     @PostMapping
-    public ResponseEntity<?> createVacation(@AuthenticationPrincipal Member member, @RequestBody ReqVacation reqVacation) {
+    public ResponseEntity<?> create(@AuthenticationPrincipal Member member, @RequestBody ReqVacation reqVacation) {
         ResVacation resVacation = vacationService.applyVacation(member, reqVacation);
         return ResponseEntity.status(HttpStatus.CREATED).body(resVacation);
     }
 
     // 휴가 삭제
     @DeleteMapping("/{vacationId}")
-    public ResponseEntity<?> deleteVacation(@AuthenticationPrincipal Member member, @PathVariable("vacationId") Long vacationId) {
+    public ResponseEntity<?> delete(@AuthenticationPrincipal Member member, @PathVariable("vacationId") Long vacationId) {
         vacationService.deleteVacation(member, vacationId);
         return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @PostMapping("/{vacationId}/approve")
+    public ResponseEntity<?> approve(@AuthenticationPrincipal Member member, @PathVariable("vacationId") Long vacationId) {
+        return ResponseEntity.status(HttpStatus.OK).body(vacationService.approveVacation(member, vacationId));
+    }
+
+    @PostMapping("/{vacationId}/reject")
+    public ResponseEntity<?> reject(@AuthenticationPrincipal Member member, @PathVariable("vacationId") Long vacationId) {
+        return ResponseEntity.status(HttpStatus.OK).body(vacationService.rejectVacation(member, vacationId));
     }
 
 }
