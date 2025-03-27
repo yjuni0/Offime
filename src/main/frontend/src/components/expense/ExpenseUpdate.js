@@ -28,6 +28,8 @@ const ExpenseUpdate = () => {
   useEffect(() => {
     const fetchExpenseData = async () => {
       const accessToken = localStorage.getItem("access_token");
+      console.log("토큰 확인:", accessToken); // ✅ 토큰 로그 확인
+
       if (!accessToken) {
         console.error("No access token found. Redirecting to login.");
         navigate("/login");
@@ -42,8 +44,10 @@ const ExpenseUpdate = () => {
           },
         });
 
-        if (response.status === 403) {
-          console.error("Access denied. Redirecting to login...");
+        console.log("응답 상태:", response.status); // ✅ 응답 상태 확인
+
+        if (response.status === 401 || response.status === 403) {
+          console.error("Unauthorized. Redirecting to login...");
           navigate("/login");
           return;
         }
@@ -67,11 +71,11 @@ const ExpenseUpdate = () => {
           throw new Error("Failed to fetch expense data");
         }
       } catch (error) {
+        console.error("Fetch error:", error);
         setError("데이터를 가져오는 데 실패했습니다.");
         setLoading(false);
       }
     };
-
     fetchExpenseData();
   }, [id, navigate]);
 

@@ -6,8 +6,11 @@ import { useNavigate } from "react-router-dom";
 const Signup = () => {
   const navigate = useNavigate();
 
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
@@ -17,15 +20,14 @@ const Signup = () => {
     setSuccess("");
 
     try {
-      const response = await axios.post(
-        "http://localhost:3000/api/auth/register",
-        {
-          username,
-          password,
-        }
-      );
+      const response = await axios.post("http://localhost:3000/signUp", {
+        email,
+        password,
+        name,
+        phone,
+      });
 
-      if (response.status === 201) {
+      if (response.status === 200) {
         setSuccess("User registered successfully!");
         navigate("/login");
       }
@@ -43,10 +45,10 @@ const Signup = () => {
       <Form onSubmit={handleSignup}>
         <h2>Signup</h2>
         <Input
-          type="text"
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
         />
         <Input
           type="password"
@@ -54,6 +56,19 @@ const Signup = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
+        <Input
+          type="text"
+          placeholder="Name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
+        <Input
+          type="text"
+          placeholder="Phone"
+          value={phone}
+          onChange={(e) => setPhone(e.target.value)}
+        />
+
         <Button type="submit">Signup</Button>
         {error && <ErrorMessage>{error}</ErrorMessage>}
         {success && <SuccessMessage>{success}</SuccessMessage>}
