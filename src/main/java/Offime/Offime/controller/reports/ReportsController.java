@@ -1,10 +1,10 @@
 package Offime.Offime.controller.reports;
 
-import Offime.Offime.dto.reports.request.ReportsReqDto;
-import Offime.Offime.dto.reports.response.QuestionsResDto;
-import Offime.Offime.dto.reports.response.ReportsResDto;
-import Offime.Offime.dto.reports.response.ResponseResDto;
-import Offime.Offime.dto.reports.response.TemplatesResDto;
+import Offime.Offime.dto.request.reports.ReportsReqDto;
+import Offime.Offime.dto.response.reports.QuestionsResDto;
+import Offime.Offime.dto.response.reports.ReportsResDto;
+import Offime.Offime.dto.response.reports.ResponseResDto;
+import Offime.Offime.dto.response.reports.TemplatesResDto;
 import Offime.Offime.service.reports.ReportsService;
 import Offime.Offime.service.reports.TemplatesService;
 import lombok.RequiredArgsConstructor;
