@@ -2,7 +2,13 @@ import Router from "./router/Router";
 
 function Main() {
     return (
-            <Router/>
+        <div id={"container"}>
+            <div id={"device"}>
+                <main id={"main"}>
+                    <Router/>
+                </main>
+            </div>
+        </div>
     )
 }
 
