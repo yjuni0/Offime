@@ -117,8 +117,7 @@ public class ExpenseService {
 
         // 현재 인증된 사용자의 권한 가져오기
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        boolean isAdmin = authentication.getAuthorities().stream()
-                .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_ADMIN"));
+        boolean isAdmin = authentication.getAuthorities().stream().isParallel();
 
         // 게시물 작성자와 현재 사용자가 다르면서 관리자도 아니면 권한 없음 예외 발생 (또는 다른 처리)
         if (!expense.getUsername().equals(authentication.getName()) && !isAdmin) {
@@ -134,8 +133,7 @@ public class ExpenseService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         // 관리자 권한 확인
-        boolean isAdmin = authentication.getAuthorities().stream()
-                .anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN")); // 'ROLE_ADMIN'은 실제 관리자 역할 이름으로 변경해야 합니다.
+        boolean isAdmin = authentication.getAuthorities().stream().isParallel();
 
         if (isAdmin) {
             // 관리자는 모든 게시물 조회
