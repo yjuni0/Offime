@@ -45,10 +45,10 @@ public class EventRecord {
     private OutOfOfficeType outOfOfficeType;
 
     @Column(name = "LATE")
-    private long late;
+    private int late;
 
     @Column(name = "LEAVE_EARLY")
-    private long leaveEarly;
+    private int leaveEarly;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MEMBER_ID", nullable = false)
@@ -56,7 +56,7 @@ public class EventRecord {
 
     @Builder
     public EventRecord(Long id, LocalDate date, LocalDateTime requestTime, LocalTime clockIn, LocalTime clockOut,
-                       EventType eventType, OutOfOfficeType outOfOfficeType, long late, long leaveEarly, Member member) {
+                       EventType eventType, OutOfOfficeType outOfOfficeType, int late, int leaveEarly, Member member) {
         this.id = id;
         this.date = date;
         this.requestTime = requestTime;
@@ -73,7 +73,7 @@ public class EventRecord {
         this.clockOut = clockOut;
     }
 
-    public void updateLeaveEarly(long leaveEarly) {
+    public void updateLeaveEarly(int leaveEarly) {
         this.leaveEarly = leaveEarly;
     }
 }

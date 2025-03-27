@@ -14,7 +14,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class ReqOutOfOfficeDto {
 
-    private Long memberId;
     private OutOfOfficeType outOfOfficeType;
 
     public static EventRecord toEntity(Member member, ReqOutOfOfficeDto dto, EventRecord clockInRecord) {

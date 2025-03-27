@@ -13,7 +13,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class ReqReturnToOfficeDto {
 
-    private Long memberId;
     private double latitude;
     private double longitude;
 

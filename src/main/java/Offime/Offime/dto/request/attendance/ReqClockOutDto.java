@@ -14,9 +14,7 @@ import java.time.LocalTime;
 @NoArgsConstructor
 public class ReqClockOutDto {
 
-    private Long memberId;
-
-    public static EventRecord toEntity(Member member, EventRecord clockInRecord, long leaveEarly) {
+    public static EventRecord toEntity(Member member, EventRecord clockInRecord, int leaveEarly) {
         return EventRecord.builder()
                 .member(member)
                 .date(LocalDate.now())

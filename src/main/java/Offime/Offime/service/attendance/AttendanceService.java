@@ -47,7 +47,7 @@ public class AttendanceService {
         Member currentMember = memberRepository.findByEmail(member.getEmail()).orElseThrow(
                 () -> new MemberException("확인된 사용자가 아닙니다.", HttpStatus.BAD_REQUEST)
         );
-        long lateMinutes = late(now);
+        int lateMinutes = late(now);
         EventRecord eventRecord = ReqClockInDto.toEntity(currentMember, lateMinutes);
         eventRecordRepository.save(eventRecord);
         currentMember.updateWorkStatus(WorkStatus.근무중);
@@ -59,7 +59,7 @@ public class AttendanceService {
                 () -> new MemberException("확인된 사용자가 아닙니다.", HttpStatus.BAD_REQUEST)
         );
         LocalDate today = now.toLocalDate();
-        EventRecord clockInRecord = eventRecordRepository.findByDateAndEventType(today, 출근)
+        EventRecord clockInRecord = eventRecordRepository.findByMemberIdAndDateAndEventType(member.getId(), today, 출근)
                 .orElseThrow(() -> new IllegalStateException("오늘의 출근 기록이 없습니다."));
 
         EventRecord eventRecord = ReqOutOfOfficeDto.toEntity(currentMember, dto, clockInRecord);
@@ -76,7 +76,7 @@ public class AttendanceService {
                 () -> new MemberException("확인된 사용자가 아닙니다.", HttpStatus.BAD_REQUEST)
         );
         LocalDate today = now.toLocalDate();
-        EventRecord clockInRecord = eventRecordRepository.findByDateAndEventType(today, 출근)
+        EventRecord clockInRecord = eventRecordRepository.findByMemberIdAndDateAndEventType(member.getId(), today, 출근)
                 .orElseThrow(() -> new IllegalStateException("오늘의 출근 기록이 없습니다."));
         EventRecord eventRecord = ReqReturnToOfficeDto.toEntity(currentMember, clockInRecord);
         eventRecordRepository.save(eventRecord);
@@ -89,51 +89,50 @@ public class AttendanceService {
                 () -> new MemberException("확인된 사용자가 아닙니다.", HttpStatus.BAD_REQUEST)
         );
         LocalDate today = now.toLocalDate();
-        EventRecord clockInRecord = eventRecordRepository.findByDateAndEventType(today, 출근)
+        EventRecord clockInRecord = eventRecordRepository.findByMemberIdAndDateAndEventType(member.getId(), today, 출근)
                 .orElseThrow(() -> new IllegalStateException("오늘의 출근 기록이 없습니다."));
 
-        long leaveEarlyMinutes = leaveEarly(now);
+        int leaveEarlyMinutes = leaveEarly(now);
         EventRecord eventRecord = ReqClockOutDto.toEntity(currentMember, clockInRecord, leaveEarlyMinutes);
 
-        eventRecordRepository.findByDateAndEventType(today, 출근)
+        eventRecordRepository.findByMemberIdAndDateAndEventType(member.getId(), today, 출근)
                 .ifPresent(record -> {
                     record.updateClockOut(now());
                     record.updateLeaveEarly(leaveEarly(now));
                 });
-        eventRecordRepository.findByDateAndEventType(today, 자리비움)
+        eventRecordRepository.findByMemberIdAndDateAndEventType(member.getId(), today, 자리비움)
                 .ifPresent(record -> {
                     record.updateClockOut(now());
                     record.updateLeaveEarly(leaveEarly(now));
                 });
-        eventRecordRepository.findByDateAndEventType(today, 복귀)
+        eventRecordRepository.findByMemberIdAndDateAndEventType(member.getId(), today, 복귀)
                 .ifPresent(record -> {
                     record.updateClockOut(now());
                     record.updateLeaveEarly(leaveEarly(now));
                 });
-
         eventRecordRepository.save(eventRecord);
         currentMember.updateWorkStatus(WorkStatus.퇴근);
     }
 
     //private 메소드=========================================================================================
-    private long late(LocalDateTime clockInTime) {
+    private int late(LocalDateTime clockInTime) {
         LocalTime Time = clockInTime.toLocalTime();
         if (Time.isAfter(COMPANY_START_TIME)) {
             Duration duration = Duration.between(COMPANY_START_TIME, Time);
-            return duration.toMinutes();
+            return (int) duration.toMinutes();
         }
         return 0;
     }
 
-    private long leaveEarly(LocalDateTime clockOutTime) {
+
+    private int leaveEarly(LocalDateTime clockOutTime) {
         LocalTime Time = clockOutTime.toLocalTime();
         if (Time.isBefore(COMPANY_END_TIME)) {
             Duration duration = Duration.between(Time, COMPANY_END_TIME);
-            return duration.toMinutes();
+            return (int) duration.toMinutes();
         }
         return 0;
     }
-
     private boolean isInDistance(double latitude, double longitude) {
         double distance = calculateDistance(COMPANY_LATITUDE, COMPANY_LONGITUDE, latitude, longitude);
         return distance <= MAX_DISTANCE;

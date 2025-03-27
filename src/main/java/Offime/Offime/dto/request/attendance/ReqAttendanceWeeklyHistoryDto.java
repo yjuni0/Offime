@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ReqAttendanceWeeklyHistoryDto {
 
-    private Long memberId;
     private int year;
     private int month;
     private int startDay;

@@ -1,11 +1,10 @@
 package Offime.Offime.controller.attendance;
 
-
 import Offime.Offime.dto.request.attendance.ReqAttendanceMonthlyHistoryDto;
 import Offime.Offime.dto.request.attendance.ReqAttendanceWeeklyHistoryDto;
-import Offime.Offime.dto.response.attendance.ResAttendanceHistoryDto;
+import Offime.Offime.dto.response.attendance.ResAttendanceHistoryForEmployeeDto;
 import Offime.Offime.entity.member.Member;
-import Offime.Offime.service.attendance.EmployeeAttendanceManagerService;
+import Offime.Offime.service.attendance.AttendanceManagerForEmployeeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -15,23 +14,23 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-public class AttendanceHistoryController {
+public class AttendanceManagerForEmployeeController {
 
-    private final EmployeeAttendanceManagerService employeeAttendanceManagerService;
+    private final AttendanceManagerForEmployeeService employeeAttendanceManagerService;
 
     @GetMapping("/weekly")
-    public ResponseEntity<ResAttendanceHistoryDto> getWeeklyAttendance(
+    public ResponseEntity<ResAttendanceHistoryForEmployeeDto> getWeeklyAttendance(
             @AuthenticationPrincipal Member member, @RequestBody ReqAttendanceWeeklyHistoryDto request) {
-        ResAttendanceHistoryDto weeklyStats = employeeAttendanceManagerService.getWeeklyAttendanceHistory(
-                request.getMemberId(), request.getYear(), request.getMonth(), request.getStartDay());
+        ResAttendanceHistoryForEmployeeDto weeklyStats = employeeAttendanceManagerService.getWeeklyAttendanceHistory(
+                member, request.getYear(), request.getMonth(), request.getStartDay());
         return ResponseEntity.ok(weeklyStats);
     }
 
     @GetMapping("/monthly")
-    public ResponseEntity<ResAttendanceHistoryDto> getMonthlyAttendance(
+    public ResponseEntity<ResAttendanceHistoryForEmployeeDto> getMonthlyAttendance(
             @AuthenticationPrincipal Member member, @RequestBody ReqAttendanceMonthlyHistoryDto request) {
-        ResAttendanceHistoryDto monthlyStats = employeeAttendanceManagerService.getMonthlyAttendanceHistory(
-                request.getMemberId(), request.getYear(), request.getMonth());
+        ResAttendanceHistoryForEmployeeDto monthlyStats = employeeAttendanceManagerService.getMonthlyAttendanceHistory(
+                member, request.getYear(), request.getMonth());
         return ResponseEntity.ok(monthlyStats);
     }
 }

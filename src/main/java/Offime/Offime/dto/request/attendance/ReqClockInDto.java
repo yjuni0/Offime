@@ -14,11 +14,10 @@ import java.time.LocalTime;
 @NoArgsConstructor
 public class ReqClockInDto {
 
-    private Long memberId;
     private double latitude;
     private double longitude;
 
-    public static EventRecord toEntity(Member member, long late) {
+    public static EventRecord toEntity(Member member, int late) {
         return EventRecord.builder()
                 .member(member)
                 .date(LocalDate.now())
