@@ -10,16 +10,17 @@ import java.util.List;
 
 @Getter
 @NoArgsConstructor
-public class ResAttendanceHistoryDto {
+public class ResAttendanceHistoryForEmployeeDto {
 
-    private long clockInCount;
-    private long lateCount;
-    private long totalLateMinutes;
-    private long leaveEarlyCount;
-    private long totalLeaveEarlyMinutes;
+    private int clockInCount;
+    private int lateCount;
+    private int totalLateMinutes;
+    private int leaveEarlyCount;
+    private int totalLeaveEarlyMinutes;
 
     @Builder
-    public ResAttendanceHistoryDto(long clockInCount, long lateCount, long totalLateMinutes, long leaveEarlyCount, long totalLeaveEarlyMinutes) {
+    public ResAttendanceHistoryForEmployeeDto(
+            int clockInCount, int lateCount, int totalLateMinutes, int leaveEarlyCount, int totalLeaveEarlyMinutes) {
         this.clockInCount = clockInCount;
         this.lateCount = lateCount;
         this.totalLateMinutes = totalLateMinutes;
@@ -27,24 +28,26 @@ public class ResAttendanceHistoryDto {
         this.totalLeaveEarlyMinutes = totalLeaveEarlyMinutes;
     }
 
-    public static ResAttendanceHistoryDto fromEntity(List<EventRecord> eventRecord){
-        return ResAttendanceHistoryDto.builder()
-                .clockInCount(eventRecord.stream()
+    public static ResAttendanceHistoryForEmployeeDto fromEntity(List<EventRecord> eventRecord){
+        return ResAttendanceHistoryForEmployeeDto.builder()
+                .clockInCount((int) eventRecord.stream()
                         .filter(r -> r.getEventType() == EventType.출근).count())
-                .lateCount(eventRecord.stream()
+                .lateCount((int) eventRecord.stream()
                         .filter(r -> r.getEventType() == EventType.출근)
                         .filter(r -> r.getLate() > 0)
                         .count())
                 .totalLateMinutes(eventRecord.stream()
                         .filter(r -> r.getEventType() == EventType.출근)
-                        .mapToLong(EventRecord::getLate)
+                        .mapToInt(EventRecord::getLate)
                         .sum())
-                .leaveEarlyCount(eventRecord.stream()
+                .leaveEarlyCount((int) eventRecord.stream()
                         .filter(r -> r.getEventType() == EventType.퇴근)
-                        .filter(r -> r.getLeaveEarly() > 0).count())
+                        .filter(r -> r.getLeaveEarly() > 0)
+                        .count())
                 .totalLeaveEarlyMinutes(eventRecord.stream()
                         .filter(r -> r.getEventType() == EventType.퇴근)
-                        .mapToLong(EventRecord::getLeaveEarly).sum())
+                        .mapToInt(EventRecord::getLeaveEarly)
+                        .sum())
                 .build();
     }
 }

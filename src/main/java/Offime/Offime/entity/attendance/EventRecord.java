@@ -1,6 +1,7 @@
 package Offime.Offime.entity.attendance;
 
 import Offime.Offime.common.LocalTimeConverter;
+import Offime.Offime.entity.member.Member;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -44,18 +45,18 @@ public class EventRecord {
     private OutOfOfficeType outOfOfficeType;
 
     @Column(name = "LATE")
-    private long late;
+    private int late;
 
     @Column(name = "LEAVE_EARLY")
-    private long leaveEarly;
+    private int leaveEarly;
 
-//    @ManyToOne
-//    @JoinColumn(name = "MEMBER_ID", nullable = false)
-//    private Member member;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "MEMBER_ID", nullable = false)
+    private Member member;
 
     @Builder
     public EventRecord(Long id, LocalDate date, LocalDateTime requestTime, LocalTime clockIn, LocalTime clockOut,
-                       EventType eventType, OutOfOfficeType outOfOfficeType, long late, long leaveEarly) {
+                       EventType eventType, OutOfOfficeType outOfOfficeType, int late, int leaveEarly, Member member) {
         this.id = id;
         this.date = date;
         this.requestTime = requestTime;
@@ -65,13 +66,14 @@ public class EventRecord {
         this.outOfOfficeType = outOfOfficeType;
         this.late = late;
         this.leaveEarly = leaveEarly;
+        this.member = member;
     }
     //==================================================================================================================
     public void updateClockOut(LocalTime clockOut) {
         this.clockOut = clockOut;
     }
 
-    public void updateLeaveEarly(long leaveEarly) {
+    public void updateLeaveEarly(int leaveEarly) {
         this.leaveEarly = leaveEarly;
     }
 }
