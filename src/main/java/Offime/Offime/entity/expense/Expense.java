@@ -25,6 +25,7 @@ public class Expense {
     private String username;  // 작성자
     private double amount;  // 금액
     private String category;  // 식비, 교통, 숙박, 경조사, 기타
+    private String status;
 
     @Column(name = "expense_date", nullable = false)
     private LocalDate expenseDate;

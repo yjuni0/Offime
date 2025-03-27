@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { jwtDecode } from "jwt-decode";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -19,29 +18,20 @@ const Login = () => {
         password,
       });
 
-      const { token } = response.data;
-      if (!token) {
-        setError("Token is missing.");
+      const { token, email: userEmail, role } = response.data;
+
+      if (!token || !userEmail || !role) {
+        setError("Token, email, or role is missing.");
         return;
       }
 
-      localStorage.setItem("access_token", token);
+      // 토큰과 이메일, role을 로컬 스토리지에 저장
+      localStorage.setItem("access_token", token); // 토큰 저장
+      localStorage.setItem("email", userEmail); // 이메일 저장
+      localStorage.setItem("role", role); // role 저장
 
-      try {
-        // jwtDecode 오류 처리 추가
-        const decodedToken = jwtDecode(token);
-        const { sub: decodedEmail, role } = decodedToken;
-
-        localStorage.setItem("email", decodedEmail);
-        localStorage.setItem("role", role);
-
-        setError("");
-
-        navigate("/list");
-      } catch (decodeError) {
-        console.error("Token decoding error:", decodeError);
-        setError("Invalid token format.");
-      }
+      setError(""); // 에러 초기화
+      navigate("/list"); // 로그인 성공 후 이동
     } catch (err) {
       console.log("로그인 실패:", err);
       setError("Invalid credentials!");
@@ -77,7 +67,6 @@ const Login = () => {
     </LoginContainer>
   );
 };
-
 const LoginContainer = styled.div`
   display: flex;
   justify-content: center;

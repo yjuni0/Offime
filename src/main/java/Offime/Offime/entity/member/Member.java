@@ -72,7 +72,7 @@ public class Member extends BaseTimeEntity implements UserDetails {
         this.role = role;
         this.team = team;
     }
-//나중에삭제
+
     @PrePersist
     public void prePersist() {
         if (this.availableLeaveDays == null) {
@@ -84,14 +84,6 @@ public class Member extends BaseTimeEntity implements UserDetails {
             this.role = Role.USER;
         }
     }
-//    @PrePersist
-//    public void prePersist() {
-//        if (this.availableLeaveDays.compareTo(BigDecimal.ZERO) == 0) { this.availableLeaveDays = new BigDecimal("12.00"); }
-//        if (this.role == null) { this.role = Role.USER; }
-//    }
-//
-
-
 
     @Override
     public String getUsername() {

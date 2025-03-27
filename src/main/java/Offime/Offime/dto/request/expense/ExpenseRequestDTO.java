@@ -11,6 +11,7 @@ import java.util.List;
 @Setter
 public class ExpenseRequestDTO {
 
+
     private String title;
     private String content;
     private double amount;

@@ -45,6 +45,22 @@ public class ExpenseService {
         return expenseRepository.searchExpenses(searchTerm);
     }
 
+    public List<Expense> getPendingExpenses() {
+        return expenseRepository.findByStatus("pending");
+    }
+
+    public Expense approveExpense(Long id) {
+        Expense expense = expenseRepository.findById(id).orElseThrow(() -> new RuntimeException("Expense not found"));
+        expense.setStatus("approved");
+        return expenseRepository.save(expense);
+    }
+
+    public Expense rejectExpense(Long id) {
+        Expense expense = expenseRepository.findById(id).orElseThrow(() -> new RuntimeException("Expense not found"));
+        expense.setStatus("rejected");
+        return expenseRepository.save(expense);
+    }
+
     // 게시물 생성 (이미지와 함께)
     public Expense createExpense(ExpenseRequestDTO expenseDTO, List<MultipartFile> images) {
         Expense expense = new Expense();
@@ -99,13 +115,14 @@ public class ExpenseService {
             // 파일을 디스크에 저장
             image.transferTo(uploadFile);
 
-            // 반환할 URL 경로
-            return serverUrl + "/" + fileName; // 동적으로 읽어온 URL 경로 사용
+            // 반환할 URL 경로 (서버 URL이 올바르게 설정되었는지 확인)
+            return serverUrl + "/images/" + fileName; // 서버 URL 경로 확인
         } catch (IOException e) {
             logger.error("이미지 업로드 실패: {}", e.getMessage());
             throw new RuntimeException("Image upload failed: " + e.getMessage());
         }
     }
+
 
 
 
