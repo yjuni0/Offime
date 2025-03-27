@@ -81,4 +81,13 @@ public class ReportsService {
     public void deleteReport(Long reportId) {
         reportsRepository.deleteById(reportId);
     }
+
+    public void updateReport(Long id, ReportsReqDto reportsReqDto) {
+
+        Reports reports = reportsRepository.findById(id).orElseThrow(() -> new NoSuchElementException());
+
+        reports.setTitle(reportsReqDto.getTitle());
+
+        reportsRepository.save(reports);
+    }
 }
