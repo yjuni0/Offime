@@ -15,25 +15,25 @@ public class EmployeeAttendanceManagerService {
 
     private final EventRecordRepository eventRecordRepository;
 
-    public ResAttendanceHistoryDto getWeeklyAttendanceHistory(int year, int month, int startDay) {
-        List<EventRecord> records = getWeeklyRecords(year, month, startDay);
+    public ResAttendanceHistoryDto getWeeklyAttendanceHistory(Long memberId, int year, int month, int startDay) {
+        List<EventRecord> records = getWeeklyRecords(memberId, year, month, startDay);
         return ResAttendanceHistoryDto.fromEntity(records);
     }
 
-    public ResAttendanceHistoryDto getMonthlyAttendanceHistory(int year, int month) {
-        List<EventRecord> records = getMonthlyRecords(year, month);
+    public ResAttendanceHistoryDto getMonthlyAttendanceHistory(Long memberId, int year, int month) {
+        List<EventRecord> records = getMonthlyRecords(memberId, year, month);
         return ResAttendanceHistoryDto.fromEntity(records);
     }
 
-    private List<EventRecord> getWeeklyRecords(int year, int month, int startDay) {
+    private List<EventRecord> getWeeklyRecords(Long memberId, int year, int month, int startDay) {
         LocalDate startOfWeek = LocalDate.of(year, month, startDay);
         LocalDate endOfWeek = startOfWeek.plusDays(6);
-        return eventRecordRepository.findByDateBetween(startOfWeek, endOfWeek);
+        return eventRecordRepository.findByMemberIdAndDateBetween(memberId, startOfWeek, endOfWeek);
     }
 
-    private List<EventRecord> getMonthlyRecords(int year, int month) {
+    private List<EventRecord> getMonthlyRecords(Long memberId, int year, int month) {
         LocalDate startOfMonth = LocalDate.of(year, month, 1);
         LocalDate endOfMonth = startOfMonth.plusMonths(1).minusDays(1);
-        return eventRecordRepository.findByDateBetween(startOfMonth, endOfMonth);
+        return eventRecordRepository.findByMemberIdAndDateBetween(memberId, startOfMonth, endOfMonth);
     }
 }

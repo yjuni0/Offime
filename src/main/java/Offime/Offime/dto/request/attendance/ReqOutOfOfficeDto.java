@@ -3,6 +3,7 @@ package Offime.Offime.dto.request.attendance;
 import Offime.Offime.entity.attendance.EventRecord;
 import Offime.Offime.entity.attendance.EventType;
 import Offime.Offime.entity.attendance.OutOfOfficeType;
+import Offime.Offime.entity.member.Member;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -13,10 +14,12 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class ReqOutOfOfficeDto {
 
+    private Long memberId;
     private OutOfOfficeType outOfOfficeType;
 
-    public static EventRecord toEntity(ReqOutOfOfficeDto dto, EventRecord clockInRecord) {
+    public static EventRecord toEntity(Member member, ReqOutOfOfficeDto dto, EventRecord clockInRecord) {
         return EventRecord.builder()
+                .member(member)
                 .date(LocalDate.now())
                 .requestTime(LocalDateTime.now())
                 .clockIn(clockInRecord.getClockIn())

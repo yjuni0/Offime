@@ -5,12 +5,15 @@ import Offime.Offime.dto.request.attendance.ReqClockOutDto;
 import Offime.Offime.dto.request.attendance.ReqOutOfOfficeDto;
 import Offime.Offime.dto.request.attendance.ReqReturnToOfficeDto;
 import Offime.Offime.entity.attendance.EventRecord;
+import Offime.Offime.entity.attendance.WorkStatus;
 import Offime.Offime.entity.member.Member;
+import Offime.Offime.exception.MemberException;
 import Offime.Offime.repository.attendance.EventRecordRepository;
 import Offime.Offime.repository.member.MemberRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
@@ -37,51 +40,60 @@ public class AttendanceService {
     private static final LocalTime COMPANY_END_TIME = LocalTime.of(18, 0);
 
     @Transactional
-    public void clockIn(ReqClockInDto dto, LocalDateTime now
-//                        Member member
-    ) {
+    public void clockIn(Member member, ReqClockInDto dto, LocalDateTime now) {
         if (!isInDistance(dto.getLatitude(), dto.getLongitude())) {
             throw new IllegalArgumentException(" - " + "허용 범위를 벗어났습니다.");
         }
-//        Member currentMember = memberRepository.findByEmail(member.getEmail()).orElseThrow(
-//                () -> new MemberException("확인된 사용자가 아닙니다.", HttpStatus.BAD_REQUEST)
-//        );
+        Member currentMember = memberRepository.findByEmail(member.getEmail()).orElseThrow(
+                () -> new MemberException("확인된 사용자가 아닙니다.", HttpStatus.BAD_REQUEST)
+        );
         long lateMinutes = late(now);
-        EventRecord eventRecord = ReqClockInDto.toEntity(lateMinutes);
+        EventRecord eventRecord = ReqClockInDto.toEntity(currentMember, lateMinutes);
         eventRecordRepository.save(eventRecord);
-//        currentMember.updateWorkStatus(WorkStatus.근무중);
+        currentMember.updateWorkStatus(WorkStatus.근무중);
     }
 
     @Transactional
-    public void returnToOffice(ReqReturnToOfficeDto dto, LocalDateTime now) {
+    public void outOfOffice(Member member, ReqOutOfOfficeDto dto, LocalDateTime now) {
+        Member currentMember = memberRepository.findByEmail(member.getEmail()).orElseThrow(
+                () -> new MemberException("확인된 사용자가 아닙니다.", HttpStatus.BAD_REQUEST)
+        );
+        LocalDate today = now.toLocalDate();
+        EventRecord clockInRecord = eventRecordRepository.findByDateAndEventType(today, 출근)
+                .orElseThrow(() -> new IllegalStateException("오늘의 출근 기록이 없습니다."));
+
+        EventRecord eventRecord = ReqOutOfOfficeDto.toEntity(currentMember, dto, clockInRecord);
+        eventRecordRepository.save(eventRecord);
+        currentMember.updateWorkStatus(WorkStatus.자리비움중);
+    }
+
+    @Transactional
+    public void returnToOffice(Member member, ReqReturnToOfficeDto dto, LocalDateTime now) {
         if (!isInDistance(dto.getLatitude(), dto.getLongitude())) {
             throw new IllegalArgumentException(" - " + "허용 범위를 벗어났습니다.");
         }
+        Member currentMember = memberRepository.findByEmail(member.getEmail()).orElseThrow(
+                () -> new MemberException("확인된 사용자가 아닙니다.", HttpStatus.BAD_REQUEST)
+        );
         LocalDate today = now.toLocalDate();
         EventRecord clockInRecord = eventRecordRepository.findByDateAndEventType(today, 출근)
                 .orElseThrow(() -> new IllegalStateException("오늘의 출근 기록이 없습니다."));
-        EventRecord eventRecord = ReqReturnToOfficeDto.toEntity(clockInRecord);
+        EventRecord eventRecord = ReqReturnToOfficeDto.toEntity(currentMember, clockInRecord);
         eventRecordRepository.save(eventRecord);
+        currentMember.updateWorkStatus(WorkStatus.근무중);
     }
 
     @Transactional
-    public void outOfOffice(ReqOutOfOfficeDto dto, LocalDateTime now) {
-        LocalDate today = now.toLocalDate();
-        EventRecord clockInRecord = eventRecordRepository.findByDateAndEventType(today, 출근)
-                .orElseThrow(() -> new IllegalStateException("오늘의 출근 기록이 없습니다."));
-
-    EventRecord eventRecord = ReqOutOfOfficeDto.toEntity(dto, clockInRecord);
-    eventRecordRepository.save(eventRecord);
-    }
-
-    @Transactional
-    public void clockOut(ReqClockOutDto dto, LocalDateTime now) {
+    public void clockOut(Member member, ReqClockOutDto dto, LocalDateTime now) {
+        Member currentMember = memberRepository.findByEmail(member.getEmail()).orElseThrow(
+                () -> new MemberException("확인된 사용자가 아닙니다.", HttpStatus.BAD_REQUEST)
+        );
         LocalDate today = now.toLocalDate();
         EventRecord clockInRecord = eventRecordRepository.findByDateAndEventType(today, 출근)
                 .orElseThrow(() -> new IllegalStateException("오늘의 출근 기록이 없습니다."));
 
         long leaveEarlyMinutes = leaveEarly(now);
-        EventRecord eventRecord = ReqClockOutDto.toEntity(clockInRecord, leaveEarlyMinutes);
+        EventRecord eventRecord = ReqClockOutDto.toEntity(currentMember, clockInRecord, leaveEarlyMinutes);
 
         eventRecordRepository.findByDateAndEventType(today, 출근)
                 .ifPresent(record -> {
@@ -100,6 +112,7 @@ public class AttendanceService {
                 });
 
         eventRecordRepository.save(eventRecord);
+        currentMember.updateWorkStatus(WorkStatus.퇴근);
     }
 
     //private 메소드=========================================================================================
