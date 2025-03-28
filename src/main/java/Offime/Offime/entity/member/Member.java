@@ -3,7 +3,7 @@ package Offime.Offime.entity.member;
 import Offime.Offime.common.BaseTimeEntity;
 import Offime.Offime.common.Role;
 import Offime.Offime.entity.attendance.WorkStatus;
-import Offime.Offime.entity.vacation.Vacation;
+//import Offime.Offime.entity.vacation.Vacation;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -57,8 +57,8 @@ public class Member extends BaseTimeEntity implements UserDetails {
     @Enumerated(EnumType.STRING)
     private SignUpStatus signUpStatus;
 
-    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Vacation> vacations;
+//    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<Vacation> vacations;
 
 
 
