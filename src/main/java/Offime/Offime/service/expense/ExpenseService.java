@@ -46,10 +46,9 @@ public class ExpenseService {
     }
 
     // 게시물 검색
-    public List<Expense> searchExpenses(String searchTerm, ExpenseStatus status) {
-        return expenseRepository.searchExpenses(searchTerm, status);
+    public List<Expense> searchExpenses(String searchTerm) {
+        return expenseRepository.searchExpenses(searchTerm);
     }
-
     // 대기 중인 게시물 가져오기
     public List<Expense> getPendingExpenses() {
         return expenseRepository.findByStatus(ExpenseStatus.PENDING);

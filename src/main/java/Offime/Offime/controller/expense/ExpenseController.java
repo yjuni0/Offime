@@ -54,22 +54,15 @@ public class ExpenseController {
 
     // 검색 기능
     @GetMapping("/search")
-    public ResponseEntity<?> searchExpenses(
-            @RequestParam(required = false) String searchTerm,
-            @RequestParam(required = true) String status) {
+    public ResponseEntity<?> searchExpenses(@RequestParam(required = false) String searchTerm) {
         try {
-            ExpenseStatus expenseStatus = ExpenseStatus.valueOf(status.toUpperCase());
-
-            List<Expense> expenses = expenseService.searchExpenses(searchTerm, expenseStatus);
+            List<Expense> expenses = expenseService.searchExpenses(searchTerm);
             List<ExpenseResponseDTO> responseDTOs = expenses.stream()
                     .map(this::convertToResponseDTO)
                     .collect(Collectors.toList());
 
             logger.info("Search results: {}", responseDTOs);
-            return ResponseEntity.ok(responseDTOs); // 수정된 부분
-        } catch (IllegalArgumentException e) {
-            logger.error("Invalid status value: {}", status);
-            return ResponseEntity.badRequest().body("Invalid status value"); // String 반환
+            return ResponseEntity.ok(responseDTOs);
         } catch (Exception e) {
             logger.error("Error searching expenses: {}", e.getMessage(), e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred while searching");

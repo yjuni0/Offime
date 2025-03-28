@@ -21,7 +21,8 @@ public interface ExpenseRepository extends JpaRepository<Expense, Long> {
             "e.username LIKE %:searchTerm% OR " +
             "e.category LIKE %:searchTerm% OR " +
             "e.content LIKE %:searchTerm% OR " +
-            "CAST(e.amount AS string) LIKE %:searchTerm%) AND " +
-            "e.status = :status") // status가 null인 경우 검색하지 않음
-    List<Expense> searchExpenses(@Param("searchTerm") String searchTerm, @Param("status") ExpenseStatus status);
+            "CAST(e.amount AS string) LIKE %:searchTerm% OR " +
+            "CAST(e.status AS string) LIKE %:searchTerm% OR " +
+            "CAST(e.expenseDate AS string) LIKE %:searchTerm%)")
+    List<Expense> searchExpenses(@Param("searchTerm") String searchTerm);
 }

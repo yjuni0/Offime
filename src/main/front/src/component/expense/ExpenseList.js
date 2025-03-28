@@ -72,19 +72,13 @@ const ExpenseList = () => {
     navigate(`/expenseDetail/${id}`);
   };
 
-  const handleSearch = async ({ searchTerm }) => {
-    setIsLoading(true); // 검색 시 로딩 시작
-    setError(null); // 이전 에러 상태 초기화
-    setHasNoResults(false); // 검색 결과 없음을 초기화
-
-    if (!searchTerm) {
-      setError("Search term is required.");
-      setIsLoading(false);
-      return;
-    }
+  const handleSearch = async (searchTerm) => {
+    setIsLoading(true);
+    setError(null);
+    setHasNoResults(false);
 
     try {
-      const token = localStorage.getItem("access_token"); // 토큰 가져오기
+      const token = localStorage.getItem("access_token");
       if (!token) {
         setError("Authorization token is missing.");
         setIsLoading(false);
@@ -92,7 +86,7 @@ const ExpenseList = () => {
       }
 
       const searchResponse = await fetch(
-        `/api/expenses/search?searchTerm=${searchTerm}`,
+        `http://localhost:8080/api/expenses/search?searchTerm=${searchTerm}`,
         {
           method: "GET",
           headers: {
@@ -104,10 +98,10 @@ const ExpenseList = () => {
 
       if (searchResponse.ok) {
         const searchData = await searchResponse.json();
-        setFilteredExpenses(searchData); // 검색 결과를 필터링된 목록으로 설정
+        setFilteredExpenses(searchData);
 
         if (searchData.length === 0) {
-          setHasNoResults(true); // 검색 결과가 없으면 상태 업데이트
+          setHasNoResults(true);
         }
       } else {
         console.error("Error fetching search results:", searchResponse.status);
@@ -117,7 +111,7 @@ const ExpenseList = () => {
       console.error("Error fetching search data:", error);
       setError("An error occurred while searching.");
     } finally {
-      setIsLoading(false); // 로딩 끝
+      setIsLoading(false);
     }
   };
 
