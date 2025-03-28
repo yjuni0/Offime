@@ -24,6 +24,7 @@ public class ReqClockOutDto {
                 .eventType(EventType.퇴근)
                 .late(clockInRecord.getLate())
                 .leaveEarly(leaveEarly)
+                .team(member.getTeam())
                 .build();
     }
 }

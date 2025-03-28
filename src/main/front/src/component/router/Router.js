@@ -10,6 +10,7 @@ import ReportReplies from "../reports/replies/ReportReplies";
 import TemplateList from "../reports/templates/TemplateList";
 import ReportUpdate from "../reports/reports/update/ReportUpdate";
 import Schedule from "../schedule/Schedule";
+import AttendanceManager from "../attendance/AttendanceManager"
 
 
 function Router() {
@@ -24,7 +25,8 @@ function Router() {
             <Route path="/replies/:reportId" element={<ReportReplies/>}/>
             <Route path="/schedule" element={<Schedule />} />
             <Route path="/templates/list" element={<TemplateList/>} />
-            <Route path="/reports/update/:reportId" element={<ReportUpdate/>}/>
+            <Route path="/reports/update/:reportId" element={<ReportUpdate />} />
+            <Route path="/attendance/manager" element={<AttendanceManager />} />
         </Routes>
     )
 }

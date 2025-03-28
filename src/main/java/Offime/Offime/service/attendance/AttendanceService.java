@@ -132,6 +132,7 @@ public class AttendanceService {
         }
         return 0;
     }
+
     private boolean isInDistance(double latitude, double longitude) {
         double distance = calculateDistance(COMPANY_LATITUDE, COMPANY_LONGITUDE, latitude, longitude);
         return distance <= MAX_DISTANCE;

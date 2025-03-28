@@ -2,6 +2,7 @@ package Offime.Offime.entity.attendance;
 
 import Offime.Offime.common.LocalTimeConverter;
 import Offime.Offime.entity.member.Member;
+import Offime.Offime.entity.member.Team;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -50,13 +51,17 @@ public class EventRecord {
     @Column(name = "LEAVE_EARLY")
     private int leaveEarly;
 
+    @Column(name = "TEAM")
+    @Enumerated(EnumType.STRING)
+    private Team team;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MEMBER_ID", nullable = false)
     private Member member;
 
     @Builder
     public EventRecord(Long id, LocalDate date, LocalDateTime requestTime, LocalTime clockIn, LocalTime clockOut,
-                       EventType eventType, OutOfOfficeType outOfOfficeType, int late, int leaveEarly, Member member) {
+                       EventType eventType, OutOfOfficeType outOfOfficeType, int late, int leaveEarly, Team team, Member member) {
         this.id = id;
         this.date = date;
         this.requestTime = requestTime;
@@ -66,6 +71,7 @@ public class EventRecord {
         this.outOfOfficeType = outOfOfficeType;
         this.late = late;
         this.leaveEarly = leaveEarly;
+        this.team = team;
         this.member = member;
     }
     //==================================================================================================================

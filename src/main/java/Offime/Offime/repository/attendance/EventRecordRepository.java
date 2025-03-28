@@ -17,10 +17,11 @@ public interface EventRecordRepository extends JpaRepository<EventRecord, Long> 
 
     Optional<EventRecord> findByMemberIdAndDateAndEventType(Long memberId, LocalDate date, EventType eventType);
 
-
     List<EventRecord> findByMemberAndDateBetween(Member member, LocalDate startDate, LocalDate endDate);
 
     List<EventRecord> findByDate(LocalDate date);
+
+    long countByDateAndEventType(LocalDate date, EventType eventType);
 
     @Query("SELECT er FROM EventRecord er WHERE er.date = :date AND er.member.team = :team")
     List<EventRecord> findByDateAndTeam(@Param("date") LocalDate date, @Param("team") Team team);
