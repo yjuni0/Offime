@@ -15,13 +15,16 @@ const PendingExpensesCount = () => {
           navigate("/login");
           return;
         }
-        const response = await fetch("/api/expenses/pending/count", {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`, // "Bearer " 접두사 추가
-            "Content-Type": "application/json",
-          },
-        });
+        const response = await fetch(
+          "http://localhost:8080/api/expenses/pending/count",
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${token}`, // "Bearer " 접두사 추가
+              "Content-Type": "application/json",
+            },
+          }
+        );
 
         if (response.ok) {
           const data = await response.json();

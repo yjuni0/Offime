@@ -32,13 +32,16 @@ const ExpenseList = () => {
       setError(null); // 이전 에러 상태 초기화
 
       try {
-        const expenseResponse = await fetch("/api/expenses", {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        });
+        const expenseResponse = await fetch(
+          "http://localhost:8080/api/expenses",
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
 
         if (expenseResponse.ok) {
           const expenseData = await expenseResponse.json();
@@ -66,7 +69,7 @@ const ExpenseList = () => {
   }, [token]); // token이 변경될 때만 fetchData가 실행됨
 
   const handleTitleClick = (id) => {
-    navigate(`/detail/${id}`);
+    navigate(`/expenseDetail/${id}`);
   };
 
   const handleSearch = async ({ searchTerm }) => {
@@ -179,7 +182,7 @@ const ExpenseList = () => {
             </ul>
             <button
               className="expense-list-add-button bg_pm tc-w fs_md p_md btn"
-              onClick={() => navigate("/create")}
+              onClick={() => navigate("/ExpenseWrite")}
             >
               +
             </button>

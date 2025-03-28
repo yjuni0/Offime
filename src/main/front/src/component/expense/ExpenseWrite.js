@@ -108,7 +108,7 @@ const ExpenseWrite = () => {
     }
 
     try {
-      const response = await fetch("/api/expenses", {
+      const response = await fetch("http://localhost:8080/api/expenses", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${accessToken}`,
@@ -120,7 +120,7 @@ const ExpenseWrite = () => {
         const data = await response.json();
         // 백엔드에서 반환된 photoUrls 배열을 업데이트
         setExpense({ ...expense, photoUrls: data.photoUrls });
-        navigate("/list"); // 리스트 페이지로 이동
+        navigate("/expenseList"); // 리스트 페이지로 이동
       } else {
         const errorDetails = await response.text();
         console.error("Failed to create expense", errorDetails);

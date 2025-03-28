@@ -42,13 +42,16 @@ const ExpenseDetail = () => {
           return;
         }
 
-        const response = await fetch(`/api/expenses/${id}`, {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        });
+        const response = await fetch(
+          `http://localhost:8080/api/expenses/${id}`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
 
         if (response.ok) {
           const data = await response.json();
@@ -73,16 +76,19 @@ const ExpenseDetail = () => {
           return;
         }
 
-        const response = await fetch(`/api/expenses/${id}`, {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        });
+        const response = await fetch(
+          `http://localhost:8080/api/expenses/${id}`,
+          {
+            method: "DELETE",
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
 
         if (response.ok) {
-          navigate("/list");
+          navigate("/expenseList");
         } else {
           console.error("Error deleting expense:", response.status);
         }
@@ -93,7 +99,7 @@ const ExpenseDetail = () => {
   };
 
   const handleEdit = () => {
-    navigate(`/update/${id}`);
+    navigate(`/expenseUpdate/${id}`);
   };
 
   const handleStatusChange = async (status) => {
@@ -113,7 +119,7 @@ const ExpenseDetail = () => {
         }
 
         const response = await fetch(
-          `/api/expenses/${id}/status?status=${status}`,
+          `http://localhost:8080/api/expenses/${id}/status?status=${status}`,
           {
             method: "PATCH",
             headers: {
@@ -129,7 +135,7 @@ const ExpenseDetail = () => {
             try {
               const updatedExpense = await response.json();
               setExpense(updatedExpense);
-              navigate("/list");
+              navigate("/expenseList");
             } catch (jsonError) {
               console.error("Error parsing JSON:", jsonError);
               setError("서버 응답을 처리하는 중 오류가 발생했습니다.");

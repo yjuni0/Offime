@@ -28,7 +28,6 @@ const ExpenseUpdate = () => {
   useEffect(() => {
     const fetchExpenseData = async () => {
       const accessToken = localStorage.getItem("access_token");
-      console.log("토큰 확인:", accessToken); // ✅ 토큰 로그 확인
 
       if (!accessToken) {
         console.error("No access token found. Redirecting to login.");
@@ -37,14 +36,15 @@ const ExpenseUpdate = () => {
       }
 
       try {
-        const response = await fetch(`/api/expenses/${id}`, {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        });
-
-        console.log("응답 상태:", response.status); // ✅ 응답 상태 확인
+        const response = await fetch(
+          `http://localhost:8080/api/expenses/${id}`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }
+        );
 
         if (response.status === 401 || response.status === 403) {
           console.error("Unauthorized. Redirecting to login...");
@@ -137,7 +137,7 @@ const ExpenseUpdate = () => {
     }
 
     try {
-      const response = await fetch(`/api/expenses/${id}`, {
+      const response = await fetch(`http://localhost:8080/api/expenses/${id}`, {
         method: "PUT",
         headers: {
           Authorization: `Bearer ${accessToken}`,
@@ -146,7 +146,7 @@ const ExpenseUpdate = () => {
       });
 
       if (response.ok) {
-        navigate(`/detail/${id}`); // 수정된 후 상세 페이지로 이동
+        navigate(`/expenseDetail/${id}`); // 수정된 후 상세 페이지로 이동
       } else {
         console.error("Failed to update expense", await response.text());
       }
