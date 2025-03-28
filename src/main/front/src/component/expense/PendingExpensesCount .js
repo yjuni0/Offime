@@ -76,8 +76,8 @@ const PendingExpensesCount = () => {
         style={{ cursor: "pointer" }} // 커서 스타일 변경
       >
         <h3 className="ml_xlg">경비 관리</h3>
-        <h3 className="tc-pm ml_xlg  ">{pendingCount} 건</h3>
-        <h3 className="tc-p5 ml_xlg">{rejectedCount} 건</h3>
+        <h3 className="tc-pm ml_xlg  ">{pendingCount}</h3>
+        <h3 className="tc-p5 ml_xlg">{rejectedCount}</h3>
       </div>
     </>
   );
