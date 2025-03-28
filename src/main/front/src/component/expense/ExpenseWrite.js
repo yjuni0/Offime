@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import BackPage from "../BackPage";
-import "./ExpenseWrite.css";
 
+import "../../css/common.css";
+import "../../css/reset.css";
+import "../../css/expense.css";
 const formatAmount = (amount) => {
   if (!amount) return "";
   return amount.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -131,130 +133,144 @@ const ExpenseWrite = () => {
   };
 
   return (
-    <div className="expense-write-container">
+    <>
       <BackPage />
-      <h2 className="expense-write-title">경비 관리</h2>
-      <form className="expense-write-form" onSubmit={handleSubmit}>
-        <label className="expense-write-label">날짜</label>
-        <input
-          className="expense-write-input"
-          type="date"
-          value={expense.date}
-          onChange={handleChangeDate}
-          required
-        />
+      <main id="main" className="경비관리 상세">
+        <section className="sec ">
+          <form className="inner" onSubmit={handleSubmit}>
+            <div className="bg_n0 item bg_pm mt_md mb_md">
+              <p className="fs_lg ">제목</p>
+              <input
+                className="input input-txt fs_md mb_md"
+                name="title"
+                value={expense.title}
+                onChange={(e) =>
+                  setExpense({ ...expense, title: e.target.value })
+                }
+                required
+              />
 
-        <label className="expense-write-label">제목</label>
-        <input
-          className="expense-write-input"
-          name="title"
-          value={expense.title}
-          onChange={(e) => setExpense({ ...expense, title: e.target.value })}
-          required
-        />
-
-        <label className="expense-write-label">카테고리</label>
-        <div className="expense-write-category-buttons">
-          {["식비", "교통", "숙박", "경조사", "기타"].map((category) => (
-            <button
-              key={category}
-              type="button"
-              className={`expense-write-category-button ${
-                expense.category === category ? "selected" : ""
-              }`}
-              onClick={(e) => handleCategoryChange(category, e)}
-            >
-              {category}
-            </button>
-          ))}
-        </div>
-
-        <label className="expense-write-label">사진 URL</label>
-        <label className="expense-write-file-input-wrapper" htmlFor="fileInput">
-          +
-        </label>
-        <input
-          className="expense-write-hidden-input"
-          type="file"
-          multiple
-          onChange={handleFileChange}
-          id="fileInput"
-          accept="image/*"
-        />
-        {previewImages && previewImages.length > 0 && (
-          <div className="expense-write-image-preview-container">
-            {previewImages.map((src, index) => (
-              <div key={index} className="expense-write-image-preview-item">
-                <img
-                  className="expense-write-preview-image"
-                  src={src}
-                  alt={`미리보기 ${index + 1}`}
-                />
-                <button
-                  className="expense-write-remove-image-button"
-                  type="button"
-                  onClick={() => handleRemoveImage(index)}
-                >
-                  X
-                </button>
-              </div>
-            ))}
-          </div>
-        )}
-
-        <label className="expense-write-label">금액</label>
-        {expense.amounts.map((amountItem, index) => (
-          <div className="expense-write-amount-container" key={index}>
-            <input
-              className="expense-write-input"
-              name="amount"
-              type="text"
-              value={amountItem.amount || ""}
-              onChange={(e) => handleChange(e, index)}
-              required
-            />
-            {expense.amounts.length > 1 && (
-              <button
-                className="expense-write-remove-button"
-                type="button"
-                onClick={() => handleRemoveAmount(index)}
+              <p className="fs_lg">사진</p>
+              <label
+                className="btn btn-md btn-pm fs_md mb_md txt-a-c "
+                htmlFor="fileInput"
               >
-                삭제
+                +
+              </label>
+              <input
+                className="display_none"
+                type="file"
+                multiple
+                onChange={handleFileChange}
+                id="fileInput"
+                accept="image/*"
+              />
+              {previewImages && previewImages.length > 0 && (
+                <div className="">
+                  {previewImages.map((src, index) => (
+                    <div key={index} className="item">
+                      <img
+                        className="item"
+                        src={src}
+                        alt={`미리보기 ${index + 1}`}
+                      />
+                      <button
+                        className=""
+                        type="button"
+                        onClick={() => handleRemoveImage(index)}
+                      >
+                        X
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              <p className="fs_lg">금액</p>
+              {expense.amounts.map((amountItem, index) => (
+                <div className="flex " key={index}>
+                  <input
+                    className="input input-txt fs_md mb_md"
+                    name="amount"
+                    type="text"
+                    value={amountItem.amount || ""}
+                    onChange={(e) => handleChange(e, index)}
+                    required
+                  />
+                  {expense.amounts.length > 1 && (
+                    <button
+                      className="btn btn-sm btn-p05 fs_sm mb_md ml_md "
+                      type="button"
+                      onClick={() => handleRemoveAmount(index)}
+                    >
+                      삭제
+                    </button>
+                  )}
+                </div>
+              ))}
+              <button
+                className="btn btn-md btn-pm fs_md mb_md"
+                type="button"
+                onClick={handleAddAmount}
+              >
+                금액란 추가
               </button>
-            )}
-          </div>
-        ))}
-        <button
-          className="expense-write-add-button"
-          type="button"
-          onClick={handleAddAmount}
-        >
-          금액 추가
-        </button>
 
-        <label className="expense-write-label">전체 합계</label>
-        <input
-          className="expense-write-input"
-          name="totalAmount"
-          type="text"
-          value={formatAmount(String(calculateTotalAmount()))}
-          disabled
-        />
+              <p className="fs_lg">전체 금액</p>
+              <input
+                className="input fs_md mb_md"
+                name="totalAmount"
+                type="text"
+                value={formatAmount(String(calculateTotalAmount()))}
+                disabled
+              />
 
-        <label className="expense-write-label">내용</label>
-        <input
-          className="expense-write-input"
-          name="content"
-          value={expense.content}
-          onChange={(e) => setExpense({ ...expense, content: e.target.value })}
-          required
-        />
+              <p className="fs_lg">날짜</p>
+              <input
+                className="input input-txt fs_md mb_md"
+                type="date"
+                value={expense.date}
+                onChange={handleChangeDate}
+                required
+              />
 
-        <button className="expense-write-submit-button" type="submit">
-          작성
-        </button>
-      </form>
-    </div>
+              <p className="fs_lg">유형</p>
+              <div className="flex space-around">
+                {["식비", "교통", "숙박", "경조사", "기타"].map((category) => (
+                  <button
+                    key={category}
+                    type="button"
+                    className={`expense-button mb_md ${
+                      expense.category === category ? "selected" : ""
+                    }`}
+                    onClick={(e) => handleCategoryChange(category, e)}
+                  >
+                    {category}
+                  </button>
+                ))}
+              </div>
+
+              <p className="fs_lg">내용</p>
+              <input
+                className="input input-txt fs_md mb_md"
+                name="content"
+                value={expense.content}
+                onChange={(e) =>
+                  setExpense({ ...expense, content: e.target.value })
+                }
+                required
+              />
+            </div>
+            <button
+              className="btn btn-max btn-pm fs_lg mb_md mt_md"
+              type="submit"
+            >
+              작성
+            </button>
+          </form>
+        </section>
+      </main>
+    </>
   );
 };
 

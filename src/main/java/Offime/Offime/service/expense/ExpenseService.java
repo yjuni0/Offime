@@ -45,6 +45,12 @@ public class ExpenseService {
         return pendingExpenses.size();
     }
 
+    public long getRejectedExpensesCount() {
+        List<Expense> rejectedExpenses = expenseRepository.findByStatus(ExpenseStatus.REJECTED);
+        return rejectedExpenses.size();
+    }
+
+
     // 게시물 검색
     public List<Expense> searchExpenses(String searchTerm) {
         return expenseRepository.searchExpenses(searchTerm);

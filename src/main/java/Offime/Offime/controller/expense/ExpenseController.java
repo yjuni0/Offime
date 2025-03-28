@@ -243,6 +243,25 @@ public class ExpenseController {
         }
     }
 
+    @GetMapping("/rejected/count")
+    public ResponseEntity<?> getRejectedExpensesCount(HttpServletRequest request) {
+        String token = request.getHeader("Authorization");
+        if (token == null || !token.startsWith("Bearer ")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("인증 토큰이 없습니다.");
+        }
+        token = token.substring(7);
+
+        try {
+            long count = expenseService.getRejectedExpensesCount();
+            Map<String, Long> response = new HashMap<>();
+            response.put("count", count);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유효하지 않은 토큰입니다.");
+        }
+    }
+
+
     // Entity -> Response DTO 변환
     private ExpenseResponseDTO convertToResponseDTO(Expense expense) {
         ExpenseResponseDTO responseDTO = new ExpenseResponseDTO();

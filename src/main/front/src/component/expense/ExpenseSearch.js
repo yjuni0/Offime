@@ -11,15 +11,16 @@ const ExpenseSearch = ({ onSearch }) => {
   };
 
   return (
-    <div className="expense-search">
+    <div className="">
       <form onSubmit={handleSubmit}>
         <input
           type="text"
           placeholder="검색어"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
+          className="input input-txt fs_md mb_md"
         />
-        <button type="submit">검색</button>
+        <button className="display_none">검색</button>
       </form>
     </div>
   );

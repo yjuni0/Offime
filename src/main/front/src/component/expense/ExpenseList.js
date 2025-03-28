@@ -15,6 +15,14 @@ const ExpenseList = () => {
   const [hasNoResults, setHasNoResults] = useState(false); // 검색 결과 없음 상태
   const navigate = useNavigate();
 
+  const formatAmount = (amount) => {
+    if (!amount) return "";
+    const amountString = String(amount); // 숫자를 문자열로 변환
+    return amountString
+      .replace(/\D/g, "")
+      .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  };
+
   useEffect(() => {
     const storedToken = localStorage.getItem("access_token");
     if (storedToken) {
@@ -119,54 +127,69 @@ const ExpenseList = () => {
   const getStatusLabel = (status) => {
     switch (status) {
       case "PENDING":
-        return <span className="status pending">대기중</span>;
+        return (
+          <span className="btn btn-sm btn-pm fs_sm txt-a-c mb_xsm">
+            대기 중
+          </span>
+        );
       case "APPROVED":
-        return <span className="status accepted">수락됨</span>;
+        return (
+          <span className="btn btn-sm btn-p04 fs_sm txt-a-c mb_xsm">
+            승인 됨
+          </span>
+        );
       case "REJECTED":
-        return <span className="status rejected">거절됨</span>;
+        return (
+          <span className="btn btn-sm btn-e fs_sm txt-a-c mb_xsm">거절 됨</span>
+        );
       default:
-        return <span className="status unknown">알 수 없음</span>;
+        return (
+          <span className="btn btn-sm btn-pk fs_sm txt-a-c mb_xsm">
+            알 수 없음
+          </span>
+        );
     }
   };
   return (
     <>
       <BackPage />
-      <main id="main" className="경비관리 목록">
-        <section className="sec bg_n20">
+      <main id="main" className="경비관리 수정">
+        <section className="sec ">
           <div className="inner">
-            <h4>경비 관리</h4>
-            <ExpenseSearch onSearch={handleSearch} />
-            {isLoading && <p>로딩 중...</p>} {/* 로딩 상태 표시 */}
-            {error && <p className="error">{error}</p>} {/* 에러 메시지 표시 */}
-            <ul className="item">
+            <div className=" bg_n0 item bg_pm mt_md">
+              <h3>경비 관리</h3>
+              <ExpenseSearch onSearch={handleSearch} />
+              {isLoading && <p>로딩 중...</p>} {/* 로딩 상태 표시 */}
+              {error && <p className="error">{error}</p>}{" "}
+            </div>
+            {/* 에러 메시지 표시 */}
+            <ul className="">
               {hasNoResults ? (
                 <p>검색된 결과가 없습니다.</p> // 검색 결과가 없을 때
               ) : filteredExpenses && filteredExpenses.length > 0 ? (
                 filteredExpenses.map((expense) => (
                   <li
-                    className="mb_md expense-list-form bg_n0"
+                    className=" bg_n0 item mt_md"
                     key={expense.id}
                     onClick={() => handleTitleClick(expense.id)}
                   >
-                    <div className="flex space-between mb_md expense-list-box">
-                      <p className="fs_md m_sm">
-                        {expense.username || localStorage.getItem("username")}
-                      </p>
-                      <p className="fs_xsm m_sm"> {expense.expenseDate}</p>
-                    </div>
-
-                    <h3>{expense.title}</h3>
-
-                    <div className="flex space-between pb_md">
-                      <p className="fs_sm tc-pk"> {expense.category}</p>
-                      <p className="fs_md">{expense.amount} 원</p>
-                    </div>
-                    <p className="fs_md">{expense.content}</p>
-
                     {/* 상태 표시 추가 */}
-                    <div className="status-container">
+                    <div className="space-between flex">
                       {getStatusLabel(expense.status)}{" "}
                       {/* 상태에 따라 다르게 표시 */}
+                      <p className=""> {expense.expenseDate}</p>
+                    </div>
+
+                    <h4>{expense.title}</h4>
+
+                    <p className="pl_xsm ">{expense.content}</p>
+
+                    {/* <p className="">
+                      {expense.username || localStorage.getItem("username")}
+                    </p> */}
+                    <div className="flex space-between">
+                      <p className="pt_md "> {expense.category}</p>
+                      <p className="fs_lg">{formatAmount(expense.amount)} 원</p>
                     </div>
                   </li>
                 ))
@@ -175,7 +198,7 @@ const ExpenseList = () => {
               )}
             </ul>
             <button
-              className="expense-list-add-button bg_pm tc-w fs_md p_md btn"
+              className="btn btn-max btn-pm fs_lg mb_md mt_md"
               onClick={() => navigate("/ExpenseWrite")}
             >
               +
