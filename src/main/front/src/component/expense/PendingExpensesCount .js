@@ -75,9 +75,9 @@ const PendingExpensesCount = () => {
         onClick={handleContainerClick} // 클릭 이벤트 핸들러 추가
         style={{ cursor: "pointer" }} // 커서 스타일 변경
       >
-        <h3 className="ml_xlg">경비 관리</h3>
-        <h3 className="tc-pm ml_xlg  ">{pendingCount}</h3>
-        <h3 className="tc-p5 ml_xlg">{rejectedCount}</h3>
+        <h3 className="ml_xlg mr_lg">경비 관리</h3>
+        <h3 className="tc-pm ml_xlg pl_xlg ">{pendingCount}</h3>
+        <h3 className="tc-p5 ml_md">{rejectedCount}</h3>
       </div>
     </>
   );
