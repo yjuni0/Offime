@@ -55,21 +55,24 @@ const ExpenseList = () => {
           const expenseData = await expenseResponse.json();
 
           if (Array.isArray(expenseData)) {
-            setExpenses(expenseData); // 데이터가 배열이라면 상태 업데이트
-            setFilteredExpenses(expenseData); // 필터링된 목록도 초기화
+            setExpenses(expenseData);
+            setFilteredExpenses(expenseData);
           } else {
-            console.error("Invalid expenses data format", expenseData);
-            setError("Invalid data format.");
+            console.error("잘못된 지출 데이터 형식", expenseData);
+            setError("잘못된 데이터 형식입니다.");
           }
         } else {
-          console.error("Error fetching expenses:", expenseResponse.status);
-          setError("Error fetching expenses.");
+          console.error(
+            "지출 데이터를 가져오는 중 오류 발생:",
+            expenseResponse.status
+          );
+          setError("지출 데이터를 가져오는 중 오류가 발생했습니다.");
         }
       } catch (error) {
-        console.error("Error fetching data:", error);
-        setError("An error occurred while fetching data.");
+        console.error("데이터 가져오기 중 오류 발생:", error);
+        setError("데이터를 가져오는 중 오류가 발생했습니다.");
       } finally {
-        setIsLoading(false); // 로딩 끝
+        setIsLoading(false);
       }
     };
 
@@ -194,7 +197,7 @@ const ExpenseList = () => {
                   </li>
                 ))
               ) : (
-                <p>등록된 게시글이 없습니다.</p> // 등록된 경비가 없을 때
+                <p className="txt-a-c m_lg fs_lg">등록된 게시글이 없습니다.</p> // 등록된 경비가 없을 때
               )}
             </ul>
             <button
