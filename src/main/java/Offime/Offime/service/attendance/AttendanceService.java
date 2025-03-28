@@ -124,7 +124,6 @@ public class AttendanceService {
         return 0;
     }
 
-
     private int leaveEarly(LocalDateTime clockOutTime) {
         LocalTime Time = clockOutTime.toLocalTime();
         if (Time.isBefore(COMPANY_END_TIME)) {

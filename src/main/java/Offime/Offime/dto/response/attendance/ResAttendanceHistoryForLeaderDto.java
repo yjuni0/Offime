@@ -43,6 +43,7 @@ public class ResAttendanceHistoryForLeaderDto {
         return ResAttendanceHistoryForLeaderDto.builder()
                 .clockInCount((int) eventRecord.stream()
                         .filter(r -> r.getEventType() == EventType.출근).count())
+//                .beforeClockInCount()
 
                 .lateCount((int) eventRecord.stream()
                         .filter(r -> r.getEventType() == EventType.출근)
