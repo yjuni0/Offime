@@ -13,7 +13,7 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post("/login", {
+      const response = await axios.post("http://localhost:8080/login", {
         email,
         password,
       });
@@ -31,7 +31,7 @@ const Login = () => {
       localStorage.setItem("role", role); // role 저장
 
       setError(""); // 에러 초기화
-      navigate("/list"); // 로그인 성공 후 이동
+      navigate("/"); // 로그인 성공 후 이동
     } catch (err) {
       console.log("로그인 실패:", err);
       setError("Invalid credentials!");

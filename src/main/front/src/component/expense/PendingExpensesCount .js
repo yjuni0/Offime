@@ -37,12 +37,8 @@ const PendingExpensesCount = () => {
     fetchPendingCount();
   }, [navigate]);
 
-  if (error) {
-    return <div>{error}</div>;
-  }
-
   const handleContainerClick = () => {
-    navigate("/list"); // 클릭 시 list 페이지로 이동
+    navigate("/expenseList"); // 클릭 시 list 페이지로 이동
   };
 
   return (
@@ -52,7 +48,7 @@ const PendingExpensesCount = () => {
         onClick={handleContainerClick} // 클릭 이벤트 핸들러 추가
         style={{ cursor: "pointer" }} // 커서 스타일 변경
       >
-        <h2>경비 관리 대기중인 수</h2>
+        <h2>경비 관리</h2>
         <p className="pending-count">{pendingCount} 건</p>
       </div>
     </>

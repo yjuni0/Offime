@@ -20,7 +20,7 @@ const Signup = () => {
     setSuccess("");
 
     try {
-      const response = await axios.post("http://localhost:3000/signUp", {
+      const response = await axios.post("http://localhost:8080/signUp", {
         email,
         password,
         name,

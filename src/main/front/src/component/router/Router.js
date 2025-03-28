@@ -10,6 +10,12 @@ import ReportReplies from "../reports/replies/ReportReplies";
 import TemplateList from "../reports/templates/TemplateList";
 import ReportUpdate from "../reports/reports/update/ReportUpdate";
 import Schedule from "../schedule/Schedule";
+import Login from "../login/Login";
+import Signup from "../login/Signup";
+import ExpenseDetail from "../expense/ExpenseDetail";
+import ExpenseList from "../expense/ExpenseList";
+import ExpenseWrite from "../expense/ExpenseWrite";
+import ExpenseUpdate from "../expense/ExpenseUpdate";
 
 function Router() {
   return (
@@ -27,6 +33,14 @@ function Router() {
       <Route path="/schedule" element={<Schedule />} />
       <Route path="/templates/list" element={<TemplateList />} />
       <Route path="/reports/update/:reportId" element={<ReportUpdate />} />
+
+      <Route path="/login" element={<Login />} />
+      <Route path="/signup" element={<Signup />} />
+
+      <Route path="/expenseDetail/:id" element={<ExpenseDetail />} />
+      <Route path="/expenseList" element={<ExpenseList />} />
+      <Route path="/expenseWrite" element={<ExpenseWrite />} />
+      <Route path="/expenseUpdate/:id" element={<ExpenseUpdate />} />
     </Routes>
   );
 }
