@@ -15,17 +15,18 @@ import java.util.List;
 
 @Getter
 @NoArgsConstructor
-public class MemberTokenDto implements UserDetails  {
+public class MemberTokenDto {
     private Long id;
     private String name;
     private String email;
     private Role role;
     private Team team;
     private String createdDate;
+    private boolean enable;
     private String token;
 
     @Builder
-    public MemberTokenDto(Long id, String name, String email, Role role, Team team, String createdDate, String token) {
+    public MemberTokenDto(Long id, String name, String email, Role role, Team team, String createdDate, String token, boolean enable) {
 
         this.id = id;
         this.name = name;
@@ -34,6 +35,7 @@ public class MemberTokenDto implements UserDetails  {
         this.team = team;
         this.createdDate = createdDate;
         this.token = token;
+        this.enable = enable;
     }
 
     public static MemberTokenDto fromEntity(Member member, String token){
@@ -44,39 +46,9 @@ public class MemberTokenDto implements UserDetails  {
                 .role(member.getRole())
                 .team(member.getTeam())
                 .createdDate(member.getCreatedDate())
+                .enable(member.isEnable())
                 .token(token)
                 .build();
     }
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
-    }
-
-    @Override
-    public String getPassword() {
-        return "";
-    }
-
-    @Override
-    public String getUsername() {
-        return "";
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return UserDetails.super.isAccountNonExpired();
-    }
-    @Override
-    public boolean isAccountNonLocked() {
-        return UserDetails.super.isAccountNonLocked();
-    }
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return UserDetails.super.isCredentialsNonExpired();
-    }
-    @Override
-    public boolean isEnabled() {
-        return UserDetails.super.isEnabled();
-    }
 }

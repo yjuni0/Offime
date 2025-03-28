@@ -9,7 +9,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -18,11 +20,10 @@ public class AdminController {
 
     private final MemberService memberService;
 
-    @GetMapping("/member")
-    public ResponseEntity<Page<MemberResponseDto>> getAllMembers(
-            @PageableDefault(size= 10, sort="id", direction = Sort.Direction.ASC) Pageable pageable) {
-        System.out.println("Received sort: " + pageable.getSort());
-        Page<MemberResponseDto> listDto = memberService.getAllMembers(pageable);
-        return ResponseEntity.status(HttpStatus.OK).body(listDto);
+    // 직원 삭제
+    @DeleteMapping("/delete/{memberId}")
+    public ResponseEntity<String> deleteMember(@PathVariable Long memberId) {
+        memberService.deleteMember(memberId);
+        return ResponseEntity.status(HttpStatus.OK).body("유저 삭제 성공");
     }
 }

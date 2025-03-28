@@ -124,7 +124,6 @@ public class AttendanceService {
         return 0;
     }
 
-
     private int leaveEarly(LocalDateTime clockOutTime) {
         LocalTime Time = clockOutTime.toLocalTime();
         if (Time.isBefore(COMPANY_END_TIME)) {
@@ -133,6 +132,7 @@ public class AttendanceService {
         }
         return 0;
     }
+
     private boolean isInDistance(double latitude, double longitude) {
         double distance = calculateDistance(COMPANY_LATITUDE, COMPANY_LONGITUDE, latitude, longitude);
         return distance <= MAX_DISTANCE;
