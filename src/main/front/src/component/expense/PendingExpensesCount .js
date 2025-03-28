@@ -15,7 +15,7 @@ const PendingExpensesCount = () => {
       try {
         const token = localStorage.getItem("access_token");
         if (!token) {
-          navigate("/login");
+          navigate("/");
           return;
         }
 
