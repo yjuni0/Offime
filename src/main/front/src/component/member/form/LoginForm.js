@@ -37,7 +37,7 @@ function LoginForm() {
 
                 setAuth(response.data.email);
                 setHeaders({ Authorization: `Bearer ${response.data.token}` });
-                navigate('/main');
+                navigate('/pageTest');
             } else {
                 alert('로그인 실패: ' + response.data.message);
             }
@@ -61,7 +61,7 @@ function LoginForm() {
 
     useEffect(() => {
         if (auth) {
-            navigate('/main');
+            navigate('/pageTest');
         }
     }, []);
 

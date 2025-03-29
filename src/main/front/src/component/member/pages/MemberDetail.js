@@ -5,8 +5,6 @@ import { useParams } from 'react-router-dom';
 function MemberDetail() {
     const { id } = useParams();
     const [member, setMember] = useState('');
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
 
     const fetchMemberData = async () => {
         try {
@@ -27,11 +25,18 @@ function MemberDetail() {
     }, []);
 
     return (
-                                <p>이름{member.name}</p>
-                                <p>이메일{member.email}</p>
-                                <p>전화{member.phone}</p>
-                                <p>직책{member.role}</p>
-                                <p>팀{member.team}</p>
+        <section className="sec">
+            <div className="inner">
+                <div className="item">
+                    {/* 렌더링 확인용 */}
+                    <p>이름{member.name}</p>
+                    <p>이메일{member.email}</p>
+                    <p>전화{member.phone}</p>
+                    <p>직책{member.role}</p>
+                    <p>팀{member.team}</p>
+                </div>
+            </div>
+        </section>
     );
 }
 export default MemberDetail;

@@ -3,6 +3,7 @@ package Offime.Offime.service.member;
 import Offime.Offime.dto.request.member.MemberLoginDto;
 import Offime.Offime.dto.request.member.MemberRegisterDto;
 import Offime.Offime.dto.response.member.MemberListDto;
+import Offime.Offime.dto.response.member.MemberPendingDto;
 import Offime.Offime.dto.response.member.MemberResponseDto;
 import Offime.Offime.dto.response.member.MemberTokenDto;
 import Offime.Offime.entity.member.Member;
@@ -24,6 +25,11 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -60,11 +66,10 @@ public class MemberService {
         Member member = memberRepository.findByEmail(memberLoginDto.getEmail()).orElseThrow(
                 () -> new ResourceNotFoundException("Member", "Member Email", memberLoginDto.getEmail()));
         authenticate(memberLoginDto.getEmail(), memberLoginDto.getPassword());
-
         if (member.getSignUpStatus() == SignUpStatus.PENDING) {
             throw new UnauthorizedAccessException("가입 승인 대기중입니다.");
-        }
 
+        }
         if (!member.isEnable()) {
             throw new DisabledException("비활성화 처리된 계정입니다.");
         }
@@ -97,6 +102,9 @@ public class MemberService {
     // 탈퇴
     public void userDisabled(Member member) {
         member.setEnable(false);
+        if (member.getSignUpStatus() == SignUpStatus.ACTIVE) {
+            member.setSignUpStatus(null);
+        }
         memberRepository.save(member);
     }
 
@@ -110,5 +118,25 @@ public class MemberService {
         Member member = memberRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("직원 정보를 찾을 수 없습니다."));
         return MemberResponseDto.fromEntity(member);
+    }
+
+    // 가입 신청자 조회
+    public List<MemberPendingDto> getPendingMembers() {
+        List<Member> members = memberRepository.findBySignUpStatus(SignUpStatus.PENDING);
+
+        if (members.isEmpty()) {
+            return new ArrayList<>();
+        }
+
+        return members.stream()
+                .map(MemberPendingDto::fromEntity)
+                .collect(Collectors.toList());
+    }
+
+    public void updateSignUpStatusToActive(String email) {
+        Member member = memberRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("회원", "이메일", email));
+        member.setSignUpStatus(SignUpStatus.ACTIVE);
+        memberRepository.save(member);
     }
 }

@@ -2,8 +2,14 @@ import SignUpForm from '../form/SignUpForm';
 
 function SignUp() {
     return (
-                                <h3>회원가입</h3>
-                                <SignUpForm />
+        <section className="sec">
+            <div className="inner">
+                <div className="item">
+                    <h3>회원가입</h3>
+                    <SignUpForm />
+                </div>
+            </div>
+        </section>
     );
 }
 
