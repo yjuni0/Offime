@@ -68,18 +68,16 @@ public class MemberService {
         authenticate(memberLoginDto.getEmail(), memberLoginDto.getPassword());
         if (member.getSignUpStatus() == SignUpStatus.PENDING) {
             throw new UnauthorizedAccessException("가입 승인 대기중입니다.");
-
         }
         if (!member.isEnable()) {
-            throw new DisabledException("비활성화 처리된 계정입니다.");
+            throw new DisabledException("비활성화 된 계정입니다.");
         }
-
         String password = memberLoginDto.getPassword();
         if (passwordEncoder.matches(password, member.getPassword())) {
             String token = jwtTokenUtil.generateToken(member);
             return MemberTokenDto.fromEntity(member, token);
         } else {
-            throw new IllegalArgumentException("잘못된 비밀번호 입니다.");
+            throw new IllegalArgumentException("잘못된 비밀번호입니다.");
         }
 
     }
