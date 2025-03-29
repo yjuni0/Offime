@@ -42,20 +42,15 @@ function LoginForm() {
                 alert('로그인 실패: ' + response.data.message);
             }
         } catch (error) {
-            if (error.response?.status === 401) {
-                alert('비활성화 된 직원입니다.');
-            } else if (
-                error.response.data.message == '가입 승인 대기중입니다.'
-            ) {
-                alert('가입 승인 대기중입니다.');
+            // console.error('로그인 오류:', error);
+            // console.log('에러 응답 데이터:', error.response?.data);
+            if (error.response) {
+                const errorMessage =
+                    error.response.data?.message || '잘못된 비밀번호입니다.';
+                alert(errorMessage);
             } else {
-                alert(
-                    error.response?.data?.error ||
-                        error.response?.data ||
-                        '로그인 실패'
-                );
+                alert('서버 오류 발생: 관리자에게 문의하세요.');
             }
-            console.error('로그인 오류:', error);
         }
     };
 

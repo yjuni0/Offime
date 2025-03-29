@@ -13,7 +13,7 @@ const SignUpConfirm = () => {
             setPendingMembers(response.data);
         } catch (error) {
             setError('가입 신청자를 불러오는 데 오류가 발생했습니다.');
-            console.error(error);
+            // console.error(error);
         }
     };
 
@@ -25,7 +25,7 @@ const SignUpConfirm = () => {
             fetchPendingMembers();
         } catch (error) {
             setError('상태 업데이트에 오류가 발생했습니다.');
-            console.error(error);
+            // console.error(error);
         }
     };
 

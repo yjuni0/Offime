@@ -32,7 +32,7 @@ function SignUpForm() {
             }
         } catch (error) {
             alert('서버와의 연결 오류');
-            console.error(error);
+            // console.error(error);
         }
     };
 
