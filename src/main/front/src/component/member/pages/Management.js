@@ -10,7 +10,6 @@ function Management() {
     const fetchMember = async () => {
         try {
             const response = await axios.get('http://localhost:8080/member');
-            console.log('멤버 데이터:', response.data);
             setMember(
                 Array.isArray(response.data.content)
                     ? response.data.content
@@ -37,33 +36,36 @@ function Management() {
     };
 
     return (
-                                <input
-                                    type="text"
-                                    className="input-txt input-max"
-                                    placeholder="직원 검색 (이름)"
-                                    value={search}
-                                    onChange={(e) => setSearch(e.target.value)}
-                                />
-                                <table>
-                                    <tbody>
-                                        {filteredMembers.map((member) => (
-                                            <tr key={member.id}>
-                                                <td
-                                                    className="btn btn-pm-f btn-max"
-                                                    onClick={() =>
-                                                        handleMemberClick(
-                                                            member.id
-                                                        )
-                                                    } // 수정된 부분
-                                                >
-                                                    {member.name}
-                                                    {member.team || '미배정'}
-                                                </td>
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
-
+        <section className="sec">
+            <div className="inner">
+                <div className="item">
+                    <input
+                        type="text"
+                        className="input-txt input-max"
+                        placeholder="직원 검색 (이름)"
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
+                    />
+                    <table>
+                        <tbody>
+                            {filteredMembers.map((member) => (
+                                <tr key={member.id}>
+                                    <td
+                                        className="btn btn-pm-f btn-max"
+                                        onClick={() =>
+                                            handleMemberClick(member.id)
+                                        }
+                                    >
+                                        {member.name}
+                                        {member.team || '미배정'}
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
     );
 }
 
