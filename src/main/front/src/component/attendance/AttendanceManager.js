@@ -34,17 +34,17 @@ function AttendanceManager() {
 
                         {/* 출근과 미출근 */}
                         <div className="attendance-row mt_md">
-                            <button className="attendance-box bg_wt" onClick={() => handleButtonClick('/working')}>
+                            <button className="attendance-box bg_wt" onClick={() => handleButtonClick('/clockIn')}>
                                 <div className="tc-pm">출근</div>
                                 <div className="right-square tc-pm">0</div>
                             </button>
-                            <button className="attendance-box bg_wt" onClick={() => handleButtonClick('/not-working')}>
+                            <button className="attendance-box bg_wt" onClick={() => handleButtonClick('/absent')}>
                                 <div className="tc-e">미출근</div>
                                 <div className="right-square tc-e">0</div>
                             </button>
                         </div>
 
-                        <button className="attendance-box mt_md bg_wt" onClick={() => handleButtonClick('/before-work')}>
+                        <button className="attendance-box mt_md bg_wt" onClick={() => handleButtonClick('/beforeClockIn')}>
                             <div className=" tc-b">출근 전</div>
                             <div className="right-square tc-b">0</div>
                         </button>

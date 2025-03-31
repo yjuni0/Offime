@@ -28,13 +28,13 @@ import MemberDetail from '../member/pages/MemberDetail';
 
 import AttendanceBanner from '../attendance/AttendanceBanner';
 import AttendanceManager from '../attendance/AttendanceManager';
-import AttendanceRateForLeader from '../attendance/AttendanceRateForLeader';
-import ClockInForLeader from '../attendance/pages/employee/ClockInForLeader';
-import AbsentForLeader from '../attendance/pages/employee/AbsentForLeader';
-import BeforeClockInForLeader from '../attendance/pages/employee/BeforeClockInForLeader';
-import WorkStatusForLeader from '../attendance/pages/employee/WorkStatusForLeader';
-import LateForLeader from '../attendance/pages/employee/LateForLeader';
-import LeaveEarlyForLeader from '../attendance/pages/employee/LeaveEarlyForLeader';
+// import AttendanceRateForLeader from '../attendance/AttendanceRateForLeader';
+// import ClockInForLeader from '../attendance/pages/employee/ClockInForLeader';
+// import AbsentForLeader from '../attendance/pages/employee/AbsentForLeader';
+// import BeforeClockInForLeader from '../attendance/pages/employee/BeforeClockInForLeader';
+// import WorkStatusForLeader from '../attendance/pages/employee/WorkStatusForLeader';
+// import LateForLeader from '../attendance/pages/employee/LateForLeader';
+// import LeaveEarlyForLeader from '../attendance/pages/employee/LeaveEarlyForLeader';
 
 function Router() {
     return (
@@ -73,13 +73,13 @@ function Router() {
 
             <Route path="/attendanceBanner" element={<AttendanceBanner />} />
             <Route path="/attendanceManager" element={<AttendanceManager />} />
-            <Route path="/attendanceManager/attendanceRateForLeader" element={<AttendanceRateForLeader />} />
+            {/* <Route path="/attendanceManager/attendanceRateForLeader" element={<AttendanceRateForLeader />} />
             <Route path="/attendanceManager/clockInForLeader" element={<ClockInForLeader />} />
             <Route path="/attendanceManager/beforeClockInForLeader" element={<BeforeClockInForLeader />} />
             <Route path="/attendanceManager/absentForLeader" element={<AbsentForLeader />} />
             <Route path="/attendanceManager/workStatusForLeader" element={<WorkStatusForLeader />} />
             <Route path="/attendanceManager/lateForLeader" element={<LateForLeader />} />
-            <Route path="/attendanceManager/leaveEarlyForLeader" element={<LeaveEarlyForLeader />} />
+            <Route path="/attendanceManager/leaveEarlyForLeader" element={<LeaveEarlyForLeader />} /> */}
 
         </Routes>
     );
