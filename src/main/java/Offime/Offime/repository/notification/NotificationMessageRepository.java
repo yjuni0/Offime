@@ -11,4 +11,10 @@ public interface NotificationMessageRepository extends JpaRepository<Notificatio
     boolean existsByMemberId(Long memberId);
 
     List<NotificationMessage> findAllByMemberId(Long memberId);
+
+    List<NotificationMessage> findByStatus(String status);
+
+    List<NotificationMessage> findAllByStatus(String status);
+
+    List<NotificationMessage> findByMemberIdAndStatus(Long memberId, String status);
 }
