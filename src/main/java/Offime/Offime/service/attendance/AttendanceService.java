@@ -35,13 +35,15 @@ public class AttendanceService {
     private static final double EARTH_RADIUS = 6371.0088;       // 지구 평균 반지름(km)
     private static final double COMPANY_LATITUDE = 37.482175;   // 구트 아카데미 위도
     private static final double COMPANY_LONGITUDE = 126.898233; // 구트 아카데미 경도
-    private static final int MAX_DISTANCE = 50;                 // 허용할 최대 거리(m)
+    private static final int MAX_DISTANCE = 1000;                 // 허용할 최대 거리(m)
     private static final LocalTime COMPANY_START_TIME = LocalTime.of(9, 0);
     private static final LocalTime COMPANY_END_TIME = LocalTime.of(18, 0);
 
     @Transactional
     public void clockIn(Member member, ReqClockInDto dto, LocalDateTime now) {
         if (!isInDistance(dto.getLatitude(), dto.getLongitude())) {
+            log.info("clockIn dto.getLatitude() = " + dto.getLatitude());
+            log.info("clockIn dto.getLongitude() = " + dto.getLongitude());
             throw new IllegalArgumentException(" - " + "허용 범위를 벗어났습니다.");
         }
         Member currentMember = memberRepository.findByEmail(member.getEmail()).orElseThrow(

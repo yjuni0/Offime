@@ -1,0 +1,79 @@
+
+.attendance-row {
+    display: flex;
+    gap: 1rem;
+}
+
+.attendance-box {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+    position: relative;
+    border-radius: var(--round-md);
+    color: var(--natural_0);
+}
+
+.left-square {
+    position: absolute;
+    left: 0.5rem;
+}
+
+.right-square {
+    position: static;
+    font-size: var(--font_md);
+    margin-top: 0.5rem;
+}
+
+.bg_wt {
+    background-color: var(--natural_0);
+}
+
+
+
+.mt_md {
+    margin-top: var(--space_md);
+}
+
+
+/* 부모 컨테이너 */
+.work-status {
+    display: flex;
+    flex-direction: column;
+    /* 세로 정렬 */
+    gap: 0.5rem;
+    /* 각 줄 간격 */
+    margin-top: var(--space_md);
+    /* 상단 여백 */
+}
+
+/* 각 상태 줄 */
+.status-row {
+    display: flex;
+    justify-content: space-between;
+    /* 상태와 인원수를 좌우로 배치 */
+    align-items: center;
+    /* 세로 중앙 정렬 */
+    padding: 0.5rem;
+    background-color: var(--natural_10);
+    /* 배경색 설정 */
+    border-radius: var(--round-sm);
+    /* 둥근 모서리 */
+}
+
+/* 상태 텍스트 스타일 */
+.status-label {
+    font-size: var(--font_md);
+    /* 텍스트 크기 */
+    color: var(--natural_80);
+    /* 텍스트 색상 */
+}
+
+/* 인원수 스타일 */
+.status-count {
+    font-size: var(--font_md);
+    /* 텍스트 크기 */
+    color: var(--primary_m);
+    /* 인원수 색상 */
+}
