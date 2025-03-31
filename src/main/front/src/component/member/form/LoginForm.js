@@ -10,7 +10,7 @@ function LoginForm() {
     const navigate = useNavigate();
 
     const { auth, setAuth } = useContext(AuthContext);
-    const { headers, setHeaders } = useContext(HttpHeadersContext);
+    const { setHeaders } = useContext(HttpHeadersContext);
 
     const login = async (e) => {
         e.preventDefault();
