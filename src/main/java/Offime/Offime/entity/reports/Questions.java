@@ -17,7 +17,7 @@ public class Questions {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long ID;
+    private Long Id;
 
     @ManyToOne
     @JoinColumn(name = "TEMPLATE_ID", nullable = false)
@@ -35,4 +35,7 @@ public class Questions {
 
     @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Responses> responses = new ArrayList<>();
+
+    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Options> options = new ArrayList<>();
 }

@@ -65,10 +65,10 @@ function ReportRead() {
                                     <p>{reportData.title}</p>
                                     <p>{reportData.modifiedAt}</p>
                                     {questionData.map((question) => (
-                                        <div key={question.order}>
+                                        question.type !== "SECTION" ? <div key={question.order}>
                                             <p>질문 : {question.questionText}</p>
-                                            <ReportAnswer questionId={question.id} reportId={reportData.id}/>
-                                        </div>
+                                            <ReportAnswer questionId={question.id} reportId={reportData.id} type={question.type}/>
+                                        </div> : <hr className={"mt_lg mb_lg"}/>
                                     ))}
 
                                     <Link to={`/replies/${reportData.id}`}>댓글보기</Link>

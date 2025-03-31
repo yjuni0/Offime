@@ -33,8 +33,7 @@ function TemplateCreate() {
 
         try {
             const response = await axios.post("http://localhost:8080/templates/create", data);
-            console.log(data);
-            console.log(response);
+            navigate(-1);
         } catch (error) {
             console.error(error);
         }
@@ -69,7 +68,7 @@ function TemplateCreate() {
                     <section className={"sec"}>
                         <div className={"inner"}>
                             <div>
-                                <img onClick={() => navigate("/")}
+                                <img onClick={() => navigate(-1)}
                                      style={{display:"inline", cursor: "pointer", width: "1.5rem"}} src={"/image/backArrow.png"}/>
                                 <h3 style={{display:"inline"}} className={"title mt_md ml_sm"}>새 템플릿 작성</h3>
                             </div>
@@ -91,17 +90,36 @@ function TemplateCreate() {
                                         placeholder={"아이콘"}
                                         value={icon}
                                         onChange={(e) => setIcon(e.target.value)}/>
-                                </div>
+                                    <img src={`/image/reportIcon/icon1.png`} onClick={() => setIcon(1)} style={{width: "1.5rem", height: "1.5rem", cursor: "pointer"}}/>
+                                    <img src={`/image/reportIcon/icon2.png`} onClick={() => setIcon(2)} style={{width: "1.5rem", height: "1.5rem", cursor: "pointer"}}/>
+                                    <img src={`/image/reportIcon/icon3.png`} onClick={() => setIcon(3)} style={{width: "1.5rem", height: "1.5rem", cursor: "pointer"}}/>
+                                    <img src={`/image/reportIcon/icon4.png`} onClick={() => setIcon(4)} style={{width: "1.5rem", height: "1.5rem", cursor: "pointer"}}/>
+                                    <img src={`/image/reportIcon/icon5.png`} onClick={() => setIcon(5)} style={{width: "1.5rem", height: "1.5rem", cursor: "pointer"}}/>
+                                    <img src={`/image/reportIcon/icon6.png`} onClick={() => setIcon(6)} style={{width: "1.5rem", height: "1.5rem", cursor: "pointer"}}/>
+                                    <img src={`/image/reportIcon/icon7.png`} onClick={() => setIcon(7)} style={{width: "1.5rem", height: "1.5rem", cursor: "pointer"}}/>
+                                    <img src={`/image/reportIcon/icon8.png`} onClick={() => setIcon(8)} style={{width: "1.5rem", height: "1.5rem", cursor: "pointer"}}/>
+                                    <img src={`/image/reportIcon/icon9.png`} onClick={() => setIcon(9)} style={{width: "1.5rem", height: "1.5rem", cursor: "pointer"}}/>
+                                    <img src={`/image/reportIcon/icon10.png`} onClick={() => setIcon(10)} style={{width: "1.5rem", height: "1.5rem", cursor: "pointer"}}/>
+                                  </div>
                                 <div>
-                                    <input
+                                <input
                                         className={"input-txt mlr-a mt_sm"}
                                         type={"number"}
                                         id={"color"}
                                         placeholder={"색깔"}
                                         value={color}
                                         onChange={(e) => setColor(e.target.value)}/>
+                                    <div className={"btn btn-pm btn-sm"} onClick={() => setColor(1)}/>
+                                    <div className={"btn btn-pl btn-sm"} onClick={() => setColor(2)}/>
+                                    <div className={"btn btn-pk btn-sm"} onClick={() => setColor(3)}/>
+                                    <div className={"btn btn-p02 btn-sm"} onClick={() => setColor(4)}/>
+                                    <div className={"btn btn-p03 btn-sm"} onClick={() => setColor(5)}/>
+                                    <div className={"btn btn-p04 btn-sm"} onClick={() => setColor(6)}/>
+                                    <div className={"btn btn-p05 btn-sm"} onClick={() => setColor(7)}/>
+                                    <div className={"btn btn-e btn-sm"} onClick={() => setColor(8)}/>
                                 </div>
                                 <div>
+                                    <input className={"input-txt mlr-a mt_sm"} value={accessMemberIdList} placeholder={"접근 가능 멤버"} readOnly/>
                                     <input
                                         className={"input-txt mlr-a mt_sm"}
                                         type={"number"}

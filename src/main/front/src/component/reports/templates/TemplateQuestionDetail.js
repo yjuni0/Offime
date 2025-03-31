@@ -50,32 +50,14 @@ function TemplateQuestionDetail({type ,questionList, setQuestionList, questionIn
                     <button type={"button"} onClick={() => addOption()}>옵션 추가</button>
                 </>
             )
-        case "MULTIPLE_CHOICE" :
-            return (
-                <>
-                    {questionList.optionList.map((option, optionIndex) => (
-                        <div>
-                            <TemplateOptionBlock
-                                key={optionIndex}
-                                value={option}
-                                type={"checkbox"}
-                                onChange={(value) => {
-                                    updateOption(optionIndex, value);
-                                }}
-                            />
-                        </div>
-                    ))}
-                    <button type={"button"} onClick={() => addOption()}>옵션 추가</button>
-                </>
-            )
         case "TIME" :
-            return <input placeholder={"시각"} disabled={true}/>
+            return <input type={"time"} placeholder={"시각"} disabled={true}/>
         case "TIME_RANGE" :
-            return <input placeholder={"시간"} disabled={true}/>
+            return <><input type={"time"} placeholder={"시간"} disabled={true}/> ~ <input type={"time"} placeholder={"시간"} disabled={true}/></>
         case "DATETIME" :
-            return <input placeholder={"날짜"} disabled={true}/>
+            return <input type={"date"} placeholder={"날짜"} disabled={true}/>
         case "DATE_RANGE" :
-            return <input placeholder={"기간"} disabled={true}/>
+            return <><input type={"date"} placeholder={"기간"} disabled={true}/> ~ <input type={"date"} placeholder={"날짜"} disabled={true}/></>;
         case "EMPLOYEE_SELECT" :
             return <input placeholder={"직원"} disabled={true}/>
         case "IMAGE" :
@@ -83,7 +65,7 @@ function TemplateQuestionDetail({type ,questionList, setQuestionList, questionIn
         case "FILE" :
             return <input placeholder={"문서"} disabled={true}/>
         case "SECTION" :
-            return <input placeholder={"섹션"} disabled={true}/>
+            return
     }
 }
 

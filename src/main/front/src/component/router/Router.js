@@ -1,4 +1,4 @@
-import { Route, Routes } from 'react-router-dom';
+import {Route, Routes} from 'react-router-dom';
 
 import Home from '../Home';
 
@@ -29,37 +29,39 @@ import MemberDetail from '../member/pages/MemberDetail';
 function Router() {
     return (
         <Routes>
-            <Route path="/" element={<Login />} />
-            <Route path="/signUp" element={<SignUp />} />
-            <Route path="/pageTest" element={<PageTest />} />
-            <Route path="/member" element={<Management />} />
-            <Route path="/member/:id" element={<MemberDetail />} />
-            <Route path="/member/signUpStatus" element={<SignUpConfirm />} />
+            <Route path="/" element={<Login/>}/>
+            <Route path="/signUp" element={<SignUp/>}/>
+            <Route path="/pageTest" element={<PageTest/>}/>
+            <Route path="/member" element={<Management/>}/>
+            <Route path="/member/:id" element={<MemberDetail/>}/>
+            <Route path="/member/signUpStatus" element={<SignUpConfirm/>}/>
 
-            <Route path="/home" element={<Home />} />
-            <Route path="/templates/create" element={<TemplateCreate />} />
+            <Route path="/home" element={<Home/>}/>
+            <Route path="/templates/create" element={<TemplateCreate/>}/>
             <Route
                 path="/reports/templateList"
-                element={<ReportCreateTemplateSelect />}
+                element={<ReportCreateTemplateSelect/>}
             />
             <Route
                 path="/reports/create/:templateId"
-                element={<ReportCreate />}
+                element={<ReportCreate/>}
             />
-            <Route path="/reports/read/:reportId" element={<ReportRead />} />
-            <Route path="/reports/read" element={<ReportList />} />
-            <Route path="/replies/:reportId" element={<ReportReplies />} />
-            <Route path="/schedule" element={<Schedule />} />
-            <Route path="/templates/list" element={<TemplateList />} />
+            <Route path="/reports/read/:reportId" element={<ReportRead/>}/>
+            <Route path="/reports/read" element={<ReportList/>}/>
+            <Route path="/replies/:reportId" element={<ReportReplies/>}/>
+            <Route path="/schedule" element={<Schedule/>}/>
+            <Route path="/templates/list" element={<TemplateList/>}/>
             <Route
                 path="/reports/update/:reportId"
-                element={<ReportUpdate />}
+                element={<ReportUpdate/>}
             />
+            <Route path="/expenseDetail/:id" element={<ExpenseDetail/>}/>
+            <Route path="/expenseList" element={<ExpenseList/>}/>
+            <Route path="/expenseWrite" element={<ExpenseWrite/>}/>
+            <Route path="/expenseUpdate/:id" element={<ExpenseUpdate/>}/>
 
-            <Route path="/expenseDetail/:id" element={<ExpenseDetail />} />
-            <Route path="/expenseList" element={<ExpenseList />} />
-            <Route path="/expenseWrite" element={<ExpenseWrite />} />
-            <Route path="/expenseUpdate/:id" element={<ExpenseUpdate />} />
+                {/*리포트 테스트용*/}
+            <Route path="/reports" element={<ForCheck/>}/>
         </Routes>
     );
 }

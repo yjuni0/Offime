@@ -54,6 +54,10 @@ public class ReportsService {
 
             Responses responses = new Responses();
             responses.setReport(reports);
+            responses.setStartTime(responseData.getStartTime());
+            responses.setEndTime(responseData.getEndTime());
+            responses.setStartDate(responseData.getStartDate());
+            responses.setEndDate(responseData.getEndDate());
             responses.setAnswerText(responseData.getAnswerText());
 
             Questions question = questionsRepository.findById(responseData.getQuestionId()).orElseThrow(() -> new NoSuchElementException());
@@ -88,6 +92,23 @@ public class ReportsService {
 
         reports.setTitle(reportsReqDto.getTitle());
 
+        reportsReqDto.getResponseData().forEach(responseData -> {
+
+                    responsesRepository.findByQuestionIdAndReportId(responseData.getQuestionId(), id).ifPresent(responses -> {
+                        responses.setAnswerText(responseData.getAnswerText());
+                        responses.setStartTime(responseData.getStartTime());
+                        responses.setEndTime(responseData.getEndTime());
+                        responses.setStartDate(responseData.getStartDate());
+                        responses.setEndDate(responseData.getEndDate());
+                        responsesRepository.save(responses);
+                    });
+                });
+
         reportsRepository.save(reports);
+    }
+
+    public ResponseResDto getReportResponses(Long questionId, Long reportId) {
+
+        return responsesRepository.findByQuestionIdAndReportId(questionId, reportId).map(ResponseResDto::fromEntity).orElseThrow(() -> new NoSuchElementException());
     }
 }

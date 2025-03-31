@@ -74,6 +74,11 @@ public class ReportsController {
         return ResponseEntity.status(200).body(reportsService.getReportResponsesListByQuestion(questionId));
     }
 
+    @GetMapping("/read/response/{questionId}/{reportId}")
+    public ResponseEntity<ResponseResDto> readReportResponses(@PathVariable("questionId") Long questionId, @PathVariable("reportId") Long reportId) {
+        return ResponseEntity.status(200).body(reportsService.getReportResponses(questionId, reportId));
+    }
+
     // delete
 
     @DeleteMapping("/delete/{id}")

@@ -42,7 +42,7 @@ function ReportCreate() {
                     <section className={"sec"}>
                         <div className={"inner"}>
                             <div className={"item"}>
-                                <img onClick={() => navigate("/reports/templateList")} style={{cursor: "pointer", width: "1.5rem"}} src={"/image/backArrow.png"}/>
+                                <img onClick={() => navigate(-1)} style={{cursor: "pointer", width: "1.5rem"}} src={"/image/backArrow.png"}/>
                                 <div className={"btn bg_pm mt_md"}>
                                     <p className={"txt-a-c"}>{templateData.title}</p>
                                 </div>

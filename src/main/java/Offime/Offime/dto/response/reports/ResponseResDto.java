@@ -43,7 +43,7 @@ public class ResponseResDto {
                 .endTime(responses.getEndTime())
                 .startDate(responses.getStartDate())
                 .endDate(responses.getEndDate())
-                .questionId(responses.getQuestion().getID())
+                .questionId(responses.getQuestion().getId())
                 .reportId(responses.getReport().getId())
                 .build();
     }

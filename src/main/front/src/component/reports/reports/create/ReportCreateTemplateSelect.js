@@ -23,7 +23,7 @@ function ReportCreateTemplateSelect() {
                             <div className={"item"}>
                                 <img style={{cursor: "pointer", width: "1.5rem", display: "inline"}}
                                      src={"/image/backArrow.png"}
-                                     onClick={() => navigate(`/`)}/>
+                                     onClick={() => navigate(-1)}/>
                             </div>
                             <input className={"input-txt mlr-a"} type="text" placeholder={"템플릿명"}></input>
 
