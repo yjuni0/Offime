@@ -41,7 +41,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         // 이미지 저장 경로를 실제 경로로 변경
-        String uploadDir = "file:/C:/IntelliJ/Offime-main/src/main/resources/static/images/";
+        String uploadDir = "file:/C:/IntelliJ/Offime/src/main/resources/static/images/";
 
         registry.addResourceHandler("/images/**")
                 .addResourceLocations(uploadDir); // 실제 경로를 통해 이미지 서빙

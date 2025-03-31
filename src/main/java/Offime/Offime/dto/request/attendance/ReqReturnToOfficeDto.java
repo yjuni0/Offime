@@ -24,6 +24,7 @@ public class ReqReturnToOfficeDto {
                 .clockIn(clockInRecord.getClockIn())
                 .eventType(EventType.복귀)
                 .late(clockInRecord.getLate())
+                .team(member.getTeam())
                 .build();
     }
 }

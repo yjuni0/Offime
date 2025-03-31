@@ -25,6 +25,7 @@ public class ReqOutOfOfficeDto {
                 .eventType(EventType.자리비움)
                 .outOfOfficeType(dto.outOfOfficeType)
                 .late(clockInRecord.getLate())
+                .team(member.getTeam())
                 .build();
     }
 }
