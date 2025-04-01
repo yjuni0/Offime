@@ -1,15 +1,19 @@
-import Router from './router/Router';
+import Router from "./router/Router";
 
 function Main() {
-    return (
-        <div id={'container'}>
-            <div id={'device'}>
-                <main id={'main'}>
-                    <Router />
-                </main>
+  return (
+    <div id={"container"}>
+      <div id={"device"}>
+        <main id={"main"}>
+          <section className={"sec"}>
+            <div className={"inner"}>
+              <Router />
             </div>
-        </div>
-    );
+          </section>
+        </main>
+      </div>
+    </div>
+  );
 }
 
 export default Main;
