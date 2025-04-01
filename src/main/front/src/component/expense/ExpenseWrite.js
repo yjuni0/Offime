@@ -15,13 +15,7 @@ const ExpenseWrite = () => {
   const [previewImages, setPreviewImages] = useState([]); // 빈 배열로 초기화
   const [files, setFiles] = useState([]); // 빈 배열로 초기화
   const [expense, setExpense] = useState({
-    title: "",
-    content: "",
-    category: "",
-    date: "",
-    photoUrls: [], // 빈 배열로 초기화
-    amounts: [{ amount: "" }],
-    totalAmount: 0,
+
   });
 
   const handleChange = (e, index) => {

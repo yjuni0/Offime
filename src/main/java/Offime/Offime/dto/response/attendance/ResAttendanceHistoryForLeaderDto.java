@@ -10,7 +10,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
-import static Offime.Offime.entity.attendance.WorkStatus.*;
+import static Offime.Offime.entity.member.WorkStatus.*;
 
 @Getter
 @NoArgsConstructor

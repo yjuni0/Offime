@@ -1,6 +1,6 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
-import { HttpHeadersContext } from "../context/HttpHeadersProvider";
+import '../../css/attendance.css';
 
 function AttendanceBanner() {
   const [currentDate, setCurrentDate] = useState({
@@ -10,24 +10,44 @@ function AttendanceBanner() {
     time: "",
   });
 
-  const [status, setStatus] = useState("idle");
+  const [status, setStatus] = useState("");
   const [startTime, setStartTime] = useState("");
   const [awayTime, setAwayTime] = useState("");
-  const { headers } = useContext(HttpHeadersContext);
+  const [showPopup, setShowPopup] = useState(false);
+  const token = localStorage.getItem("CL_access_token");
+
+  const handleOutOfOfficePopup = () => {
+    setShowPopup(true);
+  };
+
+  const handleClosePopup = () => {
+    setShowPopup(false);
+  };
 
   useEffect(() => {
+    const fetchWorkStatus = async () => {
+      try {
+        const response = await axios.get("http://localhost:8080/workStatus", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
+        setStatus(response.data);
+      } catch (error) {
+        console.error("근무 상태 조회 실패:", error.response?.data || error.message);
+      }
+    };
+
+    fetchWorkStatus();
+
     const updateDateAndTime = () => {
       const now = new Date();
-      const weekdays = [
-        "일요일", "월요일", "화요일", "수요일", "목요일",
-        "금요일",
-        "토요일",
-      ];
+      const weekdays = ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"];
       const month = now.getMonth() + 1;
       const day = now.getDate();
       const weekday = weekdays[now.getDay()];
       const time = now.toLocaleTimeString("ko-KR", { hour12: false });
-
       setCurrentDate({ month, day, weekday, time });
     };
 
@@ -40,23 +60,24 @@ function AttendanceBanner() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         async (position) => {
-              const { latitude, longitude } = position.coords;
-              console.log("Latitude:", latitude, "Longitude:", longitude);
-              try {
-            
-              const response = await axios.post("http://localhost:8080/clockIn",
-                  {
-                    latitude: latitude,
-                    longitude: longitude,
-                    headers : headers,
-                  },
-                  
-              );
+          const { latitude, longitude } = position.coords;
+          try {
+            const response = await axios.post(
+              "http://localhost:8080/clockIn",
+              { latitude, longitude },
+              {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                  "Content-Type": "application/json",
+                },
+              }
+            );
             alert(response.data);
             setStartTime(currentDate.time);
-            setStatus("working");
+            setStatus("근무중");
           } catch (error) {
-            alert(`출근 실패: ${error.response?.data || error.message}`);
+            console.error("출근 실패:", error.response?.data || error.message);
+            alert(`출근 실패: ${JSON.stringify(error.response?.data || error.message)}`);
           }
         },
         (error) => {
@@ -69,77 +90,132 @@ function AttendanceBanner() {
     }
   };
 
-  const handleAway = () => {
-    alert("자리비움 처리되었습니다.");
-    setAwayTime(currentDate.time);
-    setStatus("away");
+  const handleOutOfOffice = async (type) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/outOfOffice",
+        { outOfOfficeType: type },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      alert(response.data);
+      setAwayTime(currentDate.time);
+      setStatus("자리비움중");
+      handleClosePopup();
+    } catch (error) {
+      console.error("자리비움 실패:", error.response?.data || error.message);
+      alert(`자리비움 실패: ${JSON.stringify(error.response?.data || error.message)}`);
+    }
   };
 
-  const handleReturn = () => {
-    alert("복귀 처리되었습니다.");
-    setStatus("working");
+  const handleReturnToOffice = async () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        async (position) => {
+          const { latitude, longitude } = position.coords;
+          try {
+            const response = await axios.post(
+              "http://localhost:8080/returnToOffice",
+              { latitude, longitude },
+              {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                  "Content-Type": "application/json",
+                },
+              }
+            );
+            alert(response.data);
+            setStatus("근무중");
+          } catch (error) {
+            console.error("복귀 실패:", error.response?.data || error.message);
+            alert(`복귀 실패: ${JSON.stringify(error.response?.data || error.message)}`);
+          }
+        },
+        (error) => {
+          alert("위치 정보를 가져오는데 실패했습니다.");
+          console.error(error);
+        }
+      );
+    } else {
+      alert("이 브라우저에서는 Geolocation을 지원하지 않습니다.");
+    }
   };
 
-  const handleClockOut = () => {
-    alert("퇴근 처리되었습니다.");
-    setStartTime("");
-    setAwayTime("");
-    setStatus("idle");
+  const handleClockOut = async () => {
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/clockOut",
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      alert(response.data);
+      setStatus("퇴근");
+      setStartTime("");
+      setAwayTime("");
+    } catch (error) {
+      console.error("퇴근 실패:", error.response?.data || error.message);
+      alert(`퇴근 실패: ${JSON.stringify(error.response?.data || error.message)}`);
+    }
   };
 
   return (
     <div className="item bg_pm mt_lg">
       <div className="fs_md tc-w">
-        {status === "idle" &&
-          `오늘은 ${currentDate.month}월 ${currentDate.day}일 ${currentDate.weekday}이에요 :D`}
-        {status === "working" && `근무중 ${startTime}~`}
-        {status === "away" && `자리비움 중 ${awayTime}~`}
+        {status === "퇴근" && `오늘은 ${currentDate.month}월 ${currentDate.day}일 ${currentDate.weekday}이에요 :D`}
+        {status === "근무중" && `근무 중 ${startTime}~`}
+        {status === "자리비움중" && `자리비움 중 ${awayTime}~`}
       </div>
 
       <div className="fs_lg tc-w">{currentDate.time}</div>
 
       <div className="btn-group">
-        {status === "idle" && (
-          <button
-            className="btn btn-max btn-pl fs_lg mt_sm mb_sm"
-            onClick={handleClockIn}
-          >
+        {status === "퇴근" && (
+          <button className="btn btn-max btn-pl fs_lg mt_sm mb_sm" onClick={handleClockIn}>
             출근
           </button>
         )}
-        {status === "working" && (
+        {status === "근무중" && (
           <>
-            <button
-              className="btn btn-max btn-p02 fs_lg mt_sm mb_sm"
-              onClick={handleAway}
-            >
+            <button className="btn btn-max btn-p02 fs_lg mt_sm mb_sm" onClick={handleOutOfOfficePopup}>
               자리비움
             </button>
-            <button
-              className="btn btn-max btn-p05 fs_lg mt_sm mb_sm"
-              onClick={handleClockOut}
-            >
+            <button className="btn btn-max btn-p05 fs_lg mt_sm mb_sm" onClick={handleClockOut}>
               퇴근
             </button>
           </>
         )}
-        {status === "away" && (
+        {status === "자리비움중" && (
           <>
-            <button
-              className="btn btn-max btn-p04 fs_lg mt_sm mb_sm"
-              onClick={handleReturn}
-            >
+            <button className="btn btn-max btn-p04 fs_lg mt_sm mb_sm" onClick={handleReturnToOffice}>
               복귀
             </button>
-            <button
-              className="btn btn-max btn-p05 fs_lg mt_sm mb_sm"
-              onClick={handleClockOut}
-            >
+            <button className="btn btn-max btn-p05 fs_lg mt_sm mb_sm" onClick={handleClockOut}>
               퇴근
             </button>
           </>
         )}
       </div>
+      {/* 팝업창 */}
+      {showPopup && (
+        <div className="popup-overlay">
+          <div className="popup-content">
+            <h3>자리비움 유형을 선택하세요</h3>
+            <button onClick={() => handleOutOfOffice("휴식")}>휴식</button>
+            <button onClick={() => handleOutOfOffice("식사")}>식사</button>
+            <button onClick={() => handleOutOfOffice("기타")}>기타</button>
+            <button onClick={handleClosePopup}>닫기</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -5,14 +5,20 @@ import Offime.Offime.dto.request.attendance.ReqAttendanceMonthlyHistoryDto;
 import Offime.Offime.dto.request.attendance.ReqAttendanceWeeklyHistoryDto;
 import Offime.Offime.dto.response.attendance.ResAttendanceHistoryForEmployeeDto;
 import Offime.Offime.dto.response.attendance.ResAttendanceRecordDto;
+import Offime.Offime.entity.attendance.EventRecord;
 import Offime.Offime.entity.member.Member;
 import Offime.Offime.service.attendance.AttendanceManagerForEmployeeService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cglib.core.Local;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.time.LocalDate;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -22,11 +28,12 @@ public class AttendanceManagerForEmployeeController {
 
     @GetMapping("/weekly")
     public ResponseEntity<ResAttendanceHistoryForEmployeeDto> getWeeklyAttendance(
-            @AuthenticationPrincipal Member member, @RequestBody ReqAttendanceWeeklyHistoryDto request) {
+            @AuthenticationPrincipal Member member, @RequestParam LocalDate date) {
         ResAttendanceHistoryForEmployeeDto weeklyStats = employeeAttendanceManagerService.getWeeklyAttendanceHistory(
-                member, request.getYear(), request.getMonth(), request.getStartDay());
+                member, date);
         return ResponseEntity.ok(weeklyStats);
     }
+
 
     @GetMapping("/monthly")
     public ResponseEntity<ResAttendanceHistoryForEmployeeDto> getMonthlyAttendance(

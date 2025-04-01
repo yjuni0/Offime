@@ -1,14 +1,28 @@
-import BackPage from "../BackPage";
+import BackPage from "../../../BackPage";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { MdPeopleAlt } from "react-icons/md";
-import '../../css/attendance.css';
+import '../../../../css/attendance.css';
 
-function AttendanceManager() {
+function AttendanceManagerForLeader() {
     const navigate = useNavigate();
+    const [date, setDate] = useState({
+        title: "",
+        content: "",
+        category: "",
+        date: "",
+        photoUrls: [], // 빈 배열로 초기화
+        amounts: [{ amount: "" }],
+        totalAmount: 0,
+    });
+
 
     const handleButtonClick = (path) => {
         navigate(path);
+    };
+
+    const handleChangeDate = (e) => {
+    setDate({ ...date, date: e.target.value });
     };
 
     return (
@@ -17,39 +31,47 @@ function AttendanceManager() {
             <section className="sec">
                 <div className="inner">
                     <div className="item">
-                        <div className="fs_lg">
-                            <h3>companyName</h3>
-                        </div>
-                        <span><h3>출근 현황</h3></span>
+
+                        <p className="fs_lg">구트</p>
+
+                        <p className="fs_lg">날짜</p>
+                        <input
+                            className="input input-txt fs_md mb_md"
+                            type="date"
+                            value={date.date}
+                            onChange={handleChangeDate}
+                            required
+                        />
+                        <p className="fs_lg">출근 현황</p>
                         
                         {/* 출근율 */}
-                        <button className="item bg_pm mt_lg" onClick={() => handleButtonClick('/attendanceRate')}>
+                        <div className="item bg_pm mt_md">
                             <div className="fs_md tc-w">
                                 출근율
                             </div>
                             <div className="fs_md tc-w">
                                 <MdPeopleAlt /> 0/0
                             </div>
-                        </button>
+                        </div>
 
                         {/* 출근과 미출근 */}
                         <div className="attendance-row mt_md">
-                            <button className="attendance-box bg_wt" onClick={() => handleButtonClick('/clockIn')}>
+                            <button className="attendance-box bg_wt" onClick={() => handleButtonClick('/clockInForLeader')}>
                                 <div className="tc-pm">출근</div>
                                 <div className="right-square tc-pm">0</div>
                             </button>
-                            <button className="attendance-box bg_wt" onClick={() => handleButtonClick('/absent')}>
+                            <button className="attendance-box bg_wt" onClick={() => handleButtonClick('/absentForLeader')}>
                                 <div className="tc-e">미출근</div>
                                 <div className="right-square tc-e">0</div>
                             </button>
                         </div>
 
-                        <button className="attendance-box mt_md bg_wt" onClick={() => handleButtonClick('/beforeClockIn')}>
+                        <button className="attendance-box mt_md bg_wt" onClick={() => handleButtonClick('/beforeClockInForLeader')}>
                             <div className=" tc-b">출근 전</div>
                             <div className="right-square tc-b">0</div>
                         </button>
 
-                        <button className="attendance-box mt_md bg_wt" onClick={() => handleButtonClick('/workStatus')}>
+                        <button className="attendance-box mt_md bg_wt" onClick={() => handleButtonClick('/workStatusForLeader')}>
                             <div className="work-status mt_md tc-b">출근인원 근무상태
                                 {/* 근무 중 */}
                                 <div className="status-row">
@@ -72,11 +94,11 @@ function AttendanceManager() {
                         </button>
 
                         <button className="attendance-row mt_md">
-                            <div className="attendance-box bg_p04" onClick={() => handleButtonClick('/late')}>
+                            <div className="attendance-box bg_p04" onClick={() => handleButtonClick('/lateForLeader')}>
                                 <div className="tc-w">지각</div>
                                 <div className="right-square">0</div>
                             </div>
-                            <div className="attendance-box bg_p03" onClick={() => handleButtonClick('/leaveEarly')}>
+                            <div className="attendance-box bg_p03" onClick={() => handleButtonClick('/leaveEarlyForLeader')}>
                                 <div className="tc-w">조퇴</div>
                                 <div className="right-square tc-w">0</div>
                             </div>
@@ -88,4 +110,4 @@ function AttendanceManager() {
     );
 }
 
-export default AttendanceManager;
+export default AttendanceManagerForLeader;

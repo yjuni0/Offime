@@ -5,7 +5,7 @@ import Offime.Offime.dto.request.attendance.ReqClockOutDto;
 import Offime.Offime.dto.request.attendance.ReqOutOfOfficeDto;
 import Offime.Offime.dto.request.attendance.ReqReturnToOfficeDto;
 import Offime.Offime.entity.attendance.EventRecord;
-import Offime.Offime.entity.attendance.WorkStatus;
+import Offime.Offime.entity.member.WorkStatus;
 import Offime.Offime.entity.member.Member;
 import Offime.Offime.exception.MemberException;
 import Offime.Offime.repository.attendance.EventRecordRepository;

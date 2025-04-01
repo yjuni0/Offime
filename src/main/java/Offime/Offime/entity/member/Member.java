@@ -2,7 +2,7 @@ package Offime.Offime.entity.member;
 
 import Offime.Offime.common.BaseTimeEntity;
 import Offime.Offime.common.Role;
-import Offime.Offime.entity.attendance.WorkStatus;
+import Offime.Offime.entity.member.WorkStatus;
 //import Offime.Offime.entity.vacation.Vacation;
 import jakarta.persistence.*;
 import lombok.Builder;

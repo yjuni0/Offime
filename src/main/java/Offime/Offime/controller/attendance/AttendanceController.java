@@ -5,19 +5,28 @@ import Offime.Offime.dto.request.attendance.ReqClockOutDto;
 import Offime.Offime.dto.request.attendance.ReqOutOfOfficeDto;
 import Offime.Offime.dto.request.attendance.ReqReturnToOfficeDto;
 import Offime.Offime.entity.member.Member;
+import Offime.Offime.entity.member.WorkStatus;
 import Offime.Offime.service.attendance.AttendanceService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 public class AttendanceController {
 
     private final AttendanceService attendanceService;
+
+    @GetMapping("/workStatus")
+    public ResponseEntity<WorkStatus> getWorkStatus(@AuthenticationPrincipal Member member) {
+        log.info("워크스테이터스 : " + member.getWorkStatus());
+        return ResponseEntity.ok(member.getWorkStatus());
+    }
 
     @PostMapping("/clockIn")
     public ResponseEntity<String> clockIn(
