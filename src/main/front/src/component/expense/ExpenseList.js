@@ -13,7 +13,34 @@ const ExpenseList = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [hasNoResults, setHasNoResults] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(5);
+  const [totalPages, setTotalPages] = useState(0);
   const navigate = useNavigate();
+
+  const pageNumbersToShow = 5;
+  const startPage = Math.max(
+    currentPage - Math.floor(pageNumbersToShow / 2),
+    1
+  );
+  const endPage = Math.min(startPage + pageNumbersToShow - 1, totalPages);
+
+  const showEllipsisBefore = startPage > 1;
+  const showEllipsisAfter = endPage < totalPages;
+
+  const visiblePages = [];
+  for (let i = startPage; i <= endPage; i++) {
+    visiblePages.push(i);
+  }
+
+  const getPaginatedData = () => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    return filteredExpenses.slice(startIndex, startIndex + itemsPerPage);
+  };
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
 
   const formatAmount = (amount) => {
     if (!amount) return "";
@@ -57,6 +84,7 @@ const ExpenseList = () => {
           if (Array.isArray(expenseData)) {
             setExpenses(expenseData);
             setFilteredExpenses(expenseData);
+            setTotalPages(Math.ceil(expenseData.length / itemsPerPage));
           } else {
             console.error("잘못된 지출 데이터 형식", expenseData);
             setError("잘못된 데이터 형식입니다.");
@@ -114,6 +142,8 @@ const ExpenseList = () => {
         if (searchData.length === 0) {
           setHasNoResults(true);
         }
+        setCurrentPage(1);
+        setTotalPages(Math.ceil(searchData.length / itemsPerPage));
       } else {
         console.error("Error fetching search results:", searchResponse.status);
         setError("Error fetching search results.");
@@ -126,7 +156,6 @@ const ExpenseList = () => {
     }
   };
 
-  // 상태에 따른 색상, 텍스트 등을 추가하는 함수
   const getStatusLabel = (status) => {
     switch (status) {
       case "PENDING":
@@ -175,8 +204,8 @@ const ExpenseList = () => {
             <ul className="">
               {hasNoResults ? (
                 <p>검색된 결과가 없습니다.</p> // 검색 결과가 없을 때
-              ) : filteredExpenses && filteredExpenses.length > 0 ? (
-                filteredExpenses.map((expense) => (
+              ) : getPaginatedData().length > 0 ? (
+                getPaginatedData().map((expense) => (
                   <li
                     className=" bg_n0 item mt_md"
                     key={expense.id}
@@ -206,6 +235,22 @@ const ExpenseList = () => {
                 <p className="txt-a-c m_lg fs_lg">등록된 게시글이 없습니다.</p> // 등록된 경비가 없을 때
               )}
             </ul>
+
+            <div className="txt-a-c p_sm">
+              {showEllipsisBefore && <button>...</button>} {/* 앞쪽 생략 */}
+              {visiblePages.map((pageNumber) => (
+                <button
+                  key={pageNumber}
+                  onClick={() => handlePageChange(pageNumber)}
+                  id={currentPage === pageNumber ? "active" : ""}
+                  className="p_sm "
+                >
+                  {pageNumber}
+                </button>
+              ))}
+              {showEllipsisAfter && <button>...</button>} {/* 뒤쪽 생략 */}
+            </div>
+
             <button
               className="btn btn-max btn-pm fs_lg mb_md mt_md "
               onClick={() => navigate("/ExpenseWrite")}
