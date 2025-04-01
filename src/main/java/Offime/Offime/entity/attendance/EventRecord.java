@@ -1,5 +1,6 @@
 package Offime.Offime.entity.attendance;
 
+import Offime.Offime.common.LocalDateTimeConverter;
 import Offime.Offime.common.LocalTimeConverter;
 import Offime.Offime.entity.member.Member;
 import Offime.Offime.entity.member.Team;
@@ -26,7 +27,8 @@ public class EventRecord {
     @Column(name = "DATE", nullable = false)
     private LocalDate date;
 
-    @Column(name = "REQUEST_TIME", nullable = false)
+    @Column(name = "REQUEST_TIME", nullable = false, columnDefinition = "DATETIME(0)")
+    @Convert(converter = LocalDateTimeConverter.class)
     private LocalDateTime requestTime;
 
     @Column(name = "CLOCK_IN", columnDefinition = "TIME(0)")

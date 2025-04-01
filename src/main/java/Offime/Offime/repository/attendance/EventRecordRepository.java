@@ -19,7 +19,7 @@ public interface EventRecordRepository extends JpaRepository<EventRecord, Long> 
 
     List<EventRecord> findByMemberAndDateBetween(Member member, LocalDate startDate, LocalDate endDate);
 
-    List<EventRecord> findByDate(LocalDate date);
+    List<EventRecord> findByMemberAndDate(Member member, LocalDate date);
 
     long countByDateAndEventType(LocalDate date, EventType eventType);
 

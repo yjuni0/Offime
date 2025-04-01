@@ -18,6 +18,6 @@ public class LocalTimeConverter implements AttributeConverter<LocalTime, LocalTi
 
     @Override
     public LocalTime convertToEntityAttribute(LocalTime dbData) {
-        return dbData;  // 데이터베이스에서 읽을 때는 변환 불필요
+        return dbData;
     }
 }

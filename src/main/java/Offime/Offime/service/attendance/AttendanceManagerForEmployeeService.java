@@ -1,6 +1,7 @@
 package Offime.Offime.service.attendance;
 
 import Offime.Offime.dto.response.attendance.ResAttendanceHistoryForEmployeeDto;
+import Offime.Offime.dto.response.attendance.ResAttendanceRecordDto;
 import Offime.Offime.entity.attendance.EventRecord;
 import Offime.Offime.entity.member.Member;
 import Offime.Offime.repository.attendance.EventRecordRepository;
@@ -26,6 +27,11 @@ public class AttendanceManagerForEmployeeService {
         return ResAttendanceHistoryForEmployeeDto.fromEntity(records);
     }
 
+    public ResAttendanceRecordDto getDailyAttendanceRecord(Member member, LocalDate date){
+        List<EventRecord> records = getDailyRecords(member, date);
+        return ResAttendanceRecordDto.fromEntity(records, date);
+    }
+
     private List<EventRecord> getWeeklyRecords(Member member, int year, int month, int startDay) {
         LocalDate startOfWeek = LocalDate.of(year, month, startDay);
         LocalDate endOfWeek = startOfWeek.plusDays(6);
@@ -36,5 +42,9 @@ public class AttendanceManagerForEmployeeService {
         LocalDate startOfMonth = LocalDate.of(year, month, 1);
         LocalDate endOfMonth = startOfMonth.plusMonths(1).minusDays(1);
         return eventRecordRepository.findByMemberAndDateBetween(member, startOfMonth, endOfMonth);
+    }
+
+    private List<EventRecord> getDailyRecords(Member member, LocalDate date) {
+        return eventRecordRepository.findByMemberAndDate(member, date);
     }
 }

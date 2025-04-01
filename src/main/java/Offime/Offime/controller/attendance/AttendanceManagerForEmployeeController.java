@@ -1,8 +1,10 @@
 package Offime.Offime.controller.attendance;
 
+import Offime.Offime.dto.request.attendance.ReqAttendanceDailyHistoryDto;
 import Offime.Offime.dto.request.attendance.ReqAttendanceMonthlyHistoryDto;
 import Offime.Offime.dto.request.attendance.ReqAttendanceWeeklyHistoryDto;
 import Offime.Offime.dto.response.attendance.ResAttendanceHistoryForEmployeeDto;
+import Offime.Offime.dto.response.attendance.ResAttendanceRecordDto;
 import Offime.Offime.entity.member.Member;
 import Offime.Offime.service.attendance.AttendanceManagerForEmployeeService;
 import lombok.RequiredArgsConstructor;
@@ -32,5 +34,13 @@ public class AttendanceManagerForEmployeeController {
         ResAttendanceHistoryForEmployeeDto monthlyStats = employeeAttendanceManagerService.getMonthlyAttendanceHistory(
                 member, request.getYear(), request.getMonth());
         return ResponseEntity.ok(monthlyStats);
+    }
+
+    @GetMapping("/daily")
+    public ResponseEntity<ResAttendanceRecordDto> getDailyAttendanceRecord(
+            @AuthenticationPrincipal Member member, @RequestBody ReqAttendanceDailyHistoryDto request) {
+        ResAttendanceRecordDto records = employeeAttendanceManagerService.getDailyAttendanceRecord(
+                member, request.getDate());
+        return ResponseEntity.ok(records);
     }
 }
