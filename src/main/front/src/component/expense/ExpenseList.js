@@ -164,6 +164,12 @@ const ExpenseList = () => {
               <ExpenseSearch onSearch={handleSearch} />
               {isLoading && <p>로딩 중...</p>} {/* 로딩 상태 표시 */}
               {error && <p className="error">{error}</p>}{" "}
+              <button
+                onClick={() => navigate("/approved-expenses")}
+                className="btn btn-sm btn-p04"
+              >
+                승인 경비
+              </button>
             </div>
             {/* 에러 메시지 표시 */}
             <ul className="">
