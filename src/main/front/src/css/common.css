@@ -36,7 +36,7 @@
     --font_xxlg :2.5rem ;
     --font_xlg :2rem ;
     --font_lg : 1.5rem ;
-    --font_md : 1rem;
+    --font_md : 1.25rem;
     --font_sm : .875rem;
     --font_xsm : .6875rem;
 
@@ -215,7 +215,7 @@ input.input-max { width: 100%; height: 56px; border-radius: 30px; font-size:var(
 
 /* textarea */
 textarea.textarea { width: 100%; border: 1px solid var(--primary_m); border-radius: var(--round-lg); padding: 1rem; font-size: var(--font_md); transition: .2s;}
-textarea.textarea:focus { border: 1px solid var(--second_m); }
+textarea.textarea:focus { border: 1px solid var(--primary_m); }
 
 /* label */
 label.label { display: block; font-size: var(--font_lg);}
