@@ -6,6 +6,7 @@ import Offime.Offime.entity.notifications.NotificationMessage;
 import Offime.Offime.repository.notification.NotificationMessageRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,7 +35,8 @@ public class NotificationService {
         // Stream을 사용해 여러 상태를 처리
         return Arrays.stream(statuses)
                 .flatMap(status -> notificationMessageRepository.findByMemberIdAndStatus(memberId, status).stream())
-                .collect(Collectors.toList());
+                .collect(Collectors.toList())
+                ;
     }
     // 알림 메시지 읽음 처리
     @Transactional  // 트랜잭션 관리

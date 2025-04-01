@@ -12,10 +12,9 @@ import java.util.concurrent.ConcurrentHashMap;
 public class SseService {
 
     private final Map<Long, SseEmitter> emitters = new ConcurrentHashMap<>();
-
     // 클라이언트 연결을 위한 메서드
     public SseEmitter subToNotifications(Long memberId) {
-        SseEmitter emitter = new SseEmitter(60_000L);  // 60초 타임아웃
+        SseEmitter emitter = new SseEmitter(60_000L*5);  // 5분 타임아웃
         emitters.put(memberId, emitter);
 
         // 연결 종료 및 타임아웃 시 처리

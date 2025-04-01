@@ -1,4 +1,3 @@
-import { useState } from "react";
 import HeaderNav from "../header/CommonNav";
 import "../../css/common.css";
 import { Link } from "react-router-dom";

@@ -14,10 +14,11 @@ public class MessagePublisher {
     private final RabbitTemplate rabbitTemplate;
 
     // 휴가 메시지 발행
-    public void sendVacationMessage(String routingKey,Long memberId,String message) {
+    public void sendVacationMessage(String routingKey,Long memberId,Long vacationId,String message) {
         NotificationMessage notificationMessage = new NotificationMessage();
         notificationMessage.setMemberId(memberId);
         notificationMessage.setType("vacation");
+        notificationMessage.setTypeId(vacationId);
         notificationMessage.setStatus("request");
         notificationMessage.setMessage(message);
         notificationMessage.setIsRead(false);

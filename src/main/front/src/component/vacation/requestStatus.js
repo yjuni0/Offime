@@ -1,5 +1,3 @@
-import { use, useState } from "react";
-
 const RequestStatus = ({ response }) => {
   return (
     <>
