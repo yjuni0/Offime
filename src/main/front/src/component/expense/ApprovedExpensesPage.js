@@ -10,10 +10,23 @@ const ApprovedExpensesPage = () => {
   const [expenses, setExpenses] = useState([]);
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1);
+  const [selectedCategory, setSelectedCategory] = useState(""); // 카테고리 상태 추가
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
   const token = localStorage.getItem("CL_access_token");
+
+  const categories = ["식비", "교통", "숙박", "경조사", "기타"]; // 카테고리 목록 추가
+
+  const handleCategoryChange = (category, e) => {
+    // 카테고리 선택/해제 기능 구현
+    if (category === selectedCategory) {
+      setSelectedCategory(""); // 이미 선택된 카테고리가 다시 클릭되면 해제
+    } else {
+      setSelectedCategory(category);
+    }
+  };
+
   useEffect(() => {
     if (!token) {
       navigate("/");
@@ -39,14 +52,18 @@ const ApprovedExpensesPage = () => {
         if (response.ok) {
           const data = await response.json();
 
-          // 데이터를 연도와 월을 기준으로 필터링
+          // 데이터를 연도, 월, 카테고리 기준으로 필터링
           const filteredData = data.filter((expense) => {
             const expenseYear = new Date(expense.expenseDate).getFullYear();
             const expenseMonth = new Date(expense.expenseDate).getMonth() + 1;
+            const categoryFilter =
+              selectedCategory === "" || expense.category === selectedCategory;
+
             return (
               expense.status === "APPROVED" &&
               expenseYear === selectedYear &&
-              expenseMonth === selectedMonth
+              expenseMonth === selectedMonth &&
+              categoryFilter
             );
           });
 
@@ -62,7 +79,7 @@ const ApprovedExpensesPage = () => {
     };
 
     fetchApprovedExpenses();
-  }, [token, selectedYear, selectedMonth, navigate]);
+  }, [token, selectedYear, selectedMonth, selectedCategory, navigate]);
 
   return (
     <>
@@ -72,11 +89,11 @@ const ApprovedExpensesPage = () => {
           <div className="inner">
             <div className=" bg_n0 item bg_pm mt_md">
               <div className="item">
-                <h2>승인된 경비 내역</h2>
+                <h3>승인된 경비 내역</h3>
               </div>
-              <div className="">
+              <div className="txt-a-r ">
                 <select
-                  className=""
+                  className="fs_md mb_md border_none border_bottom mr_sm "
                   value={selectedYear}
                   onChange={(e) => setSelectedYear(Number(e.target.value))}
                 >
@@ -90,7 +107,7 @@ const ApprovedExpensesPage = () => {
                   ))}
                 </select>
                 <select
-                  className=""
+                  className="fs_md mb_md border_none border_bottom mr_sm "
                   value={selectedMonth}
                   onChange={(e) => setSelectedMonth(Number(e.target.value))}
                 >
@@ -100,22 +117,39 @@ const ApprovedExpensesPage = () => {
                     </option>
                   ))}
                 </select>
+                <div className="flex space-around">
+                  {[...categories].map((category) => (
+                    <button
+                      key={category}
+                      type="button"
+                      className={`expense-button mb_md ${
+                        selectedCategory === category ? "selected" : ""
+                      }`}
+                      onClick={(e) => handleCategoryChange(category, e)}
+                    >
+                      {category}
+                    </button>
+                  ))}
+                </div>
               </div>
               {isLoading && <p>로딩 중...</p>}
               {error && <p className="error">{error}</p>}
               <ul className="">
                 {expenses.length > 0 ? (
                   expenses.map((expense) => (
-                    <li key={expense.id} className="bg_n0 item mt_md">
+                    <li key={expense.id} className="bg_n0 item">
+                      <div className="space-between flex">
+                        <p>{expense.expenseDate}</p>
+                        <p> {expense.category}</p>
+                      </div>
                       <p>
                         <strong>{expense.title}</strong> -{" "}
                         {expense.amount.toLocaleString()} 원
                       </p>
-                      <p>{expense.expenseDate}</p>
                     </li>
                   ))
                 ) : (
-                  <p className="txt-a-c m_lg fs_lg">
+                  <p className="txt-a-c m_lg ">
                     해당 기간의 승인된 경비가 없습니다.
                   </p>
                 )}

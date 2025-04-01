@@ -65,6 +65,14 @@
   display: none;
 }
 
+.border_none {
+  border: none;
+}
+
+.border_bottom {
+  border-bottom: 1px solid black;
+}
+
 /* 카테고리 버튼 그룹 */
 
 .expense-button {
