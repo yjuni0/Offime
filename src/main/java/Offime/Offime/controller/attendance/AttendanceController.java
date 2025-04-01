@@ -24,7 +24,6 @@ public class AttendanceController {
 
     @GetMapping("/workStatus")
     public ResponseEntity<WorkStatus> getWorkStatus(@AuthenticationPrincipal Member member) {
-        log.info("워크스테이터스 : " + member.getWorkStatus());
         return ResponseEntity.ok(member.getWorkStatus());
     }
 

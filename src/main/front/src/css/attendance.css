@@ -86,3 +86,25 @@
 .popup-content button {
     margin-right: 10px;
 }
+
+.react-datepicker-wrapper {
+    width: 100%;
+}
+
+.react-datepicker__input-container input {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+}
+
+.view-type-selector .btn.active {
+    background-color: #007bff;
+    color: white;
+}
+
+.view-type-selector .btn {
+    margin-right: 10px;
+    padding: 10px 20px;
+    border: 1px solid #ddd;
+    cursor: pointer;
+}
