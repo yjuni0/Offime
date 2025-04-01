@@ -4,6 +4,7 @@ import {useEffect, useState} from "react";
 function Calender(){
     const today = new Date();
     const [currentDate, setCurrentDate] = useState(new Date());
+
     const [activeDay, setActiveDay] = useState(null);
     const defaultDate = (today.getFullYear() + "-" + (today.getMonth() +1) + "-" + today.getDate()).toString() ;
     const [selectedDate, setSelectedDate] = useState(defaultDate);
@@ -11,10 +12,12 @@ function Calender(){
     const [selectedDay, setSelectedDay] = useState(dayNames[today.getDay()]);
     const navigate = useNavigate();
 
-    const [selectedYear, setSelectedYear] = useState();
-    const [selectedMonth, setSelectedMonth] = useState();
+    const [selectedYear, setSelectedYear] = useState(today.getFullYear());
+    const [selectedMonth, setSelectedMonth] = useState(today.getMonth() + 1);
+
 
     const [editOpen, setEditOpen] = useState(false);
+    const [yearMonthOpen, setYearMonthOpen] = useState(false);
 
     useEffect(() => {
         renderCalendar();
@@ -70,8 +73,6 @@ function Calender(){
             });
         }
 
-
-
         return daysArray;
     }
 
@@ -88,6 +89,29 @@ function Calender(){
     function handleEdit() {
         setEditOpen(prev => !prev);
     }
+    function handleYearMonth() {
+        setYearMonthOpen(prev => !prev);
+    }
+
+    function handleSelect(month) {
+        setSelectedMonth(month);
+    }
+    function increaseYear() {
+        setSelectedYear(prev => prev + 1);
+    }
+    function decreaseYear() {
+        setSelectedYear(prev => prev - 1);
+    }
+
+    function handleConfirmYM() {
+        setCurrentDate(new Date(selectedYear, selectedMonth - 1));
+        setYearMonthOpen(false);
+    }
+    function handleCancelYM() {
+        setYearMonthOpen(false);
+    }
+
+
 
 
     return(
@@ -97,7 +121,7 @@ function Calender(){
                 <div className="calender-wrap">
                     <div className="calendar">
                         <div className="calendar-header">
-                            <p id="monthYear" className="cal-month">
+                            <p id="monthYear" className="cal-month" onClick={handleYearMonth}>
                                 {currentDate.getFullYear()}년 {currentDate.getMonth() + 1}월
                             </p>
                         </div>
@@ -120,7 +144,8 @@ function Calender(){
                                         onClick={() => handleSelectDay(date)}
                                     >
                                         <p>{date.day}</p>
-                                        <div className="sched red">
+                                        {/*
+                                           <div className="sched red">
                                             <p className="fs_xsm active">사전 미팅aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
                                             <p className="fs_xsm">10:00 ~ 13:00</p>
                                         </div>
@@ -128,6 +153,7 @@ function Calender(){
                                             <p className="fs_xsm active">사전 미팅aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
                                             <p className="fs_xsm">10:00 ~ 13:00</p>
                                         </div>
+                                        */}
                                     </div>
                                 );
                             })}
@@ -136,27 +162,67 @@ function Calender(){
                 </div>
             </div>
             {/*<div className={editOpen ? "dark-area active" : "dark-area"} onClick={handleEdit}></div>*/}
-            <div className={editOpen ? "schedule-detail active" : "schedule-detail"}>
-                    <div className="sched-date">
-                        <input type="text" value={selectedDate + ` ` + `(` + selectedDay + `)`} readOnly id="selectedDate"/>
+            <div className={`schedule-detail ${editOpen || yearMonthOpen ? 'active' : ''}`}>
+                {editOpen && (
+                    <>
+                        <div className="sched-date">
+                            <input type="text" value={selectedDate + ` ` + `(` + selectedDay + `)`} readOnly
+                                   id="selectedDate"/>
+                        </div>
+                        <div className="inner">
+                            <p className="fs_md mt_lg">일정 시간</p>
+                            <div className='item-flex mt_md'>
+                                <input type="time" className='input-time' id="start-time"/> <p className="fs_md">~</p>
+                                <input type="time" className='input-time' id="end-time"/>
+                            </div>
+                            <p className="fs_md mt_lg mb_md">휴식 시간</p>
+                            <input type="time" className='input-time' id="break-time"/>
+                            <p className="fs_md mt_lg">메모</p>
+                            <textarea className='textarea mt_md fs_md' rows={5}></textarea>
+                            <button className="btn btn-max btn-pm fs_md mt_lg">스케줄 등록</button>
+                        </div>
+                    </>
+                )}
+                {!editOpen && yearMonthOpen && (
+                    <div className="ym-picker">
+                        <div className="year-picker">
+                            <button onClick={decreaseYear} className='fs_lg'>{'<'}</button>
+                            <p className='fs_lg'>{selectedYear}</p>
+                            <button onClick={increaseYear} className='fs_lg'>{'>'}</button>
+                        </div>
+
+                        <div className="month-picker">
+                            {[...Array(12)].map((_, i) => {
+                                const month = i + 1;
+                                return (
+                                    <div
+                                        key={month}
+                                        className={`month ${selectedMonth === month ? 'selected' : ''}`}
+                                        onClick={() => handleSelect(month)}
+                                    >
+                                       <p className='fs_lg'> {month.toString().padStart(2, '0')} </p>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                        <div className="selected-ym mb_lg">
+                            <p className='fs_md'>
+                                {selectedYear}년 {selectedMonth.toString().padStart(2, '0')}월
+                            </p>
+                        </div>
+                        <div className="btn-box">
+                            <button className='btn btn-md btn-e-f fs_md' onClick={handleCancelYM}>취소</button>
+                            <button className='btn btn-md btn-pm-f fs_md' onClick={handleConfirmYM}>확인</button>
+                        </div>
                     </div>
-                <div className="inner">
-                    <p className="fs_md mt_lg">일정 시간</p>
-                    <div className='item-flex mt_md'>
-                        <input type="time" className='input-time' id="start-time"/> <p className="fs_md">~</p> <input type="time" className='input-time' id="end-time"/>
-                    </div>
-                    <p className="fs_md mt_lg mb_md">휴식 시간</p>
-                    <input type="time" className='input-time' id="break-time"/>
-                    <p className="fs_md mt_lg">메모</p>
-                    <textarea className='textarea mt_md fs_md' rows={5}></textarea>
-                    <button className="btn btn-max btn-pm fs_lg mt_lg">스케줄 등록</button>
-                </div>
+
+                )}
             </div>
             <div className="sched-btn" onClick={handleEdit}>
                 {editOpen ? (
-                  <img src="/image/icon_close.svg" alt="스케줄 편집 닫기"/>
+                    <img src="/image/icon_close.svg" alt="스케줄 편집 닫기"/>
                 ) : (
-                  <img src="/image/icon_write.svg" alt="스케줄 편집 열기"/>
+                    <img src="/image/icon_write.svg" alt="스케줄 편집 열기"/>
                 )}
             </div>
         </>
