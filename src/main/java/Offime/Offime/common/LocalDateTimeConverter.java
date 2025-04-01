@@ -12,11 +12,11 @@ public class LocalDateTimeConverter implements AttributeConverter<LocalDateTime,
     @Override
     public LocalDateTime convertToDatabaseColumn(LocalDateTime attribute) {
         if (attribute == null) return null;
-        return attribute.truncatedTo(ChronoUnit.SECONDS);  // 나노초 절삭
+        return attribute.truncatedTo(ChronoUnit.SECONDS);
     }
 
     @Override
     public LocalDateTime convertToEntityAttribute(LocalDateTime dbData) {
-        return dbData;  // DB에서 읽어올 때는 이미 절삭된 상태
+        return dbData;
     }
 }
