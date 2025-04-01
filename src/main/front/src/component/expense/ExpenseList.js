@@ -24,11 +24,11 @@ const ExpenseList = () => {
   };
 
   useEffect(() => {
-    const storedToken = localStorage.getItem("access_token");
+    const storedToken = localStorage.getItem("CL_access_token");
     if (storedToken) {
       setToken(storedToken);
     } else {
-      navigate("/login"); // 토큰이 없으면 로그인 페이지로 리디렉션
+      navigate("/"); // 토큰이 없으면 로그인 페이지로 리디렉션
     }
   }, [navigate]);
 
@@ -89,7 +89,7 @@ const ExpenseList = () => {
     setHasNoResults(false);
 
     try {
-      const token = localStorage.getItem("access_token");
+      const token = localStorage.getItem("CL_access_token");
       if (!token) {
         setError("Authorization token is missing.");
         setIsLoading(false);

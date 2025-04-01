@@ -58,7 +58,10 @@ public class ExpenseController {
         try {
             List<Expense> expenses = expenseService.searchExpenses(searchTerm);
             List<ExpenseResponseDTO> responseDTOs = expenses.stream()
-                    .map(this::convertToResponseDTO)
+                    .map(expense -> {
+                        List<ExpenseImage> images = expenseImageRepository.findByExpenseId(expense.getId());
+                        return ExpenseResponseDTO.fromEntity(expense, images);
+                    })
                     .collect(Collectors.toList());
 
             logger.info("Search results: {}", responseDTOs);
@@ -82,7 +85,8 @@ public class ExpenseController {
             createdExpense.setStatus(ExpenseStatus.PENDING); // 상태를 대기로 설정
             expenseService.saveExpense(createdExpense);
 
-            ExpenseResponseDTO responseDTO = convertToResponseDTO(createdExpense);
+            List<ExpenseImage> expenseImages = expenseImageRepository.findByExpenseId(createdExpense.getId());
+            ExpenseResponseDTO responseDTO = ExpenseResponseDTO.fromEntity(createdExpense, expenseImages);
             return new ResponseEntity<>(responseDTO, HttpStatus.CREATED);
 
         } catch (JsonProcessingException e) {
@@ -110,7 +114,8 @@ public class ExpenseController {
             expenseService.saveExpense(expense);
             logger.info("Expense status updated successfully for id: {}", id); // 상태 업데이트 성공 로깅
 
-            ExpenseResponseDTO responseDTO = convertToResponseDTO(expense);
+            List<ExpenseImage> expenseImages = expenseImageRepository.findByExpenseId(expense.getId());
+            ExpenseResponseDTO responseDTO = ExpenseResponseDTO.fromEntity(expense, expenseImages);
             return ResponseEntity.ok(responseDTO);
 
         } catch (Exception e) {
@@ -128,7 +133,10 @@ public class ExpenseController {
                 : expenseService.getExpenses();
 
         return expenses.stream()
-                .map(this::convertToResponseDTO)
+                .map(expense -> {
+                    List<ExpenseImage> images = expenseImageRepository.findByExpenseId(expense.getId());
+                    return ExpenseResponseDTO.fromEntity(expense, images);
+                })
                 .collect(Collectors.toList());
     }
 
@@ -139,7 +147,8 @@ public class ExpenseController {
         if (expense == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-        return ResponseEntity.ok(convertToResponseDTO(expense));
+        List<ExpenseImage> expenseImages = expenseImageRepository.findByExpenseId(expense.getId());
+        return ResponseEntity.ok(ExpenseResponseDTO.fromEntity(expense, expenseImages));
     }
 
     // 게시물 수정
@@ -159,7 +168,8 @@ public class ExpenseController {
             Expense updatedExpense = expenseService.updateExpense(id, expenseDTO, images);
             handleImageDeletion(deletedImages);
 
-            return ResponseEntity.ok(convertToResponseDTO(updatedExpense));
+            List<ExpenseImage> expenseImages = expenseImageRepository.findByExpenseId(updatedExpense.getId());
+            return ResponseEntity.ok(ExpenseResponseDTO.fromEntity(updatedExpense, expenseImages));
 
         } catch (JsonProcessingException e) {
             logger.error("Error parsing ExpenseRequestDTO: {}", e.getMessage());
@@ -223,64 +233,20 @@ public class ExpenseController {
     }
 
     @GetMapping("/pending/count")
-    public ResponseEntity<?> getPendingExpensesCount(HttpServletRequest request) {
-        String token = request.getHeader("Authorization");
-        if (token == null || !token.startsWith("Bearer ")) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("인증 토큰이 없습니다.");
-        }
-        token = token.substring(7); // "Bearer " 제거
-
-        // 토큰 검증 로직...
-        try {
-            // 토큰 검증 성공
-            long count = expenseService.getPendingExpensesCount();
-            Map<String, Long> response = new HashMap<>();
-            response.put("count", count);
-            return ResponseEntity.ok(response);
-        } catch (Exception e) {
-            // 토큰 검증 실패
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유효하지 않은 토큰입니다.");
-        }
+    public ResponseEntity<?> getPendingExpensesCount() {
+        long count = expenseService.getPendingExpensesCount();
+        Map<String, Long> response = new HashMap<>();
+        response.put("count", count);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/rejected/count")
-    public ResponseEntity<?> getRejectedExpensesCount(HttpServletRequest request) {
-        String token = request.getHeader("Authorization");
-        if (token == null || !token.startsWith("Bearer ")) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("인증 토큰이 없습니다.");
-        }
-        token = token.substring(7);
-
-        try {
-            long count = expenseService.getRejectedExpensesCount();
-            Map<String, Long> response = new HashMap<>();
-            response.put("count", count);
-            return ResponseEntity.ok(response);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유효하지 않은 토큰입니다.");
-        }
+    public ResponseEntity<?> getRejectedExpensesCount() {
+        long count = expenseService.getRejectedExpensesCount();
+        Map<String, Long> response = new HashMap<>();
+        response.put("count", count);
+        return ResponseEntity.ok(response);
     }
 
 
-    // Entity -> Response DTO 변환
-    private ExpenseResponseDTO convertToResponseDTO(Expense expense) {
-        ExpenseResponseDTO responseDTO = new ExpenseResponseDTO();
-        responseDTO.setId(expense.getId());
-        responseDTO.setTitle(expense.getTitle());
-        responseDTO.setContent(expense.getContent());
-        responseDTO.setUsername(expense.getUsername());
-        responseDTO.setAmount(expense.getAmount());
-        responseDTO.setCategory(expense.getCategory());
-        responseDTO.setStatus(String.valueOf(expense.getStatus()));
-        responseDTO.setExpenseDate(expense.getExpenseDate());
-
-        responseDTO.setStatus(expense.getStatus().toString());
-
-        List<String> imageUrls = expenseImageRepository.findByExpenseId(expense.getId()).stream()
-                .map(ExpenseImage::getImageUrl)
-                .collect(Collectors.toList());
-        responseDTO.setImageUrls(imageUrls);
-
-        return responseDTO;
-    }
 }

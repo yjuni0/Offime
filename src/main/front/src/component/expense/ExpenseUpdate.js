@@ -30,7 +30,7 @@ const ExpenseUpdate = () => {
 
   useEffect(() => {
     const fetchExpenseData = async () => {
-      const accessToken = localStorage.getItem("access_token");
+      const accessToken = localStorage.getItem("CL_access_token");
 
       if (!accessToken) {
         console.error("No access token found. Redirecting to login.");
@@ -51,7 +51,7 @@ const ExpenseUpdate = () => {
 
         if (response.status === 401 || response.status === 403) {
           console.error("Unauthorized. Redirecting to login...");
-          navigate("/login");
+          navigate("/");
           return;
         }
 
@@ -105,7 +105,7 @@ const ExpenseUpdate = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const accessToken = localStorage.getItem("access_token");
+    const accessToken = localStorage.getItem("CL_access_token");
     if (!accessToken) {
       console.error("No access token found. Redirecting to login.");
       navigate("/login");

@@ -103,7 +103,7 @@ const ExpenseWrite = () => {
       });
     }
 
-    const accessToken = localStorage.getItem("access_token");
+    const accessToken = localStorage.getItem("CL_access_token");
     if (!accessToken) {
       console.error("No access token found");
       return;

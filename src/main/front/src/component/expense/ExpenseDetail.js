@@ -21,9 +21,9 @@ const ExpenseDetail = () => {
   useEffect(() => {
     const fetchExpenseDetail = async () => {
       try {
-        const token = localStorage.getItem("access_token");
+        const token = localStorage.getItem("CL_access_token");
         if (!token) {
-          navigate("/login");
+          navigate("/");
           return;
         }
 
@@ -55,7 +55,7 @@ const ExpenseDetail = () => {
   const handleDelete = async () => {
     if (window.confirm("정말로 삭제하시겠습니까?")) {
       try {
-        const token = localStorage.getItem("access_token");
+        const token = localStorage.getItem("CL_access_token");
         if (!token) {
           navigate("/login");
           return;
@@ -97,7 +97,7 @@ const ExpenseDetail = () => {
 
     if (window.confirm(`이 경비를 ${action}하시겠습니까?`)) {
       try {
-        const token = localStorage.getItem("access_token");
+        const token = localStorage.getItem("CL_access_token");
         if (!token) {
           navigate("/login");
           return;
