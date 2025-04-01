@@ -1,0 +1,15 @@
+#schedule .calendar { width: 100%; text-align: center;}
+#schedule .calendar .calendar-header { display: flex; justify-content: flex-start; align-items: center; padding: 0 2rem}
+#schedule .calendar .calendar-header p { cursor: pointer; color: var(--primary_m); }
+#schedule .calendar .cal-month { font-size: var(--font_lg); color: var(--primary_m);}
+#schedule .calendar .weekdays { background-color: var(--natural_20); border-top: 1px solid var(--natural_40);border-bottom: 1px solid var(--natural_40)}
+#schedule .calendar .weekdays,
+#schedule .calendar .days { display: grid; grid-template-columns: repeat(7, 1fr); font-size: var(--font_md);}
+#schedule .calendar .days { grid-template-rows: repeat(6, 100px); }
+#schedule .calendar .weekdays div {  padding: 5px;}
+#schedule .calendar .day { display: flex; justify-content: flex-start; align-items: center; flex-direction: column; cursor: pointer; border-bottom: 1px solid var(--natural_40);}
+#schedule .calendar .day p { text-align: center; margin: 2px 0; }
+#schedule .calendar .day.inactive p { color: var(--natural_50); }
+#schedule .calendar .day.today p{ color: var(--primary_m); }
+/*#schedule .dark-area { display: block; position: fixed; top: 50%; left: 50%; transform:translate(-50%,-50%); width: var(--device-width); height: 100vh; background-color: rgba(0,0,0,0.4); z-index: 900; }*/
+/*#schedule .schedule-detail { display: block; position: fixed; bottom: 0; width: var(--device-width); height: 50vh; background-color: var(--natural_0); border-radius: var(--round-xlg) var(--round-xlg) 0 0; box-shadow: 0 -2px .5rem rgba(0,0,0,.2); z-index: 990;}*/
