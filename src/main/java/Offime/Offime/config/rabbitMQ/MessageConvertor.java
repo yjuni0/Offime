@@ -28,7 +28,7 @@ public class MessageConvertor {
 
         // 최종 메시지 생성
         log.info("{}의 {} 휴가 신청 건이 있습니다.", memberName, formattedDates);
-        return memberName + "의 " + formattedDates + " 의 휴가 신청 건이 있습니다.";
+        return memberName + "님의 " + formattedDates + " 의 휴가 신청 건이 있습니다.";
     }
 
     // 휴가 승인 메시지 생성
@@ -41,7 +41,7 @@ public class MessageConvertor {
 
         // 최종 메시지 생성
         log.info("{}의 {} 휴가가 승인 되었습니다.", memberName, formattedDates);
-        return memberName + "의 " + formattedDates + " 의 휴가가 승인 되었습니다.";
+        return memberName + "님의 " + formattedDates + " 의 휴가가 승인 되었습니다.";
     }
 
     public static String convertRejectVacationMessage(Vacation vacation) {
@@ -50,7 +50,7 @@ public class MessageConvertor {
         String formattedDates = dateFormatting(vacation.getStartDate(), vacation.getEndDate());
 
         log.info("{}의 {} 휴가가 반려되었습니다.", memberName, formattedDates);
-        return memberName + "의 "+formattedDates+" 의 휴가가 반려 되었습니다.";
+        return memberName + "님의 "+formattedDates+" 의 휴가가 반려 되었습니다.";
     }
 
 

@@ -6,10 +6,12 @@ import Offime.Offime.config.rabbitMQ.MessagePublisher;
 import Offime.Offime.dto.request.vacation.ReqVacation;
 import Offime.Offime.dto.response.vacation.ResVacation;
 import Offime.Offime.entity.member.Member;
+import Offime.Offime.entity.notifications.NotificationMessage;
 import Offime.Offime.entity.vacation.Vacation;
 import Offime.Offime.entity.vacation.VacationApprovalStatus;
 import Offime.Offime.exception.VacationException;
 import Offime.Offime.repository.member.MemberRepository;
+import Offime.Offime.repository.notification.NotificationMessageRepository;
 import Offime.Offime.repository.vacation.VacationRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,6 +33,8 @@ public class VacationService {
     private final VacationDtoMapper vacationDtoMapper;
     private final MessagePublisher messagePublisher;
     private final MemberRepository memberRepository;
+    private final NotificationMessageRepository notificationMessageRepository;
+
     // 조회
     public Page<ResVacation> getAllVacations(Member member, Pageable pageable) {
         log.info("요청 멤버{} 페이징{} : ", member.getId(),pageable);
@@ -48,6 +52,7 @@ public class VacationService {
             log.error("요청 휴가 id {}를 찾을 수 없음 또는  멤버 id가 다름 {}",id,member.getId());
             throw new IllegalArgumentException("해당 멤버만 조회 가능 "+member.getId());
         }
+
         log.info("요청 휴가 {} 멤버 id {} ",id,member.getId());
         return vacationDtoMapper.fromEntity(vacation);
     }

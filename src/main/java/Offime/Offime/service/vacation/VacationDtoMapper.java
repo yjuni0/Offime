@@ -28,6 +28,7 @@ public class VacationDtoMapper {
                 .endDate(vacation.getEndDate())
                 .reason(vacation.getReason())
                 .status(vacation.getStatus().getDescription())
+                .modifiedDate(vacation.getModifiedDate())
                 .build();
     }
 }

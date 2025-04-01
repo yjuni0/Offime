@@ -17,6 +17,7 @@ public class MessagePublisher {
     public void sendVacationMessage(String routingKey,Long memberId,String message) {
         NotificationMessage notificationMessage = new NotificationMessage();
         notificationMessage.setMemberId(memberId);
+        notificationMessage.setType("vacation");
         notificationMessage.setStatus("request");
         notificationMessage.setMessage(message);
         notificationMessage.setIsRead(false);
@@ -25,6 +26,7 @@ public class MessagePublisher {
     public void sendVacationApprovedMessage(String routingKey, Long memberId,Long vacationId,String message) {
         NotificationMessage notificationMessage = new NotificationMessage();
         notificationMessage.setMemberId(memberId);
+        notificationMessage.setType("vacation");
         notificationMessage.setTypeId(vacationId);
         notificationMessage.setStatus("approved");
         notificationMessage.setMessage(message);
@@ -34,6 +36,7 @@ public class MessagePublisher {
     public void sendVacationRejectedMessage(String routingKey,Long memberId,Long vacationId,String message) {
         NotificationMessage notificationMessage = new NotificationMessage();
         notificationMessage.setMemberId(memberId);
+        notificationMessage.setType("vacation");
         notificationMessage.setTypeId(vacationId);
         notificationMessage.setStatus("rejected");
         notificationMessage.setMessage(message);
