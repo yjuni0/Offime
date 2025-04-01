@@ -170,6 +170,13 @@ function Calender(){
                                    id="selectedDate"/>
                         </div>
                         <div className="inner">
+                            <ul className="color_list">
+                                <li className='bg_pm selected'></li>
+                                <li className='bg_p02'></li>
+                                <li className='bg_p03'></li>
+                                <li className='bg_p04'></li>
+                                <li className='bg_p05'></li>
+                            </ul>
                             <p className="fs_md mt_lg">일정 시간</p>
                             <div className='item-flex mt_md'>
                                 <input type="time" className='input-time' id="start-time"/> <p className="fs_md">~</p>
