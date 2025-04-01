@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import ExpensesCount from "./expense/ExpensesCount ";
-
 function ForCheck() {
   return (
     <div id={"container"}>

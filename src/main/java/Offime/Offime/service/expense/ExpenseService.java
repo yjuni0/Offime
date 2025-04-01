@@ -1,6 +1,6 @@
 package Offime.Offime.service.expense;
 
-import Offime.Offime.entity.expense.ExpenseStatus;
+import Offime.Offime.entity.common.RequestStatus;
 import Offime.Offime.exception.ExpenseNotFoundException;
 import Offime.Offime.dto.request.expense.ExpenseRequestDTO;
 import Offime.Offime.dto.response.expense.ExpenseResponseDTO;
@@ -41,12 +41,12 @@ public class ExpenseService {
     private String serverUrl;
 
     public long getPendingExpensesCount() {
-        List<Expense> pendingExpenses = expenseRepository.findByStatus(ExpenseStatus.PENDING);
+        List<Expense> pendingExpenses = expenseRepository.findByStatus(RequestStatus.PENDING);
         return pendingExpenses.size();
     }
 
     public long getRejectedExpensesCount() {
-        List<Expense> rejectedExpenses = expenseRepository.findByStatus(ExpenseStatus.REJECTED);
+        List<Expense> rejectedExpenses = expenseRepository.findByStatus(RequestStatus.REJECTED);
         return rejectedExpenses.size();
     }
 
@@ -57,21 +57,21 @@ public class ExpenseService {
     }
     // 대기 중인 게시물 가져오기
     public List<Expense> getPendingExpenses() {
-        return expenseRepository.findByStatus(ExpenseStatus.PENDING);
+        return expenseRepository.findByStatus(RequestStatus.PENDING);
     }
 
     // 게시물 승인
     public Expense approveExpense(Long id) {
-        return updateExpenseStatus(id, ExpenseStatus.APPROVED);
+        return updateExpenseStatus(id, RequestStatus.APPROVED);
     }
 
     // 게시물 거절
     public Expense rejectExpense(Long id) {
-        return updateExpenseStatus(id, ExpenseStatus.REJECTED);
+        return updateExpenseStatus(id, RequestStatus.REJECTED);
     }
 
     // 상태별 게시물 조회
-    public List<Expense> getExpensesByStatus(ExpenseStatus status) {
+    public List<Expense> getExpensesByStatus(RequestStatus status) {
         return expenseRepository.findByStatus(status);
     }
 
@@ -89,7 +89,7 @@ public class ExpenseService {
         expense.setCategory(expenseDTO.getCategory());
         expense.setExpenseDate(expenseDTO.getExpenseDate());
 
-        expense.setStatus(ExpenseStatus.PENDING);
+        expense.setStatus(RequestStatus.PENDING);
 
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         expense.setUsername(username);
@@ -239,7 +239,7 @@ public class ExpenseService {
     }
 
     // 상태 업데이트 (공통 로직)
-    private Expense updateExpenseStatus(Long id, ExpenseStatus status) {
+    private Expense updateExpenseStatus(Long id, RequestStatus status) {
         Expense expense = expenseRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Expense not found"));
 

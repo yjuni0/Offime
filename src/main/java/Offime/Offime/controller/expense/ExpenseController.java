@@ -4,13 +4,12 @@ import Offime.Offime.dto.request.expense.ExpenseRequestDTO;
 import Offime.Offime.dto.response.expense.ExpenseResponseDTO;
 import Offime.Offime.entity.expense.Expense;
 import Offime.Offime.entity.expense.ExpenseImage;
-import Offime.Offime.entity.expense.ExpenseStatus;
+import Offime.Offime.entity.common.RequestStatus;
 import Offime.Offime.repository.expense.ExpenseImageRepository;
 import Offime.Offime.service.expense.ExpenseService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -82,7 +81,7 @@ public class ExpenseController {
             logger.info("Parsed ExpenseRequestDTO in Controller: {}", expenseDTO);
 
             Expense createdExpense = expenseService.createExpense(expenseDTO, images);
-            createdExpense.setStatus(ExpenseStatus.PENDING); // 상태를 대기로 설정
+            createdExpense.setStatus(RequestStatus.PENDING); // 상태를 대기로 설정
             expenseService.saveExpense(createdExpense);
 
             List<ExpenseImage> expenseImages = expenseImageRepository.findByExpenseId(createdExpense.getId());
@@ -99,7 +98,7 @@ public class ExpenseController {
     @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping("/{id}/status")
     public ResponseEntity<ExpenseResponseDTO> updateExpenseStatus(@PathVariable Long id,
-                                                                  @RequestParam ExpenseStatus status) {
+                                                                  @RequestParam RequestStatus status) {
         logger.info("Updating expense status for id: {}, status: {}", id, status); // 요청 파라미터 로깅
 
         try {
@@ -127,7 +126,7 @@ public class ExpenseController {
 
     // 게시물 목록 조회 (전체/대기 상태)
     @GetMapping
-    public List<ExpenseResponseDTO> getExpenses(@RequestParam(required = false) ExpenseStatus status) {
+    public List<ExpenseResponseDTO> getExpenses(@RequestParam(required = false) RequestStatus status) {
         List<Expense> expenses = (status != null)
                 ? expenseService.getExpensesByStatus(status)
                 : expenseService.getExpenses();

@@ -201,7 +201,7 @@ const ExpenseList = () => {
               )}
             </ul>
             <button
-              className="btn btn-max btn-pm fs_lg mb_md mt_md"
+              className="btn btn-max btn-pm fs_lg mb_md mt_md "
               onClick={() => navigate("/ExpenseWrite")}
             >
               +
