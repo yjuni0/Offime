@@ -7,17 +7,17 @@ import ExpenseSearch from "./ExpenseSearch";
 import BackPage from "../BackPage";
 
 const ExpenseList = () => {
-  const [expenses, setExpenses] = useState([]); // 전체 경비 목록
-  const [filteredExpenses, setFilteredExpenses] = useState([]); // 필터링된 경비 목록
+  const [expenses, setExpenses] = useState([]);
+  const [filteredExpenses, setFilteredExpenses] = useState([]);
   const [token, setToken] = useState(null);
-  const [isLoading, setIsLoading] = useState(false); // 로딩 상태
-  const [error, setError] = useState(null); // 에러 상태
-  const [hasNoResults, setHasNoResults] = useState(false); // 검색 결과 없음 상태
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [hasNoResults, setHasNoResults] = useState(false);
   const navigate = useNavigate();
 
   const formatAmount = (amount) => {
     if (!amount) return "";
-    const amountString = String(amount); // 숫자를 문자열로 변환
+    const amountString = String(amount);
     return amountString
       .replace(/\D/g, "")
       .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -28,16 +28,16 @@ const ExpenseList = () => {
     if (storedToken) {
       setToken(storedToken);
     } else {
-      navigate("/"); // 토큰이 없으면 로그인 페이지로 리디렉션
+      navigate("/");
     }
   }, [navigate]);
 
   useEffect(() => {
-    if (!token) return; // token이 없으면 fetchData 실행하지 않음
+    if (!token) return;
 
     const fetchData = async () => {
-      setIsLoading(true); // 로딩 시작
-      setError(null); // 이전 에러 상태 초기화
+      setIsLoading(true);
+      setError(null);
 
       try {
         const expenseResponse = await fetch(
@@ -77,7 +77,7 @@ const ExpenseList = () => {
     };
 
     fetchData();
-  }, [token]); // token이 변경될 때만 fetchData가 실행됨
+  }, [token]);
 
   const handleTitleClick = (id) => {
     navigate(`/expenseDetail/${id}`);

@@ -6,7 +6,6 @@ import "../../css/common.css";
 import "../../css/reset.css";
 import "../../css/expense.css";
 
-// 금액 형식 변환 함수
 const formatAmount = (amount) => {
   if (!amount) return "";
   return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -163,13 +162,17 @@ const ExpenseDetail = () => {
                   {expense.imageUrls.map((url, index) => (
                     <img
                       key={index}
-                      src={url} // URL 직접 사용
+                      src={url}
                       alt={`Expense image ${index + 1}`}
                     />
                   ))}
                 </div>
               )}
               <div>
+                <div>
+                  <p className="fs_lg pb_sm">작성자</p>
+                  <p className="fs_md mb_md tc-pm">{expense.username}</p>
+                </div>
                 <div>
                   <p className="fs_lg pb_sm">금액</p>
                   <p className="fs_md mb_md tc-pm">
