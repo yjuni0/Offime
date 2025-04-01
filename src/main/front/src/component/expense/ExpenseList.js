@@ -243,7 +243,7 @@ const ExpenseList = () => {
                   key={pageNumber}
                   onClick={() => handlePageChange(pageNumber)}
                   id={currentPage === pageNumber ? "active" : ""}
-                  className="p_sm "
+                  className="p_sm fs_md"
                 >
                   {pageNumber}
                 </button>
@@ -252,7 +252,7 @@ const ExpenseList = () => {
             </div>
 
             <button
-              className="btn btn-max btn-pm fs_lg mb_md mt_md "
+              className="btn btn-max btn-pm fs_lg mb_md "
               onClick={() => navigate("/ExpenseWrite")}
             >
               +
