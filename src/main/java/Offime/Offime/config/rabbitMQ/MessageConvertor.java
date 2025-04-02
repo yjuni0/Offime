@@ -59,7 +59,7 @@ public class MessageConvertor {
     private static String dateFormatting(LocalDate startDate, LocalDate endDate) {
 
         // 날짜 차이를 계산하여 휴가 일수 구하기
-        long leaveDays = ChronoUnit.DAYS.between(startDate, endDate);
+        long leaveDays = ChronoUnit.DAYS.between(startDate, endDate)+1L;
 
         // 포맷된 날짜와 휴가 일수 반환
         return startDate + "부터 " + endDate + "까지 총 " + leaveDays + "일";

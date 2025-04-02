@@ -46,13 +46,14 @@ public class VacationService {
     }
 
     public ResVacation getVacationById(Member member,Long id) {
-        Vacation vacation = vacationRepository.findByMemberAndId(member,id);
+        Vacation vacation = vacationRepository.findById(id).orElseThrow(()->new IllegalArgumentException("없음"));
         log.info("요청 멤버{} 휴가 id {} : ", member.getId(),id);
-        if (vacation==null || !vacation.getMember().getId().equals(member.getId())) {
-            log.error("요청 휴가 id {}를 찾을 수 없음 또는  멤버 id가 다름 {}",id,member.getId());
-            throw new IllegalArgumentException("해당 멤버만 조회 가능 "+member.getId());
+        if (member.getRole() != Role.ADMIN){
+            if (vacation==null || !vacation.getMember().getId().equals(member.getId())) {
+                log.error("요청 휴가 id {}를 찾을 수 없음 또는  멤버 id가 다름 {}", id, member.getId());
+                throw new IllegalArgumentException("해당 멤버만 조회 가능 " + member.getId());
+            }
         }
-
         log.info("요청 휴가 {} 멤버 id {} ",id,member.getId());
         return vacationDtoMapper.fromEntity(vacation);
     }
@@ -68,8 +69,9 @@ public class VacationService {
         log.info("휴가 신청 성공 멤버{} , 휴가 id{} ",member.getId(),vacation.getId());
         vacationRepository.save(vacation);
         // 2. 휴가 신청 후 알림 전송 (RabbitMQ)
+        log.info(String.valueOf(vacation.getId()));
         String message = MessageConvertor.convertApplyVacationMessage(member.getId(),reqVacation,memberRepository);
-        messagePublisher.sendVacationMessage("vacation.request",member.getId(),message);  // 알림 전송
+        messagePublisher.sendVacationMessage("vacation.request",member.getId(), vacation.getId(), message);  // 알림 전송
         return vacationDtoMapper.fromEntity(vacation);
     }
 
