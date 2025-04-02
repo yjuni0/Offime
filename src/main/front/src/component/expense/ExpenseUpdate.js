@@ -146,7 +146,7 @@ const ExpenseUpdate = () => {
       });
 
       if (response.ok) {
-        navigate(`/expenseDetail/${id}`); // 수정된 후 상세 페이지로 이동
+        navigate(-1); // 수정된 후 상세 페이지로 이동
       } else {
         console.error("Failed to update expense", await response.text());
       }

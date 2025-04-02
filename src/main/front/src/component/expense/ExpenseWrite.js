@@ -121,7 +121,7 @@ const ExpenseWrite = () => {
         const data = await response.json();
 
         setExpense({ ...expense, photoUrls: data.photoUrls });
-        navigate("/expenseList");
+        navigate(-1);
       } else {
         const errorDetails = await response.text();
         console.error("Failed to create expense", errorDetails);

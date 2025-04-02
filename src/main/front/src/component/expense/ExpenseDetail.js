@@ -116,7 +116,7 @@ const ExpenseDetail = () => {
         if (response.ok) {
           const updatedExpense = await response.json();
           setExpense(updatedExpense);
-          navigate("/expenseList");
+          navigate(-1);
         } else {
           console.error("Error updating expense status:", response.status);
         }
@@ -136,7 +136,7 @@ const ExpenseDetail = () => {
       <main id="main" className="경비관리 상세">
         <section className="sec ">
           <div className="inner">
-            <div className="bg_n0 item bg_pm mt_md mb_md">
+            <div className="bg_n0 item bg_pm mt_md mb_md ">
               <div className="flex space-between">
                 <h3>{expense.title}</h3>
                 <div className="pt_sm">
