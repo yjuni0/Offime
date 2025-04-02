@@ -16,7 +16,7 @@ function SignUpForm() {
             name,
             password,
             phone,
-            status: 'PENDING', // 'PENDING' 상태로 가입 신청
+            status: 'PENDING',
         };
 
         try {
