@@ -6,18 +6,20 @@ import { axiosPrivate } from "../axios/axios";
 function Notification() {
   const auth = useContext(AuthContext);
   const [notifications, setNotifications] = useState([]);
-  const fetchNotifications = async () => {
-    try {
-      const res = await axiosPrivate.get("notification");
-      setNotifications(res.data);
-    } catch (error) {
-      console.error("");
-    }
-  };
   useEffect(() => {
+    const fetchNotifications = async () => {
+      try {
+        const res = await axiosPrivate.get("notification");
+        console.log("알림 리스트:", res.data);
+        setNotifications(res.data);
+      } catch (error) {
+        console.error("알림 데이터를 가져오는 중 오류 발생:", error);
+      }
+    };
+
     fetchNotifications();
-    console.log("AuthContext:", auth);
-  }, [auth]);
+  }, []); // auth 의존성 제거
+
   return <NotificationList notifications={notifications} />;
 }
 export default Notification;

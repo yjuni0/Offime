@@ -25,14 +25,14 @@ import ExpenseWrite from "../expense/ExpenseWrite";
 import ExpenseUpdate from "../expense/ExpenseUpdate";
 import Management from "../member/pages/Management";
 import MemberDetail from "../member/pages/MemberDetail";
-
+import VacationDetail from "../vacation/VacationDetail";
 import Notification from "../notification/Notification";
 function Router() {
   return (
     <Routes>
       <Route path="/" element={<Login />} />
       <Route path="/signUp" element={<SignUp />} />
-      <Route path="/pageTest" element={<PageTest />} />
+      {/* <Route path="/pageTest" element={<PageTest />} /> */}
       <Route path="/member" element={<Management />} />
       <Route path="/member/:id" element={<MemberDetail />} />
       <Route path="/member/signUpStatus" element={<SignUpConfirm />} />
@@ -56,6 +56,7 @@ function Router() {
       <Route path="/expenseWrite" element={<ExpenseWrite />} />
       <Route path="/expenseUpdate/:id" element={<ExpenseUpdate />} />
       <Route path="/notification" element={<Notification />} />
+      <Route path="/vacation/:vacationId" element={<VacationDetail />} />
     </Routes>
   );
 }
