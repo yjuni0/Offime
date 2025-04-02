@@ -1,15 +1,10 @@
 import { useNavigate } from "react-router-dom";
 import BackArrow from "./image/backArrow.png";
 import notificationIC from "./image/notification.png";
-<<<<<<< HEAD
 import useCount from "../notification/useCount";
 
-const HeaderNav = (props) => {
+const MainNav = (props) => {
   const count = useCount();
-
-=======
-const HeaderNav = (props) => {
->>>>>>> 4b2c3ec93060f2f4fdf9c609a163c566cb3b1a9f
   const navigate = useNavigate();
   return (
     <nav
@@ -44,7 +39,6 @@ const HeaderNav = (props) => {
         }}
         onClick={() => navigate("/notification")}
       >
-<<<<<<< HEAD
         {count > 0 && (
           <p
             style={{
@@ -65,8 +59,6 @@ const HeaderNav = (props) => {
             {count}
           </p>
         )}
-=======
->>>>>>> 4b2c3ec93060f2f4fdf9c609a163c566cb3b1a9f
         <img
           src={notificationIC}
           alt="알림"
@@ -76,4 +68,4 @@ const HeaderNav = (props) => {
     </nav>
   );
 };
-export default HeaderNav;
+export default MainNav;
