@@ -4,6 +4,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthProvider';
 import { HttpHeadersContext } from '../../context/HttpHeadersProvider';
 
+import '../../../css/member.css';
+
 function LoginForm() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -62,10 +64,12 @@ function LoginForm() {
 
     return (
         <form onSubmit={login} className="txt-a-c">
-            <div className="mt_xlg">
+            <h1 className="logo-spacing">Offime</h1>
+
+            <div className="input-spacing">
                 <input
                     type="email"
-                    className=""
+                    className="input-form"
                     placeholder="이메일을 입력하세요"
                     required
                     value={email}
@@ -73,22 +77,35 @@ function LoginForm() {
                 />
             </div>
 
-            <div className="mt_xlg pb_lg">
+            <div className="input-spacing">
                 <input
                     type="password"
-                    className=""
+                    className="input-form"
                     placeholder="비밀번호를 입력하세요"
                     required
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                 />
             </div>
-            <button type="submit" className="mlr-a btn btn-pm btn-md">
-                이메일로 로그인
-            </button>
-            <Link to={'/signUp'} className="mlr-a btn btn-pm btn-md">
-                회원가입
-            </Link>
+
+            <div className="login-container">
+                <button type="submit" className="button-spacing">
+                    이메일로 로그인
+                </button>
+                <Link to={'/forgot-password'} className="forgot-password">
+                    비밀번호 찾기
+                </Link>
+            </div>
+            <div className="button-container">
+                <div className="divider-line"></div>
+
+                <Link
+                    to={'/signUp'}
+                    className="mlr-a btn btn-pm btn-md button-spacing"
+                >
+                    회원가입
+                </Link>
+            </div>
         </form>
     );
 }

@@ -19,7 +19,7 @@ import ReportUpdate from '../reports/reports/update/ReportUpdate';
 
 import Schedule from '../schedule/Schedule';
 
-import ApprovedExpensesPage from "../expense/ApprovedExpensesPage";
+import ApprovedExpensesPage from '../expense/ApprovedExpensesPage';
 import ExpenseDetail from '../expense/ExpenseDetail';
 import ExpenseList from '../expense/ExpenseList';
 import ExpenseWrite from '../expense/ExpenseWrite';
@@ -30,6 +30,7 @@ import MemberDetail from '../member/pages/MemberDetail';
 import AttendanceBanner from '../attendance/AttendanceBanner';
 import AttendanceManagerForLeader from '../attendance/pages/leader/AttendanceManagerForLeader';
 import AttendanceManagerForEmployee from '../attendance/pages/employee/AttendanceManagerForEmployee';
+import Menu from '../member/pages/Menu';
 
 function Router() {
     return (
@@ -40,6 +41,7 @@ function Router() {
             <Route path="/member" element={<Management />} />
             <Route path="/member/:id" element={<MemberDetail />} />
             <Route path="/member/signUpStatus" element={<SignUpConfirm />} />
+            <Route path="/menu" element={<Menu />} />
 
             <Route path="/home" element={<Home />} />
             <Route path="/templates/create" element={<TemplateCreate />} />
@@ -62,17 +64,26 @@ function Router() {
             />
 
             {/*리포트 테스트용*/}
-            <Route path="/reports" element={<ForCheck/>}/>
+            <Route path="/reports" element={<ForCheck />} />
 
             <Route path="/expenseDetail/:id" element={<ExpenseDetail />} />
             <Route path="/expenseList" element={<ExpenseList />} />
             <Route path="/expenseWrite" element={<ExpenseWrite />} />
             <Route path="/expenseUpdate/:id" element={<ExpenseUpdate />} />
-            <Route path="/approved-expenses" element={<ApprovedExpensesPage />} />
+            <Route
+                path="/approved-expenses"
+                element={<ApprovedExpensesPage />}
+            />
 
             <Route path="/attendanceBanner" element={<AttendanceBanner />} />
-            <Route path="/attendanceManagerForLeader" element={<AttendanceManagerForLeader />} />
-            <Route path="/attendanceManagerForEmployee" element={<AttendanceManagerForEmployee />} />
+            <Route
+                path="/attendanceManagerForLeader"
+                element={<AttendanceManagerForLeader />}
+            />
+            <Route
+                path="/attendanceManagerForEmployee"
+                element={<AttendanceManagerForEmployee />}
+            />
         </Routes>
     );
 }

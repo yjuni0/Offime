@@ -9,6 +9,9 @@ const SignUpConfirm = () => {
         <section className="sec">
             <div className="inner">
                 <div className="item">
+                    <p className="fs_lg">가입 승인</p>
+
+                    <hr />
                     {error && <div>{error}</div>}
                     <table>
                         <tbody>
