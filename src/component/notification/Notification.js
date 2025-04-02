@@ -1,10 +1,7 @@
-import { useContext, useEffect, useState } from "react";
-import { AuthContext } from "../context/AuthProvider";
+import { useEffect, useState } from "react";
 import NotificationList from "./NotificationList";
-import axios from "axios";
 import { axiosPrivate } from "../axios/axios";
 function Notification() {
-  const auth = useContext(AuthContext);
   const [notifications, setNotifications] = useState([]);
   useEffect(() => {
     const fetchNotifications = async () => {

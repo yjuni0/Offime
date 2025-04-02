@@ -1,6 +1,11 @@
 import { Link } from "react-router-dom";
+<<<<<<< HEAD
 import PendingExpensesCount from "./expense/PendingExpensesCount ";
 import MainNav from "./header/MainNav";
+=======
+import MainNav from "./header/MainNav";
+import Sse from "./notification/useSseEffect";
+>>>>>>> 4b2c3ec93060f2f4fdf9c609a163c566cb3b1a9f
 
 function Home() {
   return (
@@ -23,6 +28,10 @@ function Home() {
         <button className={"btn btn-lg btn-pm mb_md mlr-a"}>
           <Link to={"/attendance/manager"}>출퇴근</Link>
         </button>
+<<<<<<< HEAD
+=======
+        <Sse />
+>>>>>>> 4b2c3ec93060f2f4fdf9c609a163c566cb3b1a9f
       </div>
     </>
   );

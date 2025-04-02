@@ -15,7 +15,7 @@ const useCount = () => {
       }
     };
     fetchNotifications();
-  }, []);
+  }, [count]);
 
   return count; // count를 반환
 };

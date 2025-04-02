@@ -37,7 +37,11 @@ const VacationDetail = () => {
         <p>{response.startDate}</p>
         <p>{response.endDate}</p>
       </div>
+<<<<<<< HEAD
 
+=======
+      
+>>>>>>> 4b2c3ec93060f2f4fdf9c609a163c566cb3b1a9f
       <button
         className="btn btn-max btn-e"
         style={{
