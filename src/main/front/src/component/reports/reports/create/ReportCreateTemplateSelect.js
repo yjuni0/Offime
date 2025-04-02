@@ -22,21 +22,29 @@ function ReportCreateTemplateSelect() {
                         <div className={"inner"}>
                             <div className={"item"}>
                                 <img style={{cursor: "pointer", width: "1.5rem", display: "inline"}}
-                                     src={"/image/backArrow.png"}
-                                     onClick={() => navigate(`/`)}/>
+                                     src={"/image/reportIcon/backArrow.png"}
+                                     onClick={() => navigate(-1)}/>
                             </div>
-                            <input className={"input-txt mlr-a"} type="text" placeholder={"템플릿명"}></input>
+
+
 
 
                             {templateList.map(template => (
-                                <div className={"item bg_pm mt_md"} key={template.id}
-                                            onClick={() => navigate(`/reports/create/${template.id}`)}
-                                            style={{cursor: "pointer"}}>
-                                            <p className={"txt-a-l"}>{template.title}</p>
-                                            <p className={"txt-a-r"}>{template.icon}</p>
-                                            <p className={"txt-a-r"}>{template.color}</p>
-                                        </div>
-                                ))}
+                                <div className={`item mt_md ${template.color === 1 ? "bg_pm" :
+                                    template.color === 2 ? "bg_pl" :
+                                        template.color === 3 ? "bg_pk" :
+                                            template.color === 4 ? "bg_p02" :
+                                                template.color === 5 ? "bg_p03" :
+                                                    template.color === 6 ? "bg_p04" :
+                                                        template.color === 7 ? "bg_p05" :
+                                                            template.color === 8 ? "bg_e" : ""}`} key={template.id}
+                                     onClick={() => navigate(`/reports/create/${template.id}`)}
+                                     style={{cursor: "pointer"}}>
+                                    <img src={`/image/reportIcon/icon${template.icon}.png`}  style={{width: "1.5rem", height: "1.5rem"}}/>
+                                    <p className={"txt-a-l"}>{template.title}</p>
+                                </div>
+                            ))}
+
 
                         </div>
                     </section>

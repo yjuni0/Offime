@@ -18,7 +18,7 @@ function ReportCreateOptionBlock({type, questionId, updateAnswer}) {
             {optionList.map((option) => (
                 <div>
                     <input type={type} name={`question-${questionId}`} value={option}
-                           onChange={ (e) => updateAnswer(questionId, e.target.value)}
+                           onChange={ (e) => updateAnswer(questionId, "CHOICE", e.target.value)}
                     /> {option}
                 </div>
             ))}
