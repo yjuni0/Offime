@@ -6,7 +6,6 @@ const ExpenseSearch = ({ onSearch }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // 검색어를 부모 컴포넌트로 전달
     onSearch(searchTerm);
   };
 
