@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-import { use, useState } from "react";
 
-=======
->>>>>>> 4b2c3ec93060f2f4fdf9c609a163c566cb3b1a9f
 const RequestStatus = ({ response }) => {
   return (
     <>

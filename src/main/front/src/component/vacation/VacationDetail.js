@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { axiosPrivate } from "../axios/axios";
 import CommonNav from "../header/CommonNav"; // CommonNav 컴포넌트 import
 import RequestStatus from "./requestStatus"; // RequestStatus 컴포넌트 import
+
 const VacationDetail = () => {
   const { vacationId } = useParams();
   const navigate = useNavigate();
@@ -37,11 +38,6 @@ const VacationDetail = () => {
         <p>{response.startDate}</p>
         <p>{response.endDate}</p>
       </div>
-<<<<<<< HEAD
-
-=======
-      
->>>>>>> 4b2c3ec93060f2f4fdf9c609a163c566cb3b1a9f
       <button
         className="btn btn-max btn-e"
         style={{

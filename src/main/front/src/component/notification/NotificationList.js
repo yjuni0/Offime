@@ -1,7 +1,4 @@
-<<<<<<< HEAD
-import { useState } from "react";
-=======
->>>>>>> 4b2c3ec93060f2f4fdf9c609a163c566cb3b1a9f
+
 import HeaderNav from "../header/CommonNav";
 import "../../css/common.css";
 import { Link } from "react-router-dom";
