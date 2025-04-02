@@ -45,7 +45,8 @@ public class ResAttendanceHistoryForLeaderDto {
         this.offWorkCount = offWorkCount;
     }
 
-    public static ResAttendanceHistoryForLeaderDto fromEntity(List<EventRecord> eventRecord, int workdayPersonnel, int absentPersonnelCount, LocalDate requestDate){
+    public static ResAttendanceHistoryForLeaderDto fromEntity(
+            List<EventRecord> eventRecord, int workdayPersonnel, int absentPersonnelCount, LocalDate requestDate){
 
 //        LocalDate today = LocalDate.now();
         LocalTime currentTime = LocalTime.now();

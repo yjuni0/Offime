@@ -1,37 +1,41 @@
 import BackPage from "../../../BackPage";
-import { useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react"; // useEffect 추가
+import { useState, useEffect } from "react";
 import '../../../../css/attendance.css';
 import axios from "axios";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 function AttendanceManagerForEmployee() {
-    const navigate = useNavigate();
     const [viewType, setViewType] = useState("weekly");
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [attendanceData, setAttendanceData] = useState(null);
+    // const [userName, setUserName] = useState(""); 
+    // useEffect(() => {
+    //     const storedUserName = localStorage.getItem("userName");
+    //     if (storedUserName) {
+    //         setUserName(storedUserName);
+    //     }
+    // }, []);
 
-    const handleButtonClick = (path) => {
-        navigate(path);
-    };
+    useEffect(() => { fetchAttendanceData(selectedDate); }, [viewType, selectedDate]);
 
-    // useEffect를 사용하여 컴포넌트 마운트 시 데이터 가져오기
-    useEffect(() => {
-        fetchAttendanceData(selectedDate);
-    }, [viewType, selectedDate]); // viewType 또는 selectedDate가 변경될 때마다 실행
 
     const fetchAttendanceData = async (date) => {
         try {
             const token = localStorage.getItem("CL_access_token");
-            if (!token) {
-                console.error("Token not found in localStorage");
-                return; // 토큰이 없으면 중단
-            }
-            const formattedDate = date.toISOString().split('T')[0]; // yyyy-MM-dd 형식으로 변환
+            const formattedDate = date.toISOString().split('T')[0];
 
             let response;
-            if (viewType === "weekly") {
+            if (viewType === "daily") {
+                response = await axios.get("http://localhost:8080/daily", {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    },
+                    params: {
+                        date: formattedDate
+                    }
+                });
+            } else if (viewType === "weekly") {
                 response = await axios.get("http://localhost:8080/weekly", {
                     params: { date: formattedDate },
                     headers: {
@@ -45,30 +49,23 @@ function AttendanceManagerForEmployee() {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
-                    params: { year: year, month: month }, // params로 변경
+                    params: { year: year, month: month },
                 });
-            } else {
-                console.error("Invalid view type");
-                return;
             }
-
-            console.log("Fetched Data:", response.data);
+            console.log("불러온 데이터:", response.data);
             setAttendanceData(response.data);
 
         } catch (error) {
-            console.error("Error fetching attendance data:", error);
-            // 오류 처리: 사용자에게 알림 등
+            console.error("데이터 로드 오류:", error);
         }
     };
 
     const handleDateChange = (date) => {
         setSelectedDate(date);
-        // fetchAttendanceData(date); // useEffect에서 처리하도록 변경
     };
 
     const handleViewTypeChange = (type) => {
         setViewType(type);
-        // fetchAttendanceData(selectedDate); // useEffect에서 처리하도록 변경
     };
 
     return (
@@ -77,54 +74,83 @@ function AttendanceManagerForEmployee() {
             <section className="sec">
                 <div className="inner">
                     <div className="item">
-                        <p className="fs_lg">구트</p>
+                        {/* <p className="fs_lg">{userName}</p> */}
+                        <p className="fs_lg">내 출퇴근 이력</p>
 
-                        {/* 주간/월간 보기 선택 버튼 */}
+                        {/* 일간/주간/월간 보기 선택 버튼 */}
                         <div className="view-type-selector">
+                            <button
+                                className={`btn ${viewType === "daily" ? "active" : ""}`}
+                                onClick={() => handleViewTypeChange("daily")}
+                            >일간 보기
+                            </button>
                             <button
                                 className={`btn ${viewType === "weekly" ? "active" : ""}`}
                                 onClick={() => handleViewTypeChange("weekly")}
-                            >
-                                주간 보기
+                            >주간 보기
                             </button>
                             <button
                                 className={`btn ${viewType === "monthly" ? "active" : ""}`}
                                 onClick={() => handleViewTypeChange("monthly")}
-                            >
-                                월간 보기
+                            >월간 보기
                             </button>
                         </div>
-
+                        
                         {/* 조건부로 달력 렌더링 */}
-                        {viewType === "weekly" && (
+                        {viewType === "daily" && (
                             <>
-                                <p className="fs_lg">주중 날짜 선택</p>
+                                <p className="fs_lg mt_md">날짜 선택</p>
                                 <DatePicker
                                     selected={selectedDate}
                                     onChange={handleDateChange}
-                                    dateFormat="yyyy-MM-dd" // 연도-월-일 형식
-                                    className="input input-txt fs_md mb_md"
+                                    dateFormat="yyyy-MM-dd"
+                                    className="input input-txt fs_md"
+                                />
+                            </>
+                        )}
+                        {viewType === "weekly" && (
+                            <>
+                                <p className="fs_lg mt_md">주중 날짜 선택</p>
+                                <DatePicker
+                                    selected={selectedDate}
+                                    onChange={handleDateChange}
+                                    dateFormat="yyyy-MM-dd"
+                                    className="input input-txt fs_md"
                                 />
                             </>
                         )}
                         {viewType === "monthly" && (
                             <>
-                                <p className="fs_lg">월 선택</p>
+                                <p className="fs_lg mt_md">월 선택</p>
                                 <DatePicker
                                     selected={selectedDate}
                                     onChange={handleDateChange}
-                                    dateFormat="yyyy-MM" // 연도-월 형식
-                                    showMonthYearPicker // 월과 연도를 선택할 수 있는 옵션
-                                    className="input input-txt fs_md mb_md"
+                                    dateFormat="yyyy-MM"
+                                    showMonthYearPicker
+                                    className="input input-txt fs_md"
                                 />
                             </>
                         )}
 
-                        {/* 출근 현황 */}
-                        <p className="fs_lg">출근 현황</p>
+                        <p className="fs_lg mt_md">출근 현황</p>
 
                         {attendanceData ? (
-                            <div>
+                            <>
+                                {viewType === "daily" && (
+                                    <>
+                                        <div className="item bg_pm mt_sm">
+                                            <div className="fs_md tc-w">일별 출근 기록</div>
+                                        </div>
+                                            <div className="attendance-details mt_md">
+                                                <p>날짜: {attendanceData.date}</p>
+                                                <p>출근 시간: {attendanceData.clockIn}</p>
+                                                <p>퇴근 시간: {attendanceData.clockOut}</p>
+                                                <p>자리 비움 시간: {attendanceData.outOfOffice}</p>
+                                                <p>복귀 시간: {attendanceData.returnToOffice}</p>
+                                                <p>자리 비움 타입: {attendanceData.outOfOfficeType}</p>
+                                            </div>
+                                    </>
+                                )}
                                 {viewType === "weekly" && (
                                     <>
                                         <div className="item bg_pm mt_sm">
@@ -133,41 +159,28 @@ function AttendanceManagerForEmployee() {
                                         </div>
 
                                         <div className="attendance-row mt_md">
-                                            <button
-                                                className="attendance-box bg_wt"
-                                                onClick={() => handleButtonClick('/clockInForEmployee')}
-                                            >
+                                            <div className="attendance-box bg_wt">
                                                 <div className="tc-pm">출근</div>
                                                 <div className="right-square tc-pm">{attendanceData.clockInCount}</div>
-                                            </button>
-                                            <button
-                                                className="attendance-box bg_wt"
-                                                onClick={() => handleButtonClick('/absentForEmployee')}
-                                            >
+                                            </div>
+                                            <div className="attendance-box bg_wt">
                                                 <div className="tc-e">미출근</div>
                                                 <div className="right-square tc-e">{attendanceData.absentCount}</div>
-                                            </button>
+                                            </div>
                                         </div>
 
-                                        <button className="attendance-row mt_md">
-                                            <div
-                                                className="attendance-box bg_p04"
-                                                onClick={() => handleButtonClick('/lateForEmployee')}
-                                            >
+                                        <div className="attendance-row mt_md">
+                                            <div className="attendance-box bg_p04">
                                                 <div className="tc-w">지각</div>
                                                 <div className="right-square">총 {attendanceData.totalLateMinutes} 분</div>
                                             </div>
-                                            <div
-                                                className="attendance-box bg_p03"
-                                                onClick={() => handleButtonClick('/leaveEarlyForEmployee')}
-                                            >
+                                            <div className="attendance-box bg_p03">
                                                 <div className="tc-w">조퇴</div>
                                                 <div className="right-square tc-w">총 {attendanceData.totalLeaveEarlyMinutes} 분</div>
                                             </div>
-                                        </button>
+                                        </div>
                                     </>
                                 )}
-
                                 {viewType === "monthly" && (
                                     <>
                                         <div className="item bg_pm mt_sm">
@@ -176,41 +189,29 @@ function AttendanceManagerForEmployee() {
                                         </div>
 
                                         <div className="attendance-row mt_md">
-                                            <button
-                                                className="attendance-box bg_wt"
-                                                onClick={() => handleButtonClick('/clockInForEmployee')}
-                                            >
+                                            <div className="attendance-box bg_wt">
                                                 <div className="tc-pm">출근</div>
                                                 <div className="right-square tc-pm">{attendanceData.clockInCount}</div>
-                                            </button>
-                                            <button
-                                                className="attendance-box bg_wt"
-                                                onClick={() => handleButtonClick('/absentForEmployee')}
-                                            >
+                                            </div>
+                                            <div className="attendance-box bg_wt">
                                                 <div className="tc-e">미출근</div>
                                                 <div className="right-square tc-e">{attendanceData.absentCount}</div>
-                                            </button>
+                                            </div>
                                         </div>
 
-                                        <button className="attendance-row mt_md">
-                                            <div
-                                                className="attendance-box bg_p04"
-                                                onClick={() => handleButtonClick('/lateForEmployee')}
-                                            >
+                                        <div className="attendance-row mt_md">
+                                            <div className="attendance-box bg_p04">
                                                 <div className="tc-w">지각</div>
                                                 <div className="right-square">총 {attendanceData.totalLateMinutes} 분</div>
                                             </div>
-                                            <div
-                                                className="attendance-box bg_p03"
-                                                onClick={() => handleButtonClick('/leaveEarlyForEmployee')}
-                                            >
+                                            <div className="attendance-box bg_p03">
                                                 <div className="tc-w">조퇴</div>
                                                 <div className="right-square tc-w">총 {attendanceData.totalLeaveEarlyMinutes} 분</div>
                                             </div>
-                                        </button>
+                                        </div>
                                     </>
                                 )}
-                            </div>
+                            </>
                         ) : (
                             <p>달력을 통해 날짜를 선택해 주세요.</p>
                         )}
@@ -220,5 +221,4 @@ function AttendanceManagerForEmployee() {
         </>
     );
 }
-
 export default AttendanceManagerForEmployee;

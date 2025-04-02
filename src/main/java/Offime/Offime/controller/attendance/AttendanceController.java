@@ -28,8 +28,7 @@ public class AttendanceController {
     }
 
     @PostMapping("/clockIn")
-    public ResponseEntity<String> clockIn(
-            @AuthenticationPrincipal Member member, @RequestBody ReqClockInDto dto) {
+    public ResponseEntity<String> clockIn(@AuthenticationPrincipal Member member, @RequestBody ReqClockInDto dto) {
         LocalDateTime now = LocalDateTime.now();
         try {
             attendanceService.clockIn(member, dto, now);
@@ -40,8 +39,7 @@ public class AttendanceController {
     }
 
     @PostMapping("/outOfOffice")
-    public ResponseEntity<String> outOfOffice(
-            @AuthenticationPrincipal Member member, @RequestBody ReqOutOfOfficeDto dto) {
+    public ResponseEntity<String> outOfOffice(@AuthenticationPrincipal Member member, @RequestBody ReqOutOfOfficeDto dto) {
         LocalDateTime now = LocalDateTime.now();
         try {
             attendanceService.outOfOffice(member, dto, now);
@@ -52,8 +50,7 @@ public class AttendanceController {
     }
 
     @PostMapping("/returnToOffice")
-    public ResponseEntity<String> returnToOffice(
-            @AuthenticationPrincipal Member member, @RequestBody ReqReturnToOfficeDto dto) {
+    public ResponseEntity<String> returnToOffice(@AuthenticationPrincipal Member member, @RequestBody ReqReturnToOfficeDto dto) {
         LocalDateTime now = LocalDateTime.now();
         try {
             attendanceService.returnToOffice(member, dto, now);
@@ -64,8 +61,7 @@ public class AttendanceController {
     }
 
     @PostMapping("/clockOut")
-    public ResponseEntity<String> clockOut(
-            @AuthenticationPrincipal Member member, @RequestBody ReqClockOutDto dto) {
+    public ResponseEntity<String> clockOut(@AuthenticationPrincipal Member member, @RequestBody ReqClockOutDto dto) {
         LocalDateTime now = LocalDateTime.now();
         try {
             attendanceService.clockOut(member, dto, now);
