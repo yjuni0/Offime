@@ -25,8 +25,11 @@ import ExpenseWrite from "../expense/ExpenseWrite";
 import ExpenseUpdate from "../expense/ExpenseUpdate";
 import Management from "../member/pages/Management";
 import MemberDetail from "../member/pages/MemberDetail";
-import VacationDetail from "../vacation/VacationDetail";
 import Notification from "../notification/Notification";
+import VacationApply from "../vacation/pages/VacationApply";
+import ResVacation from "../vacation/component/ResVacation";
+import VacationDetail from "../vacation/pages/VacationDetail";
+import SelectStatus from "../vacation/component/SelectStatus";
 function Router() {
   return (
     <Routes>
@@ -57,6 +60,8 @@ function Router() {
       <Route path="/expenseUpdate/:id" element={<ExpenseUpdate />} />
       <Route path="/notification" element={<Notification />} />
       <Route path="/vacation/:vacationId" element={<VacationDetail />} />
+      <Route path="/vacation" element={<ResVacation />} />
+      <Route path="/vacationList/:status?" element={<SelectStatus />} />
     </Routes>
   );
 }

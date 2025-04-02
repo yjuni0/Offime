@@ -1,4 +1,4 @@
-import { useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import "../../css/common.css";
 import useCount from "../notification/hooks/useCount";
 import useSelectTitle from "./utils/useSelectTitle";
@@ -8,10 +8,14 @@ import NotificationIcon from "./NotificationIcon";
 
 const CommonNav = (messages) => {
   const location = useLocation();
+  const navigate = useNavigate();
   const count = useCount(messages);
   const isMainPage = location.pathname === "/" || location.pathname === "/home";
+  const isVacationPage = location.pathname === "/vacation";
   const title = useSelectTitle(location);
-
+  const handleListPage = () => {
+    navigate("/vacationList");
+  };
   useEffect(() => {}, [count]);
 
   return (
@@ -37,6 +41,27 @@ const CommonNav = (messages) => {
       >
         {title}
       </h4>
+      {isVacationPage && (
+        <h4
+          style={{
+            marginLeft: "10px",
+            height: "60%",
+            width: "auto",
+            display: "flex",
+            alignItems: "center",
+            fontSize: "20px",
+            position: "absolute",
+            right: "40px",
+            bottom: "10px",
+          }}
+          onClick={handleListPage}
+        >
+          신청내역
+        </h4>
+      )}
+      <Link to={"/"}>
+        <h4>홈</h4>
+      </Link>
       <NotificationIcon count={count} />
     </nav>
   );

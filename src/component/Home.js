@@ -20,6 +20,9 @@ function Home() {
         <button className={"btn btn-lg btn-pm mb_md mlr-a"}>
           <Link to={"/attendance/manager"}>출퇴근</Link>
         </button>
+        <button className={"btn btn-lg btn-pm mb_md mlr-a"}>
+          <Link to={"/vacation"}>휴가</Link>
+        </button>
       </div>
     </>
   );

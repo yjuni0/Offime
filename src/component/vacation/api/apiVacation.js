@@ -1,5 +1,23 @@
 import { axiosPrivate } from "../../axios/axios";
 
+export const getLatestVacation = async () => {
+  try {
+    const res = await axiosPrivate.get("/vacation/latest");
+    return res.data;
+  } catch (error) {
+    console.error("최근 휴가 신청 내역 불러오기 오류 ", error);
+  }
+};
+
+export const fetchVacationList = async () => {
+  try {
+    const res = await axiosPrivate.get("/vacation");
+    return res.data;
+  } catch (error) {
+    console.error("휴가 리스트 불러오기 오류", error);
+  }
+};
+
 export const fetchVacationDetail = async (vacationId) => {
   try {
     const res = await axiosPrivate.get(`/vacation/${vacationId}`);

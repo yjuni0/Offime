@@ -1,19 +1,21 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import RequestStatus from "./utils/requestStatus"; // RequestStatus 컴포넌트 import
-import VacationActionButton from "./VacationActionButton";
+import RequestStatus from "../utils/requestStatus"; // RequestStatus 컴포넌트 import
+import VacationActionButton from "../component/VacationActionButton";
 import {
   fetchVacationDetail,
   cancelVacation,
   approveVacation,
   rejectVacation,
-} from "./api/apiVacation";
+} from "../api/apiVacation";
+
 const VacationDetail = () => {
   const { vacationId } = useParams();
   const navigate = useNavigate();
   const [response, setResponse] = useState(null);
   const isAdmin = localStorage.getItem("role") === "ADMIN"; // ✅ 관리자 여부 상태 추가
   console.log("isAdmin:", isAdmin);
+
   useEffect(() => {
     const getVacationDetail = async () => {
       try {
