@@ -1,41 +1,54 @@
-
 import HeaderNav from "../header/CommonNav";
 import "../../css/common.css";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { axiosPrivate } from "../axios/axios";
 const NotificationList = ({ notifications }) => {
+  const navigate = useNavigate();
+
+  // 알림 읽기 함수
+  const readNotification = async (id, type, typeId) => {
+    try {
+      const res = await axiosPrivate.patch(`/notification/${id}`);
+      if (res.status === 200) {
+        // 알림을 읽었으면 해당 알림의 상세 페이지로 이동
+        navigate(`/${type}/${typeId}`);
+      }
+    } catch (error) {
+      console.error("알림 읽기 오류:", error);
+    }
+  };
+
   return (
     <div>
-      <HeaderNav title={"알림 메시지"} />
       {notifications.length === 0 ? (
         <p>알림이 없습니다.</p>
       ) : (
         <ul>
           {notifications.map((notification) => (
-            <Link
-              to={`/${notification.type}/${notification.typeId}`}
+            <li
               key={notification.id}
+              className="bg_n0 item bg_pm"
+              style={{
+                position: "relative",
+                marginTop: "10px",
+                opacity: notification.isRead ? 0.5 : 1, // 읽었으면 opacity 0.5
+              }}
+              onClick={() =>
+                readNotification(
+                  notification.id,
+                  notification.type,
+                  notification.typeId
+                )
+              } // 클릭 시 알림 읽음 처리
             >
-              <li
-                className="bg_n0 item bg_pm"
-                style={{ position: "relative", marginTop: "10px" }}
-              >
-                <p className="fs_md">{notification.message}</p>
-                <p style={{ marginTop: "10px" }}>{notification.createdDate}</p>
-                <p
-                  style={{
-                    position: "absolute",
-                    right: "20px",
-                    bottom: "20px",
-                  }}
-                >
-                  ({notification.isRead ? "읽음" : "안 읽음"})
-                </p>
-              </li>
-            </Link>
+              <p className="fs_md">{notification.message}</p>
+              <p style={{ marginTop: "10px" }}>{notification.createdDate}</p>
+            </li>
           ))}
         </ul>
       )}
     </div>
   );
 };
+
 export default NotificationList;

@@ -1,11 +1,8 @@
 import { Link } from "react-router-dom";
-import MainNav from "./header/MainNav";
-import Sse from "./notification/useSseEffect";
 
 function Home() {
   return (
     <>
-      <MainNav />
       <h1>Check</h1>
       <div className={"item mlr-a"}>
         <button className={"btn btn-lg btn-pm mb_md mlr-a"}>
@@ -23,7 +20,6 @@ function Home() {
         <button className={"btn btn-lg btn-pm mb_md mlr-a"}>
           <Link to={"/attendance/manager"}>출퇴근</Link>
         </button>
-        <Sse />
       </div>
     </>
   );

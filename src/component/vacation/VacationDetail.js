@@ -1,36 +1,54 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { axiosPrivate } from "../axios/axios";
-import CommonNav from "../header/CommonNav"; // CommonNav 컴포넌트 import
-import RequestStatus from "./features/requestStatus"; // RequestStatus 컴포넌트 import
-
+import RequestStatus from "./utils/requestStatus"; // RequestStatus 컴포넌트 import
+import VacationActionButton from "./VacationActionButton";
+import {
+  fetchVacationDetail,
+  cancelVacation,
+  approveVacation,
+  rejectVacation,
+} from "./api/apiVacation";
 const VacationDetail = () => {
   const { vacationId } = useParams();
   const navigate = useNavigate();
-  const [response, setResponse] = useState(null); // 상태 초기화
-
+  const [response, setResponse] = useState(null);
+  const isAdmin = localStorage.getItem("role") === "ADMIN"; // ✅ 관리자 여부 상태 추가
+  console.log("isAdmin:", isAdmin);
   useEffect(() => {
-    const fetchVacationDetail = async () => {
+    const getVacationDetail = async () => {
       try {
-        const response = await axiosPrivate.get(`/vacation/${vacationId}`);
-        console.log("휴가 상세 정보:", response.data);
-        setResponse(response.data); // 상태 업데이트
+        const res = await fetchVacationDetail(vacationId);
+        console.log("휴가 상세 정보:", res);
+        setResponse(res);
       } catch (error) {
         console.error("휴가 상세 정보를 가져오는 중 오류 발생:", error);
-        navigate("/home"); // 홈으로 리다이렉트
+        navigate("/home");
       }
     };
-    fetchVacationDetail(); // 함수 호출
-  }, [vacationId, navigate]); // 의존성 배열에 vacationId와 navigate 추가
+    getVacationDetail();
+  }, [vacationId, navigate]);
 
-  // 상태가 로딩 중일 때는 렌더링을 지연시킴
   if (!response) {
     return <p>로딩 중...</p>;
   }
 
+  const handleCancel = async () => {
+    await cancelVacation(vacationId);
+    navigate("/vacation"); // 취소 후 목록 페이지로 이동
+  };
+
+  const handleApprove = async () => {
+    await approveVacation(vacationId);
+    navigate("/vacation");
+  };
+
+  const handleReject = async () => {
+    await rejectVacation(vacationId);
+    navigate("/vacation");
+  };
+
   return (
     <>
-      <CommonNav title={"신청 휴가"} />
       <RequestStatus response={response} />
       <div className="bg_n0 item" style={{ marginTop: "20px" }}>
         <p>{response.status}</p>
@@ -38,17 +56,14 @@ const VacationDetail = () => {
         <p>{response.startDate}</p>
         <p>{response.endDate}</p>
       </div>
-      <button
-        className="btn btn-max btn-e"
-        style={{
-          width: "460px",
-          marginTop: "20px",
-          position: "fixed",
-          bottom: "20px", // 버튼을 화면 하단에 고정
-        }}
-      >
-        취소
-      </button>
+
+      {/* ✅ 버튼 컴포넌트 적용 */}
+      <VacationActionButton
+        isAdmin={isAdmin}
+        onCancel={handleCancel}
+        onApprove={handleApprove}
+        onReject={handleReject}
+      />
     </>
   );
 };
