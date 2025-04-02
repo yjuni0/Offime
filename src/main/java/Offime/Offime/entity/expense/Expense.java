@@ -1,5 +1,6 @@
 package Offime.Offime.entity.expense;
 
+import Offime.Offime.entity.common.RequestStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -27,7 +28,7 @@ public class Expense {
     private String category;  // 식비, 교통, 숙박, 경조사, 기타
 
     @Enumerated(EnumType.STRING)
-    private ExpenseStatus status;
+    private RequestStatus status;
 
     @Column(name = "expense_date", nullable = false)
     private LocalDate expenseDate;

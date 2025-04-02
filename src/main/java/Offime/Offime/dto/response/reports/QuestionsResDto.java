@@ -26,7 +26,7 @@ public class QuestionsResDto {
 
     public static QuestionsResDto fromEntity(Questions questions) {
         return QuestionsResDto.builder()
-                .id(questions.getID())
+                .id(questions.getId())
                 .questionText(questions.getQuestionText())
                 .order(questions.getOrder())
                 .type(questions.getType())

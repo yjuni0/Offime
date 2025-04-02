@@ -6,7 +6,6 @@ import "../../css/common.css";
 import "../../css/reset.css";
 import "../../css/expense.css";
 
-// 금액 형식 변환 함수
 const formatAmount = (amount) => {
   if (!amount) return "";
   return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -21,9 +20,9 @@ const ExpenseDetail = () => {
   useEffect(() => {
     const fetchExpenseDetail = async () => {
       try {
-        const token = localStorage.getItem("access_token");
+        const token = localStorage.getItem("CL_access_token");
         if (!token) {
-          navigate("/login");
+          navigate("/");
           return;
         }
 
@@ -55,7 +54,7 @@ const ExpenseDetail = () => {
   const handleDelete = async () => {
     if (window.confirm("정말로 삭제하시겠습니까?")) {
       try {
-        const token = localStorage.getItem("access_token");
+        const token = localStorage.getItem("CL_access_token");
         if (!token) {
           navigate("/login");
           return;
@@ -97,7 +96,7 @@ const ExpenseDetail = () => {
 
     if (window.confirm(`이 경비를 ${action}하시겠습니까?`)) {
       try {
-        const token = localStorage.getItem("access_token");
+        const token = localStorage.getItem("CL_access_token");
         if (!token) {
           navigate("/login");
           return;
@@ -117,7 +116,7 @@ const ExpenseDetail = () => {
         if (response.ok) {
           const updatedExpense = await response.json();
           setExpense(updatedExpense);
-          navigate("/expenseList");
+          navigate(-1);
         } else {
           console.error("Error updating expense status:", response.status);
         }
@@ -137,7 +136,7 @@ const ExpenseDetail = () => {
       <main id="main" className="경비관리 상세">
         <section className="sec ">
           <div className="inner">
-            <div className="bg_n0 item bg_pm mt_md mb_md">
+            <div className="bg_n0 item bg_pm mt_md mb_md ">
               <div className="flex space-between">
                 <h3>{expense.title}</h3>
                 <div className="pt_sm">
@@ -163,13 +162,17 @@ const ExpenseDetail = () => {
                   {expense.imageUrls.map((url, index) => (
                     <img
                       key={index}
-                      src={url} // URL 직접 사용
+                      src={url}
                       alt={`Expense image ${index + 1}`}
                     />
                   ))}
                 </div>
               )}
               <div>
+                <div>
+                  <p className="fs_lg pb_sm">작성자</p>
+                  <p className="fs_md mb_md tc-pm">{expense.username}</p>
+                </div>
                 <div>
                   <p className="fs_lg pb_sm">금액</p>
                   <p className="fs_md mb_md tc-pm">

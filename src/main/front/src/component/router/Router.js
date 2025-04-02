@@ -19,6 +19,7 @@ import ReportUpdate from '../reports/reports/update/ReportUpdate';
 
 import Schedule from '../schedule/Schedule';
 
+import ApprovedExpensesPage from "../expense/ApprovedExpensesPage";
 import ExpenseDetail from '../expense/ExpenseDetail';
 import ExpenseList from '../expense/ExpenseList';
 import ExpenseWrite from '../expense/ExpenseWrite';
@@ -60,10 +61,14 @@ function Router() {
                 element={<ReportUpdate />}
             />
 
+            {/*리포트 테스트용*/}
+            <Route path="/reports" element={<ForCheck/>}/>
+
             <Route path="/expenseDetail/:id" element={<ExpenseDetail />} />
             <Route path="/expenseList" element={<ExpenseList />} />
             <Route path="/expenseWrite" element={<ExpenseWrite />} />
             <Route path="/expenseUpdate/:id" element={<ExpenseUpdate />} />
+            <Route path="/approved-expenses" element={<ApprovedExpensesPage />} />
 
             <Route path="/attendanceBanner" element={<AttendanceBanner />} />
             <Route path="/attendanceManagerForLeader" element={<AttendanceManagerForLeader />} />

@@ -12,10 +12,16 @@ const formatAmount = (amount) => {
 
 const ExpenseWrite = () => {
   const navigate = useNavigate();
-  const [previewImages, setPreviewImages] = useState([]); // 빈 배열로 초기화
-  const [files, setFiles] = useState([]); // 빈 배열로 초기화
+  const [previewImages, setPreviewImages] = useState([]);
+  const [files, setFiles] = useState([]);
   const [expense, setExpense] = useState({
-
+    title: "",
+    content: "",
+    category: "",
+    date: "",
+    photoUrls: [],
+    amounts: [{ amount: "" }],
+    totalAmount: 0,
   });
 
   const handleChange = (e, index) => {
@@ -80,7 +86,6 @@ const ExpenseWrite = () => {
     const formData = new FormData();
     const totalAmount = calculateTotalAmount();
 
-    // 날짜 값 확인
     const expenseDto = {
       title: expense.title,
       content: expense.content,
@@ -97,7 +102,7 @@ const ExpenseWrite = () => {
       });
     }
 
-    const accessToken = localStorage.getItem("access_token");
+    const accessToken = localStorage.getItem("CL_access_token");
     if (!accessToken) {
       console.error("No access token found");
       return;
@@ -114,9 +119,9 @@ const ExpenseWrite = () => {
 
       if (response.ok) {
         const data = await response.json();
-        // 백엔드에서 반환된 photoUrls 배열을 업데이트
+
         setExpense({ ...expense, photoUrls: data.photoUrls });
-        navigate("/expenseList"); // 리스트 페이지로 이동
+        navigate(-1);
       } else {
         const errorDetails = await response.text();
         console.error("Failed to create expense", errorDetails);

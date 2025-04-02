@@ -5,7 +5,7 @@ import "../../css/common.css";
 import "../../css/reset.css";
 import "../../css/expense.css";
 
-const PendingExpensesCount = () => {
+const ExpensesCount = () => {
   const [pendingCount, setPendingCount] = useState(0);
   const [rejectedCount, setRejectedCount] = useState("");
   const [error, setError] = useState(null);
@@ -13,7 +13,7 @@ const PendingExpensesCount = () => {
   useEffect(() => {
     const fetchCounts = async () => {
       try {
-        const token = localStorage.getItem("access_token");
+        const token = localStorage.getItem("CL_access_token");
         if (!token) {
           navigate("/");
           return;
@@ -77,10 +77,10 @@ const PendingExpensesCount = () => {
       >
         <h3 className="ml_xlg mr_lg">경비 관리</h3>
         <h3 className="tc-pm ml_xlg pl_xlg ">{pendingCount}</h3>
-        <h3 className="tc-p5 ml_md">{rejectedCount}</h3>
+        <h3 className="tc-p5 pl_xlg">{rejectedCount}</h3>
       </div>
     </>
   );
 };
 
-export default PendingExpensesCount;
+export default ExpensesCount;
