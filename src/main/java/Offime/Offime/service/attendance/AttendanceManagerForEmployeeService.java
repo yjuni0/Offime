@@ -1,6 +1,7 @@
 package Offime.Offime.service.attendance;
 
 import Offime.Offime.dto.response.attendance.ResAttendanceHistoryForEmployeeDto;
+import Offime.Offime.dto.response.attendance.ResAttendanceRecordDto;
 import Offime.Offime.entity.attendance.EventRecord;
 import Offime.Offime.entity.member.Member;
 import Offime.Offime.repository.attendance.EventRecordRepository;
@@ -16,8 +17,8 @@ public class AttendanceManagerForEmployeeService {
 
     private final EventRecordRepository eventRecordRepository;
 
-    public ResAttendanceHistoryForEmployeeDto getWeeklyAttendanceHistory(Member member, int year, int month, int startDay) {
-        List<EventRecord> records = getWeeklyRecords(member, year, month, startDay);
+    public ResAttendanceHistoryForEmployeeDto getWeeklyAttendanceHistory(Member member, LocalDate date) {
+        List<EventRecord> records = getWeeklyRecords(member, date);
         return ResAttendanceHistoryForEmployeeDto.fromEntity(records);
     }
 
@@ -26,9 +27,14 @@ public class AttendanceManagerForEmployeeService {
         return ResAttendanceHistoryForEmployeeDto.fromEntity(records);
     }
 
-    private List<EventRecord> getWeeklyRecords(Member member, int year, int month, int startDay) {
-        LocalDate startOfWeek = LocalDate.of(year, month, startDay);
-        LocalDate endOfWeek = startOfWeek.plusDays(6);
+    public ResAttendanceRecordDto getDailyAttendanceRecord(Member member, LocalDate date){
+        List<EventRecord> records = getDailyRecords(member, date);
+        return ResAttendanceRecordDto.fromEntity(records, date);
+    }
+
+    private List<EventRecord> getWeeklyRecords(Member member, LocalDate date) {
+        LocalDate startOfWeek = date.with(java.time.DayOfWeek.MONDAY); // 주간 시작일 계산
+        LocalDate endOfWeek = startOfWeek.plusDays(6); // 주간 종료일 계산
         return eventRecordRepository.findByMemberAndDateBetween(member, startOfWeek, endOfWeek);
     }
 
@@ -36,5 +42,9 @@ public class AttendanceManagerForEmployeeService {
         LocalDate startOfMonth = LocalDate.of(year, month, 1);
         LocalDate endOfMonth = startOfMonth.plusMonths(1).minusDays(1);
         return eventRecordRepository.findByMemberAndDateBetween(member, startOfMonth, endOfMonth);
+    }
+
+    private List<EventRecord> getDailyRecords(Member member, LocalDate date) {
+        return eventRecordRepository.findByMemberAndDate(member, date);
     }
 }

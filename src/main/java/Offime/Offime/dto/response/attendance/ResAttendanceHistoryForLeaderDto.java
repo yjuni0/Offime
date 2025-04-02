@@ -10,7 +10,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
-import static Offime.Offime.entity.attendance.WorkStatus.*;
+import static Offime.Offime.entity.member.WorkStatus.*;
 
 @Getter
 @NoArgsConstructor
@@ -45,7 +45,8 @@ public class ResAttendanceHistoryForLeaderDto {
         this.offWorkCount = offWorkCount;
     }
 
-    public static ResAttendanceHistoryForLeaderDto fromEntity(List<EventRecord> eventRecord, int workdayPersonnel, int absentPersonnelCount, LocalDate requestDate){
+    public static ResAttendanceHistoryForLeaderDto fromEntity(
+            List<EventRecord> eventRecord, int workdayPersonnel, int absentPersonnelCount, LocalDate requestDate){
 
 //        LocalDate today = LocalDate.now();
         LocalTime currentTime = LocalTime.now();

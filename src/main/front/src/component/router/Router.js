@@ -27,6 +27,10 @@ import ExpenseUpdate from '../expense/ExpenseUpdate';
 import Management from '../member/pages/Management';
 import MemberDetail from '../member/pages/MemberDetail';
 
+import AttendanceBanner from '../attendance/AttendanceBanner';
+import AttendanceManagerForLeader from '../attendance/pages/leader/AttendanceManagerForLeader';
+import AttendanceManagerForEmployee from '../attendance/pages/employee/AttendanceManagerForEmployee';
+
 function Router() {
     return (
         <Routes>
@@ -65,6 +69,10 @@ function Router() {
             <Route path="/expenseWrite" element={<ExpenseWrite />} />
             <Route path="/expenseUpdate/:id" element={<ExpenseUpdate />} />
             <Route path="/approved-expenses" element={<ApprovedExpensesPage />} />
+
+            <Route path="/attendanceBanner" element={<AttendanceBanner />} />
+            <Route path="/attendanceManagerForLeader" element={<AttendanceManagerForLeader />} />
+            <Route path="/attendanceManagerForEmployee" element={<AttendanceManagerForEmployee />} />
         </Routes>
     );
 }
