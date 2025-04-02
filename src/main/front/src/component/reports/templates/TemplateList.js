@@ -27,10 +27,9 @@ function TemplateList() {
             <div className={"inner"}>
                 <div className={"item"}>
                     <img style={{cursor: "pointer", width: "1.5rem", display: "inline"}}
-                         src={"/image/backArrow.png"}
+                         src={"/image/reportIcon/backArrow.png"}
                          onClick={() => navigate(-1)}/>
                 </div>
-                <input className={"input-txt mlr-a"} type="text" placeholder={"템플릿명"}></input>
 
 
                 {templateList.map(template => (
@@ -42,9 +41,11 @@ function TemplateList() {
                                         template.color === 6 ? "bg_p04" :
                                             template.color === 7 ? "bg_p05" :
                                                 template.color === 8 ? "bg_e" : ""}`} key={template.id}>
-                        <img src={`/image/reportIcon/icon${template.icon}.png`}  style={{width: "1.5rem", height: "1.5rem"}}/>
+                        <img src={`/image/reportIcon/icon${template.icon}.png`}
+                             style={{width: "1.5rem", height: "1.5rem"}}/>
                         <p className={"txt-a-l"}>{template.title}</p>
-                        <button onClick={() => deleteTemplate(template.id)}>삭제</button>
+                        <img style={{cursor: "pointer", width: "1.5rem", display: "inline"}}
+                             src={"/image/reportIcon/recyclebin.png"} onClick={() => deleteTemplate(template.id)}/>
                     </div>
                 ))}
 

@@ -72,6 +72,33 @@ function ReportUpdate() {
         await axios.put(`http://localhost:8080/reports/update/${reportId}`, data);
     }
 
+    const handleFileChange = async (e, questionId) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const formData = new FormData();
+        formData.append("file", file);
+
+        try {
+            const res = await axios.post("http://localhost:8080/file/upload", formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            });
+
+            const fileUrl = res.data;
+
+            setResponseData((prev) =>
+                prev.map((r) =>
+                    r.questionId === questionId ? { ...r, fileUrl } : r
+                )
+            );
+        } catch (err) {
+            console.error("파일 업로드 실패", err);
+        }
+    };
+
+
     return (
 
         <section className={"sec"}>
@@ -139,6 +166,40 @@ function ReportUpdate() {
                                         type={"date"}
                                         value={responseData && responseData.find((r) => r.questionId === q.id)?.endDate}
                                         onChange={(e) => setResponseData((prev) => prev.map((r) => r.questionId === q.id ? {...r, endDate: e.target.value} : r))}/></>}
+
+                                {q.type === "FILE" && (
+                                    <div>
+                                        <input
+                                            type="file"
+                                            onChange={(e) => handleFileChange(e, q.id)}
+                                        />
+                                    </div>
+                                )}
+                                {q.type === "IMAGE" && (
+                                    <div>
+                                        {
+                                            (() => {
+                                                const fileUrl = responseData.find((r) => r.questionId === q.id)?.fileUrl;
+                                                const fileName = fileUrl ? fileUrl.split("/").pop() : "";
+                                                const downloadUrl = fileName ? `http://localhost:8080/file/download/${encodeURIComponent(fileName)}` : "";
+
+                                                return downloadUrl && (
+                                                    <img
+                                                        src={downloadUrl}
+                                                        alt="업로드된 이미지"
+                                                        style={{ width: "150px", marginBottom: "0.5rem" }}
+                                                    />
+                                                );
+                                            })()
+                                        }
+                                        <input
+                                            type="file"
+                                            accept="image/*"
+                                            onChange={(e) => handleFileChange(e, q.id)}
+                                        />
+                                    </div>
+                                )}
+
 
                                 {q.type === "SECTION" && <hr className={"mt_lg mb_lg"}/>}
                             </div>

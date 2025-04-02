@@ -20,17 +20,19 @@ public class ResponseResDto {
     private LocalTime endTime;
     private LocalDate startDate;
     private LocalDate endDate;
+    private String fileUrl;
     private Long questionId;
     private Long reportId;
 
     @Builder
-    public ResponseResDto(Long id, String answerText, LocalTime startTime, LocalTime endTime, LocalDate startDate, LocalDate endDate, Long questionId, Long reportId) {
+    public ResponseResDto(Long id, String answerText, LocalTime startTime, LocalTime endTime, LocalDate startDate, LocalDate endDate,String fileUrl, Long questionId, Long reportId) {
         this.id = id;
         this.answerText = answerText;
         this.startTime = startTime;
         this.endTime = endTime;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.fileUrl = fileUrl;
         this.questionId = questionId;
         this.reportId = reportId;
     }
@@ -43,6 +45,7 @@ public class ResponseResDto {
                 .endTime(responses.getEndTime())
                 .startDate(responses.getStartDate())
                 .endDate(responses.getEndDate())
+                .fileUrl(responses.getFileUrl())
                 .questionId(responses.getQuestion().getId())
                 .reportId(responses.getReport().getId())
                 .build();

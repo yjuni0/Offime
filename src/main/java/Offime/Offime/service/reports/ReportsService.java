@@ -58,6 +58,7 @@ public class ReportsService {
             responses.setEndTime(responseData.getEndTime());
             responses.setStartDate(responseData.getStartDate());
             responses.setEndDate(responseData.getEndDate());
+            responses.setFileUrl(responseData.getFileUrl());
             responses.setAnswerText(responseData.getAnswerText());
 
             Questions question = questionsRepository.findById(responseData.getQuestionId()).orElseThrow(() -> new NoSuchElementException());
@@ -100,6 +101,7 @@ public class ReportsService {
                         responses.setEndTime(responseData.getEndTime());
                         responses.setStartDate(responseData.getStartDate());
                         responses.setEndDate(responseData.getEndDate());
+                        responses.setFileUrl(responseData.getFileUrl());
                         responsesRepository.save(responses);
                     });
                 });

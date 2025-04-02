@@ -40,4 +40,7 @@ public class Responses {
 
     @Column(name = "END_DATE")
     private LocalDate endDate;
+
+    @Column(name = "FILE_URL")
+    private String fileUrl;
 }

@@ -23,7 +23,7 @@ function ReportList() {
                             <div className={"item"}>
                                 <div>
                                     <img onClick={() => navigate("/reports")}
-                                         style={{cursor: "pointer", width: "1.5rem", display: "inline"}} src={"/image/backArrow.png"}/>
+                                         style={{cursor: "pointer", width: "1.5rem", display: "inline"}} src={"/image/reportIcon/backArrow.png"}/>
                                     <p className={"txt-a-l ml_sm"} style={{display:"inline"}}>보고서</p>
                                 </div>
                                 {reportList.map((report) => (

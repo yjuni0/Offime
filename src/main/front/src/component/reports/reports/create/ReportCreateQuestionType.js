@@ -1,10 +1,13 @@
 import ReportCreateOptionBlock from "./ReportCreateOptionBlock";
 import {useEffect, useState} from "react";
+import axios from "axios";
 
 function ReportCreateQuestionType({type, questionId, setResponseData}) {
 
     const [timeRange, setTimeRange] = useState({startTime: "", endTime: ""});
     const [dateRange, setDateRange] = useState({startDate: "", endDate: ""});
+
+
 
     useEffect(() => {
         if (!timeRange) return
@@ -70,6 +73,29 @@ function ReportCreateQuestionType({type, questionId, setResponseData}) {
         });
     };
 
+    const handleFileUpload = async (file, questionId) => {
+        const formData = new FormData();
+        formData.append("file", file);
+
+        const res = await axios.post("http://localhost:8080/file/upload", formData, {
+            headers: { "Content-Type": "multipart/form-data" },
+        });
+
+        const fileUrl = res.data;
+
+        // 파일 URL을 responseData에 저장
+        setResponseData((prev) => {
+            const exists = prev.find((r) => r.questionId === questionId);
+            if (exists) {
+                return prev.map((r) =>
+                    r.questionId === questionId ? { ...r, fileUrl } : r
+                );
+            } else {
+                return [...prev, { questionId, fileUrl }];
+            }
+        });
+    };
+
     switch (type) {
         case "TEXT" :
             return <input className={"mlr-a input-txt mt_md input-max"} type={"text"} placeholder={"입력"}
@@ -96,12 +122,23 @@ function ReportCreateQuestionType({type, questionId, setResponseData}) {
                 ~
                 <input type={"date"} onChange={(e) => setDateRange({...dateRange, endDate: e.target.value})}/>
             </>
-        case "EMPLOYEE_SELECT" :
-            return
         case "IMAGE" :
-            return <input type={"file"} />
+            return <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => {
+                    const file = e.target.files[0];
+                    if (file) handleFileUpload(file, questionId);
+                }}
+            />
         case "FILE" :
-            return <input type={"file"}/>
+            return <input
+                type="file"
+                onChange={(e) => {
+                    const file = e.target.files[0];
+                    if (file) handleFileUpload(file, questionId);
+                }}
+            />
         case "SECTION" :
             return <hr className={"mt_lg mb_lg"}/>
     }

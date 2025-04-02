@@ -55,25 +55,32 @@ function ReportRead() {
         <section className={"sec"}>
             <div className={"inner"}>
                 <div className={"item"}>
+                    <div style={{display:"flex", justifyContent:"space-between" }}>
                     <img style={{cursor: "pointer", width: "1.5rem", display: "inline"}}
-                         src={"/image/backArrow.png"}
+                         src={"/image/reportIcon/backArrow.png"}
                          onClick={() => navigate(`/reports/read`)}/>
-                    <button onClick={reportDelete}>삭제</button>
+                    <img style={{cursor: "pointer", width: "1.5rem", display: "inline"}} src={"/image/reportIcon/recyclebin.png"} onClick={reportDelete}/>
+                    </div>
                     <div key={templateData.id}>
-                        <p>{templateData.title}</p>
+
                         <div>
+                            <div className={"btn btn-max btn-pm mt_md mb_md"}>
                                     <p>{reportData.title}</p>
                                     <p>{reportData.modifiedAt}</p>
+                            </div>
                                     {questionData.map((question) => (
-                                        question.type !== "SECTION" ? <div key={question.order}>
+                                        question.type !== "SECTION" ? <div className={"item btn btn-max btn-pm mb_md"} key={question.order}>
                                             <p>질문 : {question.questionText}</p>
                                             <ReportAnswer questionId={question.id} reportId={reportData.id} type={question.type}/>
                                         </div> : <hr className={"mt_lg mb_lg"}/>
                                     ))}
 
-                                    <Link to={`/replies/${reportData.id}`}>댓글보기</Link>
-                            <Link to={`/reports/update/${reportData.id}`}>수정</Link>
+                            <div style={{display:"flex", justifyContent:"space-around"}}>
+                                    <Link to={`/replies/${reportData.id}`}><button className={"btn btn-md btn-pm"}>댓글보기</button></Link>
+                            <Link to={`/reports/update/${reportData.id}`}><button className={"btn btn-md btn-pm"}>수정</button>
 
+                            </Link>
+                            </div>
                         </div>
                     </div>
                 </div>

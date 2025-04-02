@@ -31,14 +31,13 @@ function TemplateQuestionBlock({question, questionIndex, updateQuestion}) {
             <div style={{display:"flex"}}>
                 { questionList.type !== "SECTION" && <input className={"input-txt input-max mlr-a"} placeholder={"질문 입력"} type={"text"} value={questionList.content}
                        onChange={(e) => updateContent(e.target.value)}/>}
-                <select className={"select"} value={questionList.type} onChange={(e) => updateType(e.target.value)}>
+                <select className={"select select-md"} value={questionList.type} onChange={(e) => updateType(e.target.value)}>
                     <option value={"TEXT"}>텍스트박스</option>
                     <option value={"CHOICE"}>객관식</option>
                     <option value={"TIME"}>시각</option>
                     <option value={"TIME_RANGE"}>시간</option>
                     <option value={"DATETIME"}>날짜</option>
                     <option value={"DATE_RANGE"}>기간</option>
-                    <option value={"EMPLOYEE_SELECT"}>직원</option>
                     <option value={"IMAGE"}>사진</option>
                     <option value={"FILE"}>문서</option>
                     <option value={"SECTION"}>섹션</option>

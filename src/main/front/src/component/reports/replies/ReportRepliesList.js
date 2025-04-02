@@ -29,7 +29,7 @@ function ReportRepliesList({reportId}) {
     return (
         <>
             <div className={"mt_sm"}>
-                <img style={{cursor: "pointer", width: "1.5rem", display: "inline"}} src={"/image/backArrow.png"} onClick={() => navigate(`/reports/read/${reportId}`)} />
+                <img style={{cursor: "pointer", width: "1.5rem", display: "inline"}} src={"/image/reportIcon/backArrow.png"} onClick={() => navigate(`/reports/read/${reportId}`)} />
                 <p style={{display:"inline"}} className={"ml_sm"}>댓글</p>
             </div>
             {repliesData.map((reply) => (

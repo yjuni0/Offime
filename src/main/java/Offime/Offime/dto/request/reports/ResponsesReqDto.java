@@ -22,4 +22,6 @@ public class ResponsesReqDto {
     private LocalDate startDate;
 
     private LocalDate endDate;
+
+    private String fileUrl;
 }
