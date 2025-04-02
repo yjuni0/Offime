@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { axiosPrivate } from "../axios/axios";
 import CommonNav from "../header/CommonNav"; // CommonNav 컴포넌트 import
-import RequestStatus from "./requestStatus"; // RequestStatus 컴포넌트 import
+import RequestStatus from "./features/requestStatus"; // RequestStatus 컴포넌트 import
 
 const VacationDetail = () => {
   const { vacationId } = useParams();
