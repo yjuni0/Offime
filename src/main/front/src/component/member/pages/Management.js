@@ -11,9 +11,9 @@ function Management() {
         try {
             const response = await axios.get('http://localhost:8080/member');
             setMember(
-                Array.isArray(response.data.content)
-                    ? response.data.content
-                    : response.data.member || []
+                Array.isArray(response.data)
+                    ? response.data
+                    : response.data || []
             );
         } catch (error) {
             // console.error('직원 데이터를 불러오는 중 오류 발생:', error);

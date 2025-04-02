@@ -93,8 +93,11 @@ public class MemberService {
     }
 
     // 모든 직원 조회
-    public Page<MemberListDto> getAllMembers(Pageable pageable) {
-        return memberRepository.findAll(pageable).map(MemberListDto::fromEntity);
+    public List<MemberListDto> getAllMembers() {
+        List<Member> members = memberRepository.findBySignUpStatus(SignUpStatus.ACTIVE);
+        return members.stream()
+                .map(MemberListDto::fromEntity)
+                .collect(Collectors.toList());
     }
 
     // 탈퇴

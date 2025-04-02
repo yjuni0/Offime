@@ -25,6 +25,7 @@ import ExpenseWrite from '../expense/ExpenseWrite';
 import ExpenseUpdate from '../expense/ExpenseUpdate';
 import Management from '../member/pages/Management';
 import MemberDetail from '../member/pages/MemberDetail';
+import Menu from '../member/pages/Menu';
 
 function Router() {
     return (
@@ -35,6 +36,7 @@ function Router() {
             <Route path="/member" element={<Management />} />
             <Route path="/member/:id" element={<MemberDetail />} />
             <Route path="/member/signUpStatus" element={<SignUpConfirm />} />
+            <Route path="/menu" element={<Menu />} />
 
             <Route path="/home" element={<Home />} />
             <Route path="/templates/create" element={<TemplateCreate />} />

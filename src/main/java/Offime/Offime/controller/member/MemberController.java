@@ -18,6 +18,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 public class MemberController {
@@ -41,10 +43,8 @@ public class MemberController {
 
     // 모든 직원 조회
     @GetMapping("/member")
-    public ResponseEntity<Page<MemberListDto>> getAllMembers(
-            @PageableDefault(size= 10, sort="id", direction = Sort.Direction.ASC) Pageable pageable) {
-        System.out.println("Received sort: " + pageable.getSort());
-        Page<MemberListDto> memberListDtos = memberService.getAllMembers(pageable);
+    public ResponseEntity<List<MemberListDto>> getAllMembers() {
+        List<MemberListDto> memberListDtos = memberService.getAllMembers();
         return ResponseEntity.status(HttpStatus.OK).body(memberListDtos);
     }
 
@@ -70,4 +70,10 @@ public class MemberController {
         return ResponseEntity.status(HttpStatus.OK).body(memberResponseDto);
     }
 
+    // 내 정보 조회
+    @GetMapping("/member/myInfo")
+    public ResponseEntity<MemberResponseDto> getMyInfo(@AuthenticationPrincipal Member member) {
+        MemberResponseDto myInfo = MemberResponseDto.fromEntity(member);
+        return ResponseEntity.status(HttpStatus.OK).body(myInfo);
+    }
 }
