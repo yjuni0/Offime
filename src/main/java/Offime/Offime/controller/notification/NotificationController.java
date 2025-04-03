@@ -44,4 +44,8 @@ public class NotificationController {
     public ResponseEntity<?> getNotification(@AuthenticationPrincipal Member member, @PathVariable Long notificationId) {
         return ResponseEntity.status(HttpStatus.OK).body(notificationService.getById(notificationId));
     }
+    @PatchMapping("/notification/{notificationId}")
+    public ResponseEntity<?> readNotification(@AuthenticationPrincipal Member member, @PathVariable Long notificationId) {
+        return ResponseEntity.status(HttpStatus.OK).body(notificationService.getById(notificationId));
+    }
 }

@@ -9,5 +9,5 @@ import java.time.LocalDateTime;
 
 @Builder
 public record ResVacation(Long id, String type, LocalDate startDate, LocalDate endDate, String reason, String status,
-                          String modifiedDate) {
+                          String modifiedDate, String createdDate) {
 }

@@ -35,14 +35,17 @@ public class VacationService {
     private final MemberRepository memberRepository;
     private final NotificationMessageRepository notificationMessageRepository;
 
-    // 조회
     public Page<ResVacation> getAllVacations(Member member, Pageable pageable) {
-        log.info("요청 멤버{} 페이징{} : ", member.getId(),pageable);
-        Page<Vacation> vacations = vacationRepository.findAllByMember(member,pageable);
-        List<ResVacation> list = vacations.stream().map(vacationDtoMapper::fromEntity).toList();
-        log.info("해당 멤버 {} 가 신청한 휴가 {}",member.getId(),list.size());
+        log.info("요청 멤버 {} 페이징 {} : ", member.getId(), pageable);
 
-        return new PageImpl<>(list,pageable,list.size());
+        // ✅ DTO 변환을 `map()`을 사용하여 유지
+        return vacationRepository.findAllByMember(member, pageable)
+                .map(vacationDtoMapper::fromEntity);
+    }
+
+    public List<ResVacation> getFiveLatestVacation(Member member){
+        List<Vacation> vacations = vacationRepository.findTop5ByMemberOrderByIdDesc(member);
+        return vacations.stream().map(vacationDtoMapper::fromEntity).toList();
     }
 
     public ResVacation getVacationById(Member member,Long id) {
@@ -97,8 +100,10 @@ public class VacationService {
         } catch (IllegalArgumentException iae) {
             log.error("휴가 조회 실패: ", iae);
             throw new IllegalArgumentException("휴가 조회 실패");
+        } catch (VacationException e) {
+            log.error("잔여 연차가 부족합니다.: ", e);
+            throw new VacationException("잔여 연차가 부족합니다. ");
         } catch (Exception e) {
-            log.error("서버 오류 발생: ", e);
             throw new RuntimeException("서버 오류 발생");
         }
     }
