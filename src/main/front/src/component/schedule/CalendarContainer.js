@@ -37,6 +37,7 @@ function CalendarContainer() {
     const [selectedSchedule, setSelectedSchedule] = useState(null);
     const [detailOpen, setDetailOpen] = useState(false);
     const [isEditMode, setIsEditMode] = useState(false);
+    const [viewMode,setViewMode] = useState(false);
 
     useEffect(() => {
         getSchedule();
@@ -97,19 +98,24 @@ function CalendarContainer() {
         setDetailOpen(true);
     };
 
+    const handleViewMode= ()=>{
+        setViewMode(prev => !prev);
+    }
+
     return (
         <>
             <div className={writeOpen ? "calendar-container active" : "calendar-container"}>
                 <p className="hidden">calendar page</p>
                 <div className="calender-wrap">
                     <div className="calendar">
-                        <CalendarHeader currentDate={currentDate} onClick={handleYearMonth} />
+                        <CalendarHeader currentDate={currentDate} onClick={handleYearMonth} handleViewMode={handleViewMode} />
                         <DaysGrid
                             renderDays={renderCalendar(currentDate, schedules)}
                             activeDay={activeDay}
                             onSelectDay={handleSelectDay}
                             schedules={schedules}
                             onScheduleClick={handleScheduleClick}
+                            viewMode={viewMode}
                         />
                     </div>
                 </div>

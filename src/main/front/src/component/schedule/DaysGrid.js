@@ -1,4 +1,4 @@
-function DaysGrid({ renderDays, activeDay, onSelectDay, schedules, onScheduleClick }) {
+function DaysGrid({ renderDays, activeDay, onSelectDay, schedules, onScheduleClick, viewMode }) {
     return (
         <>
             <div className="weekdays">
@@ -30,7 +30,17 @@ function DaysGrid({ renderDays, activeDay, onSelectDay, schedules, onScheduleCli
                                     className={`sched ${item.color}`}
                                     onClick={() => onScheduleClick(item)}
                                 >
-                                    <p className="fs_xsm active">{item.memo}</p>
+                                    <p className="fs_xsm active">
+                                        {viewMode ? (
+                                            <>
+                                                {item.memo}
+                                            </>
+                                        ) : (
+                                            <>
+                                                {(item.startTime).slice(0,5)}
+                                            </>
+                                        )}
+                                    </p>
                                 </div>
                             ))}
                         </div>
