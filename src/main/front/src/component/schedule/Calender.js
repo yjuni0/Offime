@@ -20,6 +20,7 @@ function Calender(){
 
     const [writeOpen, setWriteOpen] = useState(false);
     const [yearMonthOpen, setYearMonthOpen] = useState(false);
+    const [editOpen, setEditOpen] = useState(false);
     const [schedules, setSchedules] = useState([]);
     const [startTime,setStartTime] = useState("");
     const [endTime, setEndTime] = useState("");
@@ -183,7 +184,7 @@ function Calender(){
     const writeSchedule = async () =>{
         try{
             const req = {
-                memberId : localStorage.getItem('id'),
+                memberId : parseInt(localStorage.getItem('id'),10),
                 date : selectedDate,
                 startTime : startTime,
                 endTime : endTime,
@@ -246,9 +247,6 @@ function Calender(){
                                                 <p className="fs_xsm active">{item.memo}</p>
                                             </div>
                                         ))}
-                                        <div className={`sched ${exmp.color}`} onClick={() => handleScheduleClick(exmp)}>
-                                            <p className="fs_xsm active">{exmp.memo}</p>
-                                        </div>
                                     </div>
                                 );
                             })}
@@ -350,6 +348,8 @@ function Calender(){
                         </div>
                     </>
                 )}
+
+
             </div>
             <div className="sched-btn" onClick={handleEdit}>
                 {writeOpen ? (
