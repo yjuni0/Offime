@@ -19,8 +19,8 @@ public class ResAttendanceHistoryForLeaderDto {
     private static final LocalTime COMPANY_START_TIME = LocalTime.of(9, 0);
 
     private int clockInCount;
-    private int absentPersonnelCount;   // 미출근
-    private int beforeClockInCount;     // 출근전
+    private int absentCount;
+    private int beforeClockInCount;
     private int lateCount;
     private int totalLateMinutes;
     private int leaveEarlyCount;
@@ -31,10 +31,10 @@ public class ResAttendanceHistoryForLeaderDto {
 
     @Builder
     public ResAttendanceHistoryForLeaderDto(
-            int clockInCount, int absentPersonnelCount, int beforeClockInCount, int lateCount, int totalLateMinutes,
+            int clockInCount, int absentCount, int beforeClockInCount, int lateCount, int totalLateMinutes,
             int leaveEarlyCount, int totalLeaveEarlyMinutes, int atWorkCount, int onBreakCount, int offWorkCount) {
         this.clockInCount = clockInCount;
-        this.absentPersonnelCount = absentPersonnelCount;
+        this.absentCount = absentCount;
         this.beforeClockInCount = beforeClockInCount;
         this.lateCount = lateCount;
         this.totalLateMinutes = totalLateMinutes;
@@ -46,7 +46,7 @@ public class ResAttendanceHistoryForLeaderDto {
     }
 
     public static ResAttendanceHistoryForLeaderDto fromEntity(
-            List<EventRecord> eventRecord, int workdayPersonnel, int absentPersonnelCount, LocalDate requestDate){
+            List<EventRecord> eventRecord, int workdayPersonnel, int absentCount, LocalDate requestDate){
 
 //        LocalDate today = LocalDate.now();
         LocalTime currentTime = LocalTime.now();
@@ -75,7 +75,7 @@ public class ResAttendanceHistoryForLeaderDto {
 
         return ResAttendanceHistoryForLeaderDto.builder()
                 .clockInCount(clockInCount)
-                .absentPersonnelCount(absentPersonnelCount)
+                .absentCount(absentCount)
                 .beforeClockInCount(beforeClockInCount)
                 .lateCount((int) eventRecord.stream()
                         .filter(r -> r.getEventType() == EventType.출근)

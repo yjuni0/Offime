@@ -70,10 +70,4 @@ public class AttendanceController {
             return ResponseEntity.badRequest().body("퇴근 실패" + e.getMessage());
         }
     }
-//    @GetMapping("/time")
-//    public ResponseEntity<List<Long>> getTimeDifference(
-//            @RequestParam(name = "localDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate localDate) {
-//        List<Long> timeDifference = attendanceService.getTimeDifference(localDate);
-//        return ResponseEntity.ok(timeDifference);
-//    }
 }

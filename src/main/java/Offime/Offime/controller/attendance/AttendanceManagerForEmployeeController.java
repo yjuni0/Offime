@@ -26,8 +26,9 @@ public class AttendanceManagerForEmployeeController {
     public ResponseEntity<ResAttendanceHistoryForEmployeeDto> getWeeklyAttendance(
             @AuthenticationPrincipal Member member,
             @RequestParam LocalDate date) {
+        int totalWorkdays = 0;
         ResAttendanceHistoryForEmployeeDto weeklyStats = employeeAttendanceManagerService.getWeeklyAttendanceHistory(
-                member, date);
+                member, date, totalWorkdays);
         return ResponseEntity.ok(weeklyStats);
     }
 
@@ -36,8 +37,9 @@ public class AttendanceManagerForEmployeeController {
             @AuthenticationPrincipal Member member,
             @RequestParam int year,
             @RequestParam int month) {
+        int totalWorkdays = 0;
         ResAttendanceHistoryForEmployeeDto monthlyStats = employeeAttendanceManagerService.getMonthlyAttendanceHistory(
-                member, year, month);
+                member, year, month, totalWorkdays);
         return ResponseEntity.ok(monthlyStats);
     }
 

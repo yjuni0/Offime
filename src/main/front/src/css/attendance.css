@@ -12,6 +12,7 @@
     position: relative;
     border-radius: var(--round-md);
     color: var(--natural_0);
+    height: 100px;
 }
 
 .left-square {
@@ -47,6 +48,8 @@
     padding: 0.5rem;
     background-color: var(--natural_10);
     border-radius: var(--round-sm);
+    width: 150px;
+    height: 70px;
 }
 
 .status-label {
@@ -115,3 +118,27 @@
     background-color: var(--primary_k);
     color: var(--natural_0);
 }
+
+/* .date-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.date-button {
+    padding: 8px 16px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    text-align: center;
+}
+
+.date-button:hover {
+    background-color: #0056b3;
+}
+
+.daily-record {
+    margin-top: 20px;
+} */

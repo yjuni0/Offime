@@ -10,7 +10,7 @@ function AttendanceBanner() {
     time: "",
   });
 
-  const [status, setStatus] = useState("");
+  const [status, setStatus] = useState("퇴근");
   const [startTime, setStartTime] = useState("");
   const [awayTime, setAwayTime] = useState("");
   const [showPopup, setShowPopup] = useState(false);
@@ -33,7 +33,7 @@ function AttendanceBanner() {
             "Content-Type": "application/json",
           },
         });
-        setStatus(response.data);
+        setStatus(response.data || "퇴근");
       } catch (error) {
         console.error("근무 상태 조회 실패:", error.response?.data || error.message);
       }
@@ -170,7 +170,7 @@ function AttendanceBanner() {
   return (
     <div className="item bg_pm mt_lg">
       <div className="fs_md tc-w">
-        {status === "퇴근" && `오늘은 ${currentDate.month}월 ${currentDate.day}일 ${currentDate.weekday}이에요 :D`}
+        {(status === "퇴근")&& `오늘은 ${currentDate.month}월 ${currentDate.day}일 ${currentDate.weekday}이에요 :D`}
         {status === "근무중" && `근무 중 ${startTime}~`}
         {status === "자리비움중" && `자리비움 중 ${awayTime}~`}
       </div>
@@ -178,29 +178,19 @@ function AttendanceBanner() {
       <div className="fs_lg tc-w">{currentDate.time}</div>
 
       <div className="btn-group">
-        {status === "퇴근" && (
-          <button className="btn btn-max btn-pl fs_lg mt_sm mb_sm" onClick={handleClockIn}>
-            출근
-          </button>
+        {(status === "퇴근") && (
+          <button className="btn btn-max btn-pl fs_lg mt_sm mb_sm" onClick={handleClockIn}>출근</button>
         )}
         {status === "근무중" && (
           <>
-            <button className="btn btn-max btn-p02 fs_lg mt_sm mb_sm" onClick={handleOutOfOfficePopup}>
-              자리비움
-            </button>
-            <button className="btn btn-max btn-p05 fs_lg mt_sm mb_sm" onClick={handleClockOut}>
-              퇴근
-            </button>
+            <button className="btn btn-max btn-p04 fs_lg mt_sm mb_sm" onClick={handleOutOfOfficePopup}>자리비움</button>
+            <button className="btn btn-max btn-p05 fs_lg mt_sm mb_sm" onClick={handleClockOut}>퇴근</button>
           </>
         )}
         {status === "자리비움중" && (
           <>
-            <button className="btn btn-max btn-p04 fs_lg mt_sm mb_sm" onClick={handleReturnToOffice}>
-              복귀
-            </button>
-            <button className="btn btn-max btn-p05 fs_lg mt_sm mb_sm" onClick={handleClockOut}>
-              퇴근
-            </button>
+            <button className="btn btn-max btn-p04 fs_lg mt_sm mb_sm" onClick={handleReturnToOffice}>복귀</button>
+            <button className="btn btn-max btn-p05 fs_lg mt_sm mb_sm" onClick={handleClockOut}>퇴근</button>
           </>
         )}
       </div>

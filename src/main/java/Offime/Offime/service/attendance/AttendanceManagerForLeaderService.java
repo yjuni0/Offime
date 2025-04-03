@@ -24,14 +24,14 @@ public class AttendanceManagerForLeaderService {
     private final MemberRepository memberRepository;
     private int workdayPersonnel;
 
-    public ResAttendanceHistoryForLeaderDto getDailyAttendanceForAll(Member member, LocalDate date) {
+    public ResAttendanceHistoryForLeaderDto getDailyAttendanceForAll(LocalDate date) {
         List<EventRecord> records = getDailyRecordsForAll(date);
         // 휴가자 리파지토리 조회(member, date)
         int absentPersonnelCount = 0;
         return ResAttendanceHistoryForLeaderDto.fromEntity(records, workdayPersonnel, absentPersonnelCount, date);
     }
 
-    public ResAttendanceHistoryForLeaderDto getDailyAttendanceForTeam(Member member, LocalDate date , Team team){
+    public ResAttendanceHistoryForLeaderDto getDailyAttendanceForTeam(LocalDate date , Team team){
         List<EventRecord> records = getDailyRecordsForTeam(date, team);
         int absentPersonnelCount = 0;
         return ResAttendanceHistoryForLeaderDto.fromEntity(records, workdayPersonnel, absentPersonnelCount, date);
