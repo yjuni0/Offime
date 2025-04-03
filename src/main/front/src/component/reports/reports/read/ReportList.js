@@ -6,9 +6,12 @@ function ReportList() {
 
     const [reportList, setReportList] = useState([]);
 
+    const [memberNames, setMemberNames] = useState({});
+
     const getReportList = async () => {
         await axios.get('http://localhost:8080/reports/read').then((res) => setReportList(res.data));
     }
+
 
     const navigate = useNavigate();
 
@@ -31,7 +34,7 @@ function ReportList() {
                                          style={{cursor: "pointer", borderRadius:"10px"}}>
                                         <p>제목 : {report.title}</p>
                                         <p>수정 날짜 : {report.modifiedAt}</p>
-                                        <p>작성자 : {report.writerId}</p>
+                                        <p>작성자 :  </p>
                                     </div>))}
                             </div>
                         </div>

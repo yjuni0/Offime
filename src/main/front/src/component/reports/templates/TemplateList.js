@@ -1,6 +1,7 @@
 import {useEffect, useState} from "react";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
+import "../../../css/report/reportCreateTemplateSelect.css";
 
 function TemplateList() {
 
@@ -18,6 +19,11 @@ function TemplateList() {
 
     const navigate = useNavigate();
 
+    const getColorClass = (colorId) => {
+        return `templateColor${colorId}`;
+    };
+
+
     useEffect(() => {
         getTemplateList();
     }, []);
@@ -30,25 +36,34 @@ function TemplateList() {
                          src={"/image/reportIcon/backArrow.png"}
                          onClick={() => navigate(-1)}/>
                 </div>
+                <div className="templateList">
+                    {templateList.map((template) => (
+                        <div
+                            key={template.id}
+                            className={`templateItem ${getColorClass(template.color)}`}
+                        >
+                            <div className="templateLeft">
+                                <img
+                                    src={`/image/reportIcon/icon${template.icon}.png`}
+                                    alt="템플릿 아이콘"
+                                    className="templateIcon"
+                                />
+                                <p className="templateTitle">{template.title}</p>
+                            </div>
+                            <img
+                                src={"/image/reportIcon/recyclebin.png"}
+                                alt="delete"
+                                className="templateDeleteIcon"
+                                onClick={() => {
+                                    if (window.confirm("정말 삭제하시겠습니까?")) {
+                                        deleteTemplate(template.id);
+                                    }
+                                }}
+                            />
+                        </div>
 
-
-                {templateList.map(template => (
-                    <div className={`item mt_md ${template.color === 1 ? "bg_pm" :
-                        template.color === 2 ? "bg_pl" :
-                            template.color === 3 ? "bg_pk" :
-                                template.color === 4 ? "bg_p02" :
-                                    template.color === 5 ? "bg_p03" :
-                                        template.color === 6 ? "bg_p04" :
-                                            template.color === 7 ? "bg_p05" :
-                                                template.color === 8 ? "bg_e" : ""}`} key={template.id}>
-                        <img src={`/image/reportIcon/icon${template.icon}.png`}
-                             style={{width: "1.5rem", height: "1.5rem"}}/>
-                        <p className={"txt-a-l"}>{template.title}</p>
-                        <img style={{cursor: "pointer", width: "1.5rem", display: "inline"}}
-                             src={"/image/reportIcon/recyclebin.png"} onClick={() => deleteTemplate(template.id)}/>
-                    </div>
-                ))}
-
+                    ))}
+                </div>
             </div>
         </section>
     )

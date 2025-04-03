@@ -1,0 +1,73 @@
+
+.reportCreateContainer {
+    background-color: #f7f8fa;
+    min-height: 100vh;
+    padding: 1rem;
+    box-sizing: border-box;
+}
+
+.reportCreateInner {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.reportCreateBackIcon {
+    width: 1.5rem;
+    cursor: pointer;
+    margin-bottom: 1rem;
+}
+
+.reportCreateHeader {
+    padding: 1rem;
+    border-radius: 16px;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+}
+
+/* 개별 색상 클래스 (header 전용) */
+.reportHeaderColor1 { background-color: #f6ebe7; }
+.reportHeaderColor2 { background-color: #eae8f9; }
+.reportHeaderColor3 { background-color: #f8f1d7; }
+.reportHeaderColor4 { background-color: #e0f7f3; }
+.reportHeaderColor5 { background-color: #d9eaf7; }
+.reportHeaderColor6 { background-color: #fce4ec; }
+.reportHeaderColor7 { background-color: #f3e5f5; }
+.reportHeaderColor8 { background-color: #ececec; }
+
+.reportCreateInput {
+    display: block;
+    width: 100%;
+    margin: 1rem auto 1.5rem;
+    padding: 14px 16px;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    background-color: #fff;
+    box-sizing: border-box;
+    outline: none;
+}
+
+.reportCreateInput:focus {
+    border-color: #3b82f6;
+}
+
+.reportCreateSubmit {
+    display: block;
+    width: 100%;
+    max-width: 400px;
+    margin: 2rem auto 0;
+    padding: 1rem;
+    font-size: 1.1rem;
+    font-weight: bold;
+    background-color: #3b82f6;
+    color: #fff;
+    border: none;
+    border-radius: 999px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.reportCreateSubmit:hover {
+    background-color: #2563eb;
+}

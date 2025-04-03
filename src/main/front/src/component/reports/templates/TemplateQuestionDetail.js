@@ -47,17 +47,36 @@ function TemplateQuestionDetail({type ,questionList, setQuestionList, questionIn
                             />
                         </div>
                     ))}
-                    <button type={"button"} onClick={() => addOption()}>옵션 추가</button>
+                    <button
+                        type="button"
+                        onClick={() => addOption()}
+                        style={{
+                            marginTop: "12px",
+                            padding: "8px 16px",
+                            fontSize: "14px",
+                            borderRadius: "6px",
+                            border: "1px solid #ccc",
+                            backgroundColor: "#f0f0f0",
+                            cursor: "pointer",
+                            transition: "background-color 0.2s",
+                        }}
+                        onMouseOver={(e) => e.target.style.backgroundColor = "#e2e8f0"}
+                        onMouseOut={(e) => e.target.style.backgroundColor = "#f0f0f0"}
+                    >
+                        옵션 추가
+                    </button>
                 </>
             )
         case "TIME" :
             return <input type={"time"} placeholder={"시각"} disabled={true}/>
         case "TIME_RANGE" :
-            return <><input type={"time"} placeholder={"시간"} disabled={true}/> ~ <input type={"time"} placeholder={"시간"} disabled={true}/></>
+            return <><input type={"time"} placeholder={"시간"} disabled={true}/> ~ <input type={"time"} placeholder={"시간"}
+                                                                                        disabled={true}/></>
         case "DATETIME" :
             return <input type={"date"} placeholder={"날짜"} disabled={true}/>
         case "DATE_RANGE" :
-            return <><input type={"date"} placeholder={"기간"} disabled={true}/> ~ <input type={"date"} placeholder={"날짜"} disabled={true}/></>;
+            return <><input type={"date"} placeholder={"기간"} disabled={true}/> ~ <input type={"date"} placeholder={"날짜"}
+                                                                                        disabled={true}/></>;
         case "EMPLOYEE_SELECT" :
             return <input placeholder={"직원"} disabled={true}/>
         case "IMAGE" :

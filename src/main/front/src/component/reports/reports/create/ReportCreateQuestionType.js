@@ -1,6 +1,7 @@
 import ReportCreateOptionBlock from "./ReportCreateOptionBlock";
 import {useEffect, useState} from "react";
 import axios from "axios";
+import '../../../../css/report/reportCreateQuestionType.css';
 
 function ReportCreateQuestionType({type, questionId, setResponseData}) {
 
@@ -97,50 +98,103 @@ function ReportCreateQuestionType({type, questionId, setResponseData}) {
     };
 
     switch (type) {
-        case "TEXT" :
-            return <input className={"mlr-a input-txt mt_md input-max"} type={"text"} placeholder={"입력"}
-                          onChange={(e) => updateAnswer(questionId, type, e.target.value)}/>
-        case "CHOICE" :
+        case "TEXT":
+            return (
+                <input
+                    type="text"
+                    placeholder="입력"
+                    className="questionInput"
+                    onChange={(e) => updateAnswer(questionId, type, e.target.value)}
+                />
+            );
+
+        case "CHOICE":
             return (
                 <div>
-                    <ReportCreateOptionBlock type={"radio"} questionId={questionId} updateAnswer={updateAnswer}/>
+                    <ReportCreateOptionBlock
+                        type="radio"
+                        questionId={questionId}
+                        updateAnswer={updateAnswer}
+                    />
                 </div>
-            )
-        case "TIME" :
-            return <input type={"time"} onChange={(e) => updateAnswer(questionId, type, e.target.value)}/>
-        case "TIME_RANGE" :
-            return <>
-                <input type={"time"} onChange={(e) => setTimeRange({...timeRange, startTime: e.target.value})}/>
-                ~
-                <input type={"time"} onChange={(e) => setTimeRange({...timeRange, endTime: e.target.value})}/>
-            </>
-        case "DATETIME" :
-            return <input type={"date"} onChange={(e) => updateAnswer(questionId, type, e.target.value)}/>
-        case "DATE_RANGE" :
-            return <>
-                <input type={"date"} onChange={(e) => setDateRange({...dateRange, startDate: e.target.value})}/>
-                ~
-                <input type={"date"} onChange={(e) => setDateRange({...dateRange, endDate: e.target.value})}/>
-            </>
-        case "IMAGE" :
-            return <input
-                type="file"
-                accept="image/*"
-                onChange={(e) => {
-                    const file = e.target.files[0];
-                    if (file) handleFileUpload(file, questionId);
-                }}
-            />
-        case "FILE" :
-            return <input
-                type="file"
-                onChange={(e) => {
-                    const file = e.target.files[0];
-                    if (file) handleFileUpload(file, questionId);
-                }}
-            />
-        case "SECTION" :
-            return <hr className={"mt_lg mb_lg"}/>
+            );
+
+        case "TIME":
+            return (
+                <input
+                    type="time"
+                    className="questionInput"
+                    onChange={(e) => updateAnswer(questionId, type, e.target.value)}
+                />
+            );
+
+        case "TIME_RANGE":
+            return (
+                <div className="questionInputGroup">
+                    <input
+                        type="time"
+                        className="questionInput"
+                        onChange={(e) =>
+                            setTimeRange({ ...timeRange, startTime: e.target.value })
+                        }
+                    />
+                    <span>~</span>
+                    <input
+                        type="time"
+                        className="questionInput"
+                        onChange={(e) =>
+                            setTimeRange({ ...timeRange, endTime: e.target.value })
+                        }
+                    />
+                </div>
+            );
+
+        case "DATETIME":
+            return (
+                <input
+                    type="date"
+                    className="questionInput"
+                    onChange={(e) => updateAnswer(questionId, type, e.target.value)}
+                />
+            );
+
+        case "DATE_RANGE":
+            return (
+                <div className="questionInputGroup">
+                    <input
+                        type="date"
+                        className="questionInput"
+                        onChange={(e) =>
+                            setDateRange({ ...dateRange, startDate: e.target.value })
+                        }
+                    />
+                    <span>~</span>
+                    <input
+                        type="date"
+                        className="questionInput"
+                        onChange={(e) =>
+                            setDateRange({ ...dateRange, endDate: e.target.value })
+                        }
+                    />
+                </div>
+            );
+
+        case "IMAGE":
+        case "FILE":
+            return (
+                <input
+                    type="file"
+                    className="questionInput"
+                    accept={type === "IMAGE" ? "image/*" : undefined}
+                    onChange={(e) => {
+                        const file = e.target.files[0];
+                        if (file) handleFileUpload(file, questionId);
+                    }}
+                />
+            );
+
+        case "SECTION":
+            return <hr className="mt_lg mb_lg" />;
     }
 
 

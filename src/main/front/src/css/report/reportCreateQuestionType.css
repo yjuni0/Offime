@@ -1,0 +1,23 @@
+
+.questionInput {
+    width: 100%;
+    padding: 12px 14px;
+    border: none;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    font-size: 1rem;
+    box-sizing: border-box;
+    outline: none;
+}
+
+.questionInputGroup {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.questionInputGroup span {
+    line-height: 2rem;
+    font-weight: bold;
+    color: #555;
+}

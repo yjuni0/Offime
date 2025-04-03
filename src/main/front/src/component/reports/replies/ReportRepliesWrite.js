@@ -1,24 +1,35 @@
-import {useState} from "react";
+import { useState } from "react";
 import axios from "axios";
+import "../../../css/report/reportRepliesWrite.css";
 
-function ReportRepliesWrite({reportId}) {
-
+function ReportRepliesWrite({ reportId }) {
     const [content, setContent] = useState("");
+    const writerId = localStorage.getItem("id");
 
-    const repliesWrite = async () => {
-        const data = {
-            reportId, content, writerId : 1,
-        }
+    const repliesWrite = async (e) => {
+        if (!content.trim()) return;
 
+        const data = { reportId, content, writerId };
         await axios.post(`http://localhost:8080/replies/create`, data);
-    }
+    };
 
     return (
-        <form className={"item"} onSubmit={repliesWrite}>
-            <input className={"input-txt input-max mb_sm"} placeholder={"댓글 입력"} value={content} onChange={(e) => setContent(e.target.value)}/>
-            <button className={"submit btn btn-pm btn-max"} type={"submit"}>댓글 입력</button>
+        <form className="replyForm" onSubmit={repliesWrite}>
+            <input
+                className="replyInput"
+                placeholder="댓글을 입력하세요..."
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
+            />
+            <button type="submit" className="replySubmitButton">
+                <img
+                    src="/image/reportIcon/check.png"
+                    alt="댓글 작성"
+                    className="replySubmitIcon"
+                />
+            </button>
         </form>
-    )
+    );
 }
 
-export default ReportRepliesWrite
+export default ReportRepliesWrite;
