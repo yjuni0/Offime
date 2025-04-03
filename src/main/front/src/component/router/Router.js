@@ -66,6 +66,7 @@ function Router() {
       <Route path="/expenseWrite" element={<ExpenseWrite />} />
       <Route path="/expenseUpdate/:id" element={<ExpenseUpdate />} />
       <Route path="/approved-expenses" element={<ApprovedExpensesPage />} />
+
       <Route path="/chatbot" element={<Chatbot />} />
 
       <Route path="/attendanceBanner" element={<AttendanceBanner />} />
