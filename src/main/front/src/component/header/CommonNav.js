@@ -5,7 +5,8 @@ import useSelectTitle from "./utils/useSelectTitle";
 import { useEffect } from "react";
 import BackButton from "./BackButton";
 import NotificationIcon from "./NotificationIcon";
-
+import homeImage from "./image/home.png";
+import listImage from "./image/list.png";
 const CommonNav = (messages) => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -42,26 +43,41 @@ const CommonNav = (messages) => {
         {title}
       </h4>
       {isVacationPage && (
-        <h4
+        <button
+          className="home-icon"
           style={{
-            marginLeft: "10px",
-            height: "60%",
-            width: "auto",
+            height: "100%",
             display: "flex",
             alignItems: "center",
-            fontSize: "20px",
             position: "absolute",
-            right: "40px",
-            bottom: "10px",
+            right: "70px",
           }}
           onClick={handleListPage}
         >
-          신청내역
-        </h4>
+          <img
+            src={listImage}
+            alt="목록"
+            style={{ height: "50%", width: "auto" }}
+          />
+        </button>
       )}
-      <Link to={"/"}>
-        <h4>홈</h4>
-      </Link>
+      <button
+        className="home-icon"
+        style={{
+          height: "100%",
+          display: "flex",
+          alignItems: "center",
+          position: "absolute",
+          right: "40px",
+        }}
+        onClick={() => navigate("/")}
+      >
+        <img
+          src={homeImage}
+          alt="홈"
+          style={{ height: "50%", width: "auto" }}
+        />
+      </button>
       <NotificationIcon count={count} />
     </nav>
   );

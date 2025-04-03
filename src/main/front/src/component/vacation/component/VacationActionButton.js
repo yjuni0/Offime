@@ -2,26 +2,38 @@ const VacationActionButton = ({ isAdmin, onCancel, onApprove, onReject }) => {
   if (isAdmin) {
     return (
       <div
+        className="mt_md item"
         style={{
+          width: "470px",
+          height: "500px",
           position: "fixed",
-          bottom: "20px",
-          left: "0px",
-          width: "100%",
           display: "flex",
-          justifyContent: "center",
-          gap: "10px",
+          justifyContent: "space-between",
+          alignItems: "center",
         }}
       >
         <button
           className="btn btn-pm fs_md mb_md"
-          style={{ width: "15rem", padding: "1rem 2rem" }}
+          style={{
+            width: "13rem",
+            padding: "1rem 2rem",
+            borderRadius: "30px",
+            position: "absolute",
+            left: "0px",
+          }}
           onClick={onApprove}
         >
           승인
         </button>
         <button
           className="btn btn-e fs_md mb_md"
-          style={{ width: "15rem", padding: "1rem 2rem" }}
+          style={{
+            width: "13rem",
+            padding: "1rem 2rem",
+            borderRadius: "30px",
+            position: "absolute",
+            right: "0",
+          }}
           onClick={onReject}
         >
           반려
@@ -29,7 +41,6 @@ const VacationActionButton = ({ isAdmin, onCancel, onApprove, onReject }) => {
       </div>
     );
   }
-
   return (
     <button
       className="btn btn-max btn-e"

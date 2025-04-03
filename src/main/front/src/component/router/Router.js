@@ -60,6 +60,7 @@ function Router() {
       <Route path="/expenseUpdate/:id" element={<ExpenseUpdate />} />
       <Route path="/notification" element={<Notification />} />
       <Route path="/vacation/:vacationId" element={<VacationDetail />} />
+      <Route path="/vacationApply" element={<VacationApply />} />
       <Route path="/vacation" element={<ResVacation />} />
       <Route path="/vacationList/:status?" element={<SelectStatus />} />
     </Routes>

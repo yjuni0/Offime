@@ -6,7 +6,7 @@ const YearBox = () => {
 
   return (
     <div
-      className="mt_md"
+      className="mt_md mb_md"
       style={{
         display: "flex",
         alignItems: "center",

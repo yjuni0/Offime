@@ -14,7 +14,11 @@ const NotificationList = ({ notifications }) => {
         navigate(`/${type}/${typeId}`);
       }
     } catch (error) {
-      console.error("알림 읽기 오류:", error);
+      console.error(
+        "휴가 반려 오류 발생:",
+        error.response?.data?.message || "알 수 없는 오류"
+      );
+      throw error.response?.data || { message: "서버 오류 발생" }; // ✅ 에러 응답 반환
     }
   };
 

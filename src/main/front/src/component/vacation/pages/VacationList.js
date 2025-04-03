@@ -1,28 +1,8 @@
 import { Link } from "react-router-dom";
-
+import calculateDays from "../utils/calculator";
+import getStatusColor from "../utils/getStatusColor";
+import CustomPagination from "../component/CustomPagination";
 const VacationList = ({ res = [] }) => {
-  const getStatusColor = (status) => {
-    switch (status) {
-      case "승인":
-        return "green";
-      case "대기":
-        return "gray";
-      case "반려":
-        return "red";
-      default:
-        return "black";
-    }
-  };
-
-  const calculateDays = (startDate, endDate) => {
-    const start = new Date(startDate).getTime();
-    const end = new Date(endDate).getTime();
-
-    if (isNaN(start) || isNaN(end)) return 0;
-
-    const diffDays = (end - start) / (1000 * 60 * 60 * 24);
-    return diffDays + 1;
-  };
   return (
     <>
       {res.length === 0 ? (
