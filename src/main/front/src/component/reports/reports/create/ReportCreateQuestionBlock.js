@@ -17,18 +17,57 @@ function ReportCreateQuestionBlock({ templateId, responseData, setResponseData }
 
     return (
         <div>
-            {questionList.map((question) => (
-                <div
-                    key={question.order}
-                    style={{
-                        marginBottom: "1.5rem",
-                        padding: "1rem",
-                        backgroundColor: "#fff",
-                        borderRadius: "12px",
-                        boxShadow: "0 2px 8px rgba(0, 0, 0, 0.05)",
-                    }}
-                >
-                    {question.type !== "SECTION" && (
+            {questionList.map((question) => {
+                if (question.type === "SECTION") {
+                    return (
+                        <div
+                            key={question.order}
+                            style={{
+                                margin: "2rem 0",
+                                textAlign: "center",
+                            }}
+                        >
+                            <hr
+                                style={{
+                                    border: "none",
+                                    height: "2px",
+                                    backgroundColor: "#ddd",
+                                    marginBottom: "0.5rem",
+                                }}
+                            />
+                            <div
+                                style={{
+                                    fontSize: "1rem",
+                                    fontWeight: "bold",
+                                    color: "#888",
+                                }}
+                            >
+                                {question.questionText}
+                            </div>
+                            <hr
+                                style={{
+                                    border: "none",
+                                    height: "2px",
+                                    backgroundColor: "#ddd",
+                                    marginTop: "0.5rem",
+                                }}
+                            />
+                        </div>
+                    );
+                }
+
+                // 일반 질문인 경우 카드 스타일
+                return (
+                    <div
+                        key={question.order}
+                        style={{
+                            marginBottom: "1.5rem",
+                            padding: "1rem",
+                            backgroundColor: "#fff",
+                            borderRadius: "12px",
+                            boxShadow: "0 2px 8px rgba(0, 0, 0, 0.05)",
+                        }}
+                    >
                         <div
                             style={{
                                 fontWeight: "bold",
@@ -38,18 +77,17 @@ function ReportCreateQuestionBlock({ templateId, responseData, setResponseData }
                         >
                             {question.questionText}
                         </div>
-                    )}
-                    <div style={{backgroundColor:"lightgray", borderRadius: "10px"}}>
-                    <ReportCreateQuestionType
-                        type={question.type}
-                        questionId={question.id}
-                        setResponseData={setResponseData}
-                    />
+                        <ReportCreateQuestionType
+                            type={question.type}
+                            questionId={question.id}
+                            setResponseData={setResponseData}
+                        />
                     </div>
-                </div>
-            ))}
+                );
+            })}
         </div>
     );
+
 }
 
 export default ReportCreateQuestionBlock;

@@ -7,7 +7,7 @@ function ReportCreateQuestionType({type, questionId, setResponseData}) {
 
     const [timeRange, setTimeRange] = useState({startTime: "", endTime: ""});
     const [dateRange, setDateRange] = useState({startDate: "", endDate: ""});
-
+    const [previewUrl, setPreviewUrl] = useState(null);
 
 
     useEffect(() => {
@@ -83,6 +83,7 @@ function ReportCreateQuestionType({type, questionId, setResponseData}) {
         });
 
         const fileUrl = res.data;
+        setPreviewUrl(fileUrl);
 
         // 파일 URL을 responseData에 저장
         setResponseData((prev) => {
@@ -180,6 +181,34 @@ function ReportCreateQuestionType({type, questionId, setResponseData}) {
             );
 
         case "IMAGE":
+            return (
+                <div style={{
+                    width: "100%",
+                    padding:"12px 14px",
+                    border: "none",
+                    borderRadius: "8px",
+                    backgroundColor: "#f9f9f9",
+                    fontSize: "1rem",
+                    boxSizing: "border-box",
+                    outline: "none"
+                }}>
+                    <label htmlFor={`file-input-${questionId}`}>
+                        <img src="/image/reportIcon/imageUpload.png" style={{width:"2rem"}} alt="이미지 업로드" />
+                    </label>
+                    <input
+                        id={`file-input-${questionId}`}
+                        type="file"
+                        accept="image/*"
+                        style={{ display: "none" }}
+                        onChange={(e) => {
+                            const file = e.target.files[0];
+                            if (file) handleFileUpload(file, questionId);
+                        }}
+                    />
+                    {previewUrl && <img src={previewUrl}/>}
+
+                </div>
+            );
         case "FILE":
             return (
                 <input
