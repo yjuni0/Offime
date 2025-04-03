@@ -1,4 +1,4 @@
-
+import pendingImage from "../image/pending.png";
 const RequestStatus = ({ response }) => {
   return (
     <>
@@ -17,6 +17,7 @@ const RequestStatus = ({ response }) => {
           style={{ marginTop: "20px", color: "white" }}
         >
           <p>반려되었습니다.</p>
+          <p>{response.modifiedDate}</p>
         </div>
       )}
       {response.status === "대기" && (
@@ -24,7 +25,10 @@ const RequestStatus = ({ response }) => {
           className="bg_pk item"
           style={{ marginTop: "20px", color: "black" }}
         >
-          <p>대기 중...</p>
+          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+            <img src={pendingImage} style={{ width: "30px", height: "30px" }} />
+            <span style={{ color: "white" }}>대기 중...</span>
+          </div>
         </div>
       )}
     </>
