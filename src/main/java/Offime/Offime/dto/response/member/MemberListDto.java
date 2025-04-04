@@ -16,13 +16,15 @@ public class MemberListDto {
     private String name;
     private Team team;
     private String profileImageUrl;
+    private String workStatus;
 
     @Builder
-    public MemberListDto(Long id, String name, Team team, String profileImageUrl) {
+    public MemberListDto(Long id, String name, Team team, String profileImageUrl, String workStatus) {
         this.id = id;
         this.name = name;
         this.team = team;
         this.profileImageUrl = profileImageUrl;
+        this.workStatus = workStatus;
     }
 
     public static MemberListDto fromEntity(Member member){
@@ -33,6 +35,7 @@ public class MemberListDto {
                 .profileImageUrl(member.getMemberProfileFiles() != null
                         ? member.getMemberProfileFiles().getFilePath()
                         : null)
+                .workStatus(member.getWorkStatus().toString())
                 .build();
     }
 }

@@ -19,9 +19,10 @@ public class MemberResponseDto {
     private Role role;
     private Team team;
     private String profileImageUrl;
+    private String workStatus;
 
     @Builder
-    public MemberResponseDto(Long id, String name, String email,String phone, Role role, Team team, String profileImageUrl) {
+    public MemberResponseDto(Long id, String name, String email,String phone, Role role, Team team, String profileImageUrl, String workStatus) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -29,6 +30,7 @@ public class MemberResponseDto {
         this.role = role;
         this.team = team;
         this.profileImageUrl = profileImageUrl;
+        this.workStatus = workStatus;
     }
 
     public static MemberResponseDto fromEntity (Member member, String profileImageUrl){
@@ -40,6 +42,7 @@ public class MemberResponseDto {
                 .role(member.getRole())
                 .team(member.getTeam())
                 .profileImageUrl(profileImageUrl)
+                .workStatus(member.getWorkStatus().toString())
                 .build();
     }
 }
