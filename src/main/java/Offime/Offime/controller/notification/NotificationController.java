@@ -26,7 +26,6 @@ public class NotificationController {
     private final SseService sseService;
     private final NotificationService notificationService;
 
-
     @GetMapping("/subscribe")
     public SseEmitter subscribeNotifications(@AuthenticationPrincipal Member member) {
         Long memberId = member.getId();
@@ -41,12 +40,17 @@ public class NotificationController {
                 .toList();
         return ResponseEntity.ok(sortedNotifications);
     }
+
     @GetMapping("/notification/{notificationId}")
-    public ResponseEntity<?> getNotification(@AuthenticationPrincipal Member member, @PathVariable Long notificationId) {
+    public ResponseEntity<?> getNotification(@AuthenticationPrincipal Member member,
+            @PathVariable Long notificationId) {
         return ResponseEntity.status(HttpStatus.OK).body(notificationService.getById(notificationId));
     }
+
     @PatchMapping("/notification/{notificationId}")
-    public ResponseEntity<?> readNotification(@AuthenticationPrincipal Member member, @PathVariable Long notificationId) {
+    public ResponseEntity<?> readNotification(@AuthenticationPrincipal Member member,
+            @PathVariable Long notificationId) {
         return ResponseEntity.status(HttpStatus.OK).body(notificationService.getById(notificationId));
     }
+
 }

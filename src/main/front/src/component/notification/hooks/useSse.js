@@ -60,7 +60,7 @@ function useSse() {
       eventSourceRef.current?.close();
       clearTimeout(timeoutRef.current);
     };
-  }, []); // ✅ 빈 배열로 설정하여 처음 한 번만 실행되도록 변경.
+  }, [token]); // ✅ 빈 배열로 설정하여 처음 한 번만 실행되도록 변경.
 
   return messages;
 }

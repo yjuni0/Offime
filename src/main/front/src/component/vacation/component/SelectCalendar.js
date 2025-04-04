@@ -29,6 +29,7 @@ const DateRangePicker = () => {
     try {
       const result = await applyVacation(req);
       alert(result.message || "휴가 신청 성공!"); // ✅ 성공 메시지 출력
+      navigate("/vacation"); // ✅ 휴가 신청 후 휴가 페이지로 이동
     } catch (error) {
       alert(error.message || "휴가 신청 실패"); // ✅ 에러 메시지 출력
     }

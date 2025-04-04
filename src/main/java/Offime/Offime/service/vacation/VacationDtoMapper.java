@@ -26,6 +26,7 @@ public class VacationDtoMapper {
                 .id(vacation.getId())
                 .type(vacation.getType().getDescription())
                 .startDate(vacation.getStartDate())
+                .memberName(vacation.getMember().getName())
                 .endDate(vacation.getEndDate())
                 .reason(vacation.getReason())
                 .status(vacation.getStatus().getDescription())

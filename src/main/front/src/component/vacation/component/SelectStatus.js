@@ -94,15 +94,18 @@ const SelectStatus = () => {
           </p>
         )}
       </div>
-
-      {/* ✅ 페이지네이션 추가 */}
-      <CustomPagination
-        page={page}
-        setPage={setPage}
-        pageSize={pageSize}
-        totalCnt={totalCnt}
-        totalPages={totalPages}
-      />
+      <div
+        style={{ display: "flex", justifyContent: "center", bottom: "20px" }}
+      >
+        {/* ✅ 페이지네이션 추가 */}
+        <CustomPagination
+          page={page}
+          setPage={setPage}
+          pageSize={pageSize}
+          totalCnt={totalCnt}
+          totalPages={totalPages}
+        />
+      </div>
     </>
   );
 };

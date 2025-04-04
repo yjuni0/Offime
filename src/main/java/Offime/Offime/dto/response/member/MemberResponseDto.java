@@ -1,7 +1,6 @@
 package Offime.Offime.dto.response.member;
 
 import Offime.Offime.common.Role;
-import Offime.Offime.entity.member.MemberProfileFiles;
 import Offime.Offime.entity.member.Team;
 import Offime.Offime.entity.member.Member;
 import lombok.Builder;
@@ -26,6 +25,7 @@ public class MemberResponseDto {
 
     @Builder
     public MemberResponseDto(BigDecimal availableLeaveDays, Long id, String name, String email,String phone, Role role, Team team, String profileImageUrl, String workStatus) {
+
         this.id = id;
         this.name = name;
         this.email = email;
@@ -37,7 +37,7 @@ public class MemberResponseDto {
         this.workStatus = workStatus;
     }
 
-    public static MemberResponseDto fromEntity (Member member, String profileImageUrl){
+    public static MemberResponseDto fromEntity(Member member, String profileImageUrl) {
         return MemberResponseDto.builder()
                 .id(member.getId())
                 .name(member.getName())
@@ -45,7 +45,9 @@ public class MemberResponseDto {
                 .phone(member.getPhone())
                 .role(member.getRole())
                 .team(member.getTeam())
-
+                .availableLeaveDays(member.getAvailableLeaveDays())
+                .profileImageUrl(profileImageUrl)
+                .workStatus(member.getWorkStatus().toString())
                 .availableLeaveDays(member.getAvailableLeaveDays())
                 .profileImageUrl(profileImageUrl)
                 .build();
