@@ -72,7 +72,7 @@ const ExpenseDetail = () => {
         );
 
         if (response.ok) {
-          navigate("/expenseList");
+          navigate(-1);
         } else {
           console.error("Error deleting expense:", response.status);
         }
