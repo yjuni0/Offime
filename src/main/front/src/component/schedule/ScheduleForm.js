@@ -10,7 +10,7 @@ function ScheduleForm({
     const [newMemo,setNewMemo] = useState('');
 
     const handleSubmit =()=>{
-        if(!newStartTime || !newEndTime || !newBreakTime || !newMemo){
+        if(!newStartTime || !newEndTime ||  !newMemo){
             alert('모든 항목을 입력해주세요.');
             return;
         }
@@ -29,7 +29,7 @@ function ScheduleForm({
             return;
         }
 
-        if (breakT > start) {
+        if (breakT > end) {
             alert('휴식 시간은 종료 시간 전이어야 합니다.');
             return;
         }
