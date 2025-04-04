@@ -140,3 +140,164 @@
     font-weight: bold;
     width: 100%;
 }
+
+.rounded-box {
+    background-color: #ffffff;
+    border-radius: 20px;
+    box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin: 20px auto;
+    width: 90%;
+    max-width: 600px;
+    min-height: 650px;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* 🔹 내용이 위쪽 정렬되도록 변경 */
+    align-items: flex-start; /* 🔹 왼쪽 정렬 */
+}
+
+.section {
+    margin-bottom: 20px;
+}
+
+.section-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.role-dropdown {
+    font-size: 14px;
+    padding: 5px 8px;
+    width: 80px;
+    height: 30px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    appearance: none;
+    background-color: white;
+    text-align: center;
+}
+
+.signup-form {
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 30px;
+    background-color: #ffffff;
+    border-radius: 20px;
+    box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.signup-form .item {
+    margin-bottom: 20px;
+}
+
+.signup-form .item label {
+    display: block;
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #333;
+}
+
+.signup-form input {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    outline: none;
+}
+
+.signup-form input:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+.signup-form button {
+    width: 100%;
+    padding: 14px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+.signup-form button:hover {
+    background-color: #0056b3;
+}
+
+.signup-form .divider-line {
+    height: 2px;
+    background-color: #ddd;
+    margin: 20px 0;
+    width: 100%;
+}
+
+.signup-form .forgot-password {
+    font-size: 15px;
+    color: #007bff;
+    text-decoration: none;
+    position: absolute;
+    right: 0;
+    bottom: -25px;
+}
+
+.signup-form .forgot-password:hover {
+    text-decoration: underline;
+}
+
+/* Title Section */
+.signup-form .logo-spacing {
+    margin-top: 40px;
+    margin-bottom: 30px;
+    text-align: center;
+    font-size: 30px;
+    font-weight: bold;
+    color: #007bff;
+}
+
+/* Button Container */
+.signup-form .button-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 50px;
+}
+
+.signup-form .button-container a {
+    text-decoration: none;
+    color: #007bff;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.signup-form .button-container a:hover {
+    text-decoration: underline;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 480px) {
+    .signup-form {
+        padding: 20px;
+    }
+
+    .signup-form .logo-spacing {
+        font-size: 25px;
+    }
+
+    .signup-form input {
+        padding: 10px;
+    }
+
+    .signup-form button {
+        padding: 12px 18px;
+    }
+}

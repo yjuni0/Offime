@@ -57,6 +57,9 @@ public class Member extends BaseTimeEntity implements UserDetails {
     @Enumerated(EnumType.STRING)
     private SignUpStatus signUpStatus;
 
+    @OneToOne(mappedBy = "member", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    private MemberProfileFiles memberProfileFiles;
+
 //    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 //    private List<Vacation> vacations;
 
@@ -97,6 +100,9 @@ public class Member extends BaseTimeEntity implements UserDetails {
         }
         if (!this.enable) {
             this.enable = true;
+        }
+        if (this.team == null){
+            this.team = Team.A;
         }
     }
 

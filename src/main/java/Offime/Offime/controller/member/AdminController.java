@@ -2,7 +2,9 @@ package Offime.Offime.controller.member;
 
 import Offime.Offime.dto.response.member.MemberPendingDto;
 import Offime.Offime.dto.response.member.MemberResponseDto;
+import Offime.Offime.entity.member.Member;
 import Offime.Offime.entity.member.SignUpStatus;
+import Offime.Offime.entity.member.Team;
 import Offime.Offime.service.member.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -14,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -40,5 +43,20 @@ public class AdminController {
     public ResponseEntity<Void> updateSignUpStatus(@RequestParam String email) {
         memberService.updateSignUpStatusToActive(email);
         return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/member/{id}/role")
+    public ResponseEntity<String> updateMemberRole(@PathVariable Long id, @RequestBody Map<String, String> request) {
+        String newRole = request.get("role");
+        memberService.updateMemberRole(id, newRole);
+        return ResponseEntity.ok("Role updated successfully");
+    }
+
+
+    @PutMapping("/member/{id}/team")
+    public ResponseEntity<String> updateTeam(@PathVariable Long id, @RequestBody Map<String, String> request) {
+       String newTeam = request.get("team");
+       memberService.updateTeam(id, newTeam);
+       return ResponseEntity.ok("Team updated successfully");
     }
 }

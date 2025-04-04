@@ -31,7 +31,6 @@ import AttendanceBanner from '../attendance/AttendanceBanner';
 import AttendanceManagerForLeader from '../attendance/pages/leader/AttendanceManagerForLeader';
 import AttendanceManagerForEmployee from '../attendance/pages/employee/AttendanceManagerForEmployee';
 import Menu from '../member/pages/Menu';
-
 function Router() {
     return (
         <Routes>
