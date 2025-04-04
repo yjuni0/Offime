@@ -3,7 +3,6 @@ import axios from "axios";
 import {DragDropContext, Draggable, Droppable} from "@hello-pangea/dnd";
 import TemplateQuestionBlock from "./TemplateQuestionBlock";
 import {useNavigate} from "react-router-dom";
-import '../../../css/report/templateCreate.css';
 
 function TemplateCreate() {
 

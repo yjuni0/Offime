@@ -2,8 +2,6 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import ReportAnswer from "./ReportAnswer";
-import "../../../../css/report/reportRead.css"; // CSS 연결
-
 function ReportRead() {
     const reportId = useParams().reportId;
     const [reportData, setReportData] = useState("");
@@ -69,7 +67,7 @@ function ReportRead() {
                     )}
                 </div>
 
-                <div className="reportCard">
+                <div className={`reportCard reportHeaderColor${templateData.color}`}>
                     <p className="reportTitle">{reportData.title}</p>
                     <div className="reportMeta">
                         <img src="/image/reportIcon/펭귄.jpg" alt="작성자" className="reportProfile" />

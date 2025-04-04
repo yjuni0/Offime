@@ -1,8 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "../../../../css/report/reportCreateTemplateSelect.css"; // css 연결
-
 function ReportCreateTemplateSelect() {
     const [templateList, setTemplateList] = useState([]);
     const navigate = useNavigate();

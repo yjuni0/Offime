@@ -1,8 +1,6 @@
 import ReportCreateOptionBlock from "./ReportCreateOptionBlock";
 import {useEffect, useState} from "react";
 import axios from "axios";
-import '../../../../css/report/reportCreateQuestionType.css';
-
 function ReportCreateQuestionType({type, questionId, setResponseData}) {
 
     const [timeRange, setTimeRange] = useState({startTime: "", endTime: ""});
@@ -83,7 +81,11 @@ function ReportCreateQuestionType({type, questionId, setResponseData}) {
         });
 
         const fileUrl = res.data;
-        setPreviewUrl(fileUrl);
+
+        const fileName = fileUrl.split("/").pop(); // 파일명만 추출
+        const finalFileUrl = `http://localhost:8080/file/download/${encodeURIComponent(fileName)}`;
+        setPreviewUrl(finalFileUrl);
+
 
         // 파일 URL을 responseData에 저장
         setResponseData((prev) => {
@@ -193,7 +195,9 @@ function ReportCreateQuestionType({type, questionId, setResponseData}) {
                     outline: "none"
                 }}>
                     <label htmlFor={`file-input-${questionId}`}>
-                        <img src="/image/reportIcon/imageUpload.png" style={{width:"2rem"}} alt="이미지 업로드" />
+                        <div style={{backgroundColor:"#2c66d2", width:"2rem", height:"2rem", borderRadius:"50%", display:"flex", justifyContent:"center", alignItems:"center"}}>
+                        <img src="/image/reportIcon/imageUpload.png" style={{width:"1rem", filter:"invert(1)"}} alt="이미지 업로드" />
+                        </div>
                     </label>
                     <input
                         id={`file-input-${questionId}`}
@@ -205,7 +209,7 @@ function ReportCreateQuestionType({type, questionId, setResponseData}) {
                             if (file) handleFileUpload(file, questionId);
                         }}
                     />
-                    {previewUrl && <img src={previewUrl}/>}
+                    {previewUrl && <img style={{width:"5rem", borderRadius:"15px", marginTop: "1rem"}} src={previewUrl}/>}
 
                 </div>
             );

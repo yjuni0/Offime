@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import "../../../css/report/reportRepliesBlock.css";
 
 function ReportRepliesBlock({ reply, deleteReply, updateReply }) {
     const [isUpdate, setIsUpdate] = useState(false);

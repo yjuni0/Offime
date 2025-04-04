@@ -49,7 +49,7 @@ function ReportAnswer({questionId, reportId, type}) {
                     />
                 ) : type === "FILE" && downloadUrl ? (
                     <a href={downloadUrl} download target="_blank" rel="noopener noreferrer">
-                        📎 다운로드
+                        다운로드
                     </a>
                 ) : (
                     <p>{answer}</p>

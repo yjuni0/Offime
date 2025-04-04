@@ -1,7 +1,5 @@
 import { useState } from "react";
 import axios from "axios";
-import "../../../css/report/reportRepliesWrite.css";
-
 function ReportRepliesWrite({ reportId }) {
     const [content, setContent] = useState("");
     const writerId = localStorage.getItem("id");

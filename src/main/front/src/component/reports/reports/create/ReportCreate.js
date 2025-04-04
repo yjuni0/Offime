@@ -2,7 +2,7 @@ import {useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import axios from "axios";
 import ReportCreateQuestionBlock from "./ReportCreateQuestionBlock";
-import "../../../../css/report/reportCreate.css"
+import "../../../../css/report.css"
 
 function ReportCreate() {
 

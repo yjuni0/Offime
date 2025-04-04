@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import ReportRepliesBlock from "./ReportRepliesBlock";
-import "../../../css/report/reportRepliesList.css";
 
 function ReportRepliesList({ reportId }) {
     const [repliesData, setRepliesData] = useState([]);
