@@ -1,4 +1,3 @@
-import BackPage from "../BackPage";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import '../../css/attendance.css';
@@ -66,7 +65,6 @@ function AttendanceManagerForEmployee() {
 
     return (
         <>
-            <BackPage />
             <section className="sec">
                 <div className="inner">
                     <div className="item">
@@ -147,17 +145,44 @@ function AttendanceManagerForEmployee() {
                                     <>
                                         {viewType === "daily" && (
                                             <>
-                                                <div className="item bg_pm mt_sm">
-                                                    <div className="fs_md tc-w">일별 출근 기록</div>
-                                                </div>
-                                                <div className="attendance-details mt_md">
-                                                    <p>날짜: {attendanceData.date}</p>
-                                                    <p>출근 시간: {attendanceData.clockIn}</p>
-                                                    <p>자리 비움 시간: {attendanceData.outOfOffice}</p>
-                                                    <p>타입: {attendanceData.outOfOfficeType}</p>
-                                                    <p>복귀 시간: {attendanceData.returnToOffice}</p>
-                                                    <p>퇴근 시간: {attendanceData.clockOut}</p>
-                                                </div>
+                                                <div className="attendance-timeline mt_md">
+    <div className="timeline-item">
+        <div className="dot" />
+        <div className="content">
+            <span className="label">출근</span>
+            <span className="value">{attendanceData.clockIn || "-"}</span>
+        </div>
+    </div>
+
+    <div className="timeline-item">
+        <div className="dot" />
+        <div className="content">
+            <span className="label">자리 비움</span>
+            <span className="value">{attendanceData.outOfOffice || "-"}</span>
+            {attendanceData.outOfOfficeType && (
+                <div className="balloon">{attendanceData.outOfOfficeType}</div>
+            )}
+        </div>
+    </div>
+
+    <div className="timeline-item">
+        <div className="dot" />
+        <div className="content">
+            <span className="label">복귀</span>
+            <span className="value">{attendanceData.returnToOffice || "-"}</span>
+        </div>
+    </div>
+
+    <div className="timeline-item">
+        <div className="dot" />
+        <div className="content">
+            <span className="label">퇴근</span>
+            <span className="value">{attendanceData.clockOut || "-"}</span>
+        </div>
+    </div>
+</div>
+
+
                                             </>
                                         )}
                                         {viewType === "weekly" && (
