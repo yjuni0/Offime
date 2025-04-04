@@ -48,21 +48,11 @@ public class ResAttendanceHistoryForLeaderDto {
     public static ResAttendanceHistoryForLeaderDto fromEntity(
             List<EventRecord> eventRecord, int workdayPersonnel, int absentCount, LocalDate requestDate){
 
-//        LocalDate today = LocalDate.now();
         LocalTime currentTime = LocalTime.now();
 
         int clockInCount = (int) eventRecord.stream()
                 .filter(r -> r.getEventType() == EventType.출근)
                 .count();
-
-//        int absentPersonnelCount;
-//        if (requestDate.equals(today)) {
-//            // 오늘: 미출근 = 휴가자(추후에)
-//            absentPersonnelCount = 0;
-//        } else {
-//            // 과거: 미출근 = 휴가자 + 결석자
-//            absentPersonnelCount = 0 + (workdayPersonnel - clockInCount);
-//        }
 
         int beforeClockInCount;
         if (currentTime.isBefore(COMPANY_START_TIME)) {

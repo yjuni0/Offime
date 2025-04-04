@@ -20,13 +20,21 @@ public class AttendanceManagerForEmployeeController {
 
     private final AttendanceManagerForEmployeeService employeeAttendanceManagerService;
 
+    @GetMapping("/daily")
+    public ResponseEntity<ResAttendanceRecordDto> getDailyAttendanceRecord(
+            @AuthenticationPrincipal Member member,
+            @RequestParam LocalDate date) {
+        ResAttendanceRecordDto records = employeeAttendanceManagerService.getDailyAttendanceRecord(
+                member, date);
+        return ResponseEntity.ok(records);
+    }
+
     @GetMapping("/weekly")
     public ResponseEntity<ResAttendanceHistoryForEmployeeDto> getWeeklyAttendance(
             @AuthenticationPrincipal Member member,
             @RequestParam LocalDate date) {
-        int totalWorkdays = 0;
         ResAttendanceHistoryForEmployeeDto weeklyStats = employeeAttendanceManagerService.getWeeklyAttendanceHistory(
-                member, date, totalWorkdays);
+                member, date);
         return ResponseEntity.ok(weeklyStats);
     }
 
@@ -35,18 +43,9 @@ public class AttendanceManagerForEmployeeController {
             @AuthenticationPrincipal Member member,
             @RequestParam int year,
             @RequestParam int month) {
-        int totalWorkdays = 0;
-        ResAttendanceHistoryForEmployeeDto monthlyStats = employeeAttendanceManagerService.getMonthlyAttendanceHistory(
-                member, year, month, totalWorkdays);
-        return ResponseEntity.ok(monthlyStats);
-    }
 
-    @GetMapping("/daily")
-    public ResponseEntity<ResAttendanceRecordDto> getDailyAttendanceRecord(
-            @AuthenticationPrincipal Member member,
-            @RequestParam LocalDate date) {
-        ResAttendanceRecordDto records = employeeAttendanceManagerService.getDailyAttendanceRecord(
-                member, date);
-        return ResponseEntity.ok(records);
+        ResAttendanceHistoryForEmployeeDto monthlyStats = employeeAttendanceManagerService.getMonthlyAttendanceHistory(
+                member, year, month);
+        return ResponseEntity.ok(monthlyStats);
     }
 }

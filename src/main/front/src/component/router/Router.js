@@ -29,19 +29,10 @@ import MemberDetail from '../member/pages/MemberDetail';
 
 import AttendanceBanner from '../attendance/AttendanceBanner';
 import AttendanceManagerForEmployee from '../attendance/AttendanceManagerForEmployee';
-import AttendanceManagerForEmployeeDetail from '../attendance/AttendanceManagerForEmployeeDetail';
 import AttendanceManagerForLeader from '../attendance/AttendanceManagerForLeader';
-import AttendanceManagerForLeaderDetail from '../attendance/AttendanceManagerForLeaderDetail';
 import Menu from '../member/pages/Menu';
-import Chatbot from '../expense/Chatbot';
-import ChangePassword from '../member/pages/ChangePassword';
-import TemplateDetail from "../reports/templates/TemplateDetail";
+import Chatbot from "../expense/Chatbot";
 
-import Notification from '../notification/Notification';
-import VacationApply from '../vacation/pages/VacationApply';
-import ResVacation from '../vacation/component/ResVacation';
-import VacationDetail from '../vacation/pages/VacationDetail';
-import SelectStatus from '../vacation/component/SelectStatus';
 function Router() {
     return (
         <Routes>
@@ -52,7 +43,6 @@ function Router() {
             <Route path="/member/:id" element={<MemberDetail />} />
             <Route path="/member/signUpStatus" element={<SignUpConfirm />} />
             <Route path="/menu" element={<Menu />} />
-            <Route path="/changePassword" element={<ChangePassword />} />
 
             <Route path="/home" element={<Home />} />
             <Route path="/templates/create" element={<TemplateCreate />} />
@@ -69,7 +59,6 @@ function Router() {
             <Route path="/replies/:reportId" element={<ReportReplies />} />
             <Route path="/schedule" element={<Schedule />} />
             <Route path="/templates/list" element={<TemplateList />} />
-                <Route path="/templates/detail/:templateId" element={<TemplateDetail/>}/>
             <Route
                 path="/reports/update/:reportId"
                 element={<ReportUpdate />}
@@ -88,28 +77,8 @@ function Router() {
             />
             <Route path="/chatbot" element={<Chatbot />} />
             <Route path="/attendanceBanner" element={<AttendanceBanner />} />
-            <Route
-                path="/attendanceManagerForEmployee"
-                element={<AttendanceManagerForEmployee />}
-            />
-            <Route
-                path="/attendanceManagerForEmployeeDetail"
-                element={<AttendanceManagerForEmployeeDetail />}
-            />
-            <Route
-                path="/attendanceManagerForLeader"
-                element={<AttendanceManagerForLeader />}
-            />
-            <Route
-                path="/attendanceManagerForLeaderDetail"
-                element={<AttendanceManagerForLeaderDetail />}
-            />
-
-            <Route path="/notification" element={<Notification />} />
-            <Route path="/vacation/:vacationId" element={<VacationDetail />} />
-            <Route path="/vacationApply" element={<VacationApply />} />
-            <Route path="/vacation" element={<ResVacation />} />
-            <Route path="/vacationList/:status?" element={<SelectStatus />} />
+            <Route path="/attendanceManagerForEmployee" element={<AttendanceManagerForEmployee />} />
+            <Route path="/attendanceManagerForLeader" element={<AttendanceManagerForLeader />} />
         </Routes>
     );
 }
