@@ -38,7 +38,7 @@ const ExpenseDetail = () => {
 
         if (response.ok) {
           const data = await response.json();
-          console.log(data.imageUrls); // 이 부분을 추가해서 URL이 제대로 오고 있는지 확인
+
           setExpense(data);
         } else {
           console.error("데이터를 가져오는 데 실패했습니다.");
@@ -160,10 +160,9 @@ const ExpenseDetail = () => {
               {expense.imageUrls && expense.imageUrls.length > 0 && (
                 <div className="pb_md item">
                   {expense.imageUrls.map((url, index) => {
-                    const fileName = url.split("/").pop(); // 파일명 추출
-
+                    const fileName = url.split("/").pop();
                     const handleDownload = (e) => {
-                      e.preventDefault(); // 기본 동작 방지 (페이지 이동 X)
+                      e.preventDefault();
                       fetch(url)
                         .then((response) => response.blob())
                         .then((blob) => {

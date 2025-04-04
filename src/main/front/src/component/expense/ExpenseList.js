@@ -191,14 +191,15 @@ const ExpenseList = () => {
             <div className=" bg_n0 item bg_pm mt_md">
               <h3>경비 관리</h3>
               <ExpenseSearch onSearch={handleSearch} />
-              {isLoading && <p>로딩 중...</p>} {/* 로딩 상태 표시 */}
-              {error && <p className="error">{error}</p>}{" "}
+              {isLoading && <p>로딩 중...</p>}
+              {error && <p className="error">{error}</p>} {/* 승인 경비 */}
               <button
                 onClick={() => navigate("/approved-expenses")}
                 className="btn btn-sm btn-p04"
               >
                 승인 경비
               </button>
+              {/* 제미니 */}
               <button
                 onClick={() => navigate("/chatbot")}
                 className="btn btn-sm btn-p02"
@@ -206,10 +207,10 @@ const ExpenseList = () => {
                 제미니
               </button>
             </div>
-            {/* 에러 메시지 표시 */}
+
             <ul className="">
               {hasNoResults ? (
-                <p>검색된 결과가 없습니다.</p> // 검색 결과가 없을 때
+                <p>검색된 결과가 없습니다.</p>
               ) : getPaginatedData().length > 0 ? (
                 getPaginatedData().map((expense) => (
                   <li
