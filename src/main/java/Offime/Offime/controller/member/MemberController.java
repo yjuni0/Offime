@@ -6,17 +6,14 @@ import Offime.Offime.dto.response.member.MemberListDto;
 import Offime.Offime.dto.response.member.MemberResponseDto;
 import Offime.Offime.dto.response.member.MemberTokenDto;
 import Offime.Offime.entity.member.Member;
+import Offime.Offime.entity.member.MemberProfileFiles;
 import Offime.Offime.service.member.MemberService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -73,7 +70,13 @@ public class MemberController {
     // 내 정보 조회
     @GetMapping("/member/myInfo")
     public ResponseEntity<MemberResponseDto> getMyInfo(@AuthenticationPrincipal Member member) {
-        MemberResponseDto myInfo = MemberResponseDto.fromEntity(member);
+        // 프로필 이미지 URL을 가져오기 위해 MemberProfileFiles 객체를 조회
+        MemberProfileFiles profileFile = member.getMemberProfileFiles(); // Member 객체의 프로필 파일 정보 조회
+        String profileImageUrl = (profileFile != null) ? profileFile.getFilePath() : null;
+
+        // MemberResponseDto를 생성할 때 profileImageUrl도 함께 전달
+        MemberResponseDto myInfo = MemberResponseDto.fromEntity(member, profileImageUrl);
+
         return ResponseEntity.status(HttpStatus.OK).body(myInfo);
     }
 }

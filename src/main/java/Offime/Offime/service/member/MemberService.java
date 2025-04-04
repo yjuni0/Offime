@@ -1,5 +1,6 @@
 package Offime.Offime.service.member;
 
+import Offime.Offime.common.Role;
 import Offime.Offime.dto.request.member.MemberLoginDto;
 import Offime.Offime.dto.request.member.MemberRegisterDto;
 import Offime.Offime.dto.response.member.MemberListDto;
@@ -7,7 +8,9 @@ import Offime.Offime.dto.response.member.MemberPendingDto;
 import Offime.Offime.dto.response.member.MemberResponseDto;
 import Offime.Offime.dto.response.member.MemberTokenDto;
 import Offime.Offime.entity.member.Member;
+import Offime.Offime.entity.member.MemberProfileFiles;
 import Offime.Offime.entity.member.SignUpStatus;
+import Offime.Offime.entity.member.Team;
 import Offime.Offime.exception.MemberException;
 import Offime.Offime.exception.ResourceNotFoundException;
 import Offime.Offime.exception.UnauthorizedAccessException;
@@ -52,7 +55,10 @@ public class MemberService {
             saveMember.setSignUpStatus(SignUpStatus.PENDING);
         }
         saveMember = memberRepository.save(saveMember);
-        return MemberResponseDto.fromEntity(saveMember);
+
+        // 기본값을 사용하거나, 이미지 URL을 실제 값으로 설정
+        String profileImageUrl = null; // 기본값을 설정하거나, 적절한 값을 넣어주세요
+        return MemberResponseDto.fromEntity(saveMember, profileImageUrl);
     }
 
     private void isExistUserEmail(String email) {
@@ -118,7 +124,12 @@ public class MemberService {
     public MemberResponseDto getMemberDetail(Long id) {
         Member member = memberRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("직원 정보를 찾을 수 없습니다."));
-        return MemberResponseDto.fromEntity(member);
+
+        // 프로필 이미지 URL을 가져오기 위해 MemberProfileFiles 객체를 조회
+        MemberProfileFiles profileFile = member.getMemberProfileFiles(); // Member 객체가 MemberProfileFiles와 연관되어 있다고 가정
+        String profileImageUrl = (profileFile != null) ? profileFile.getFilePath() : null;
+
+        return MemberResponseDto.fromEntity(member, profileImageUrl);
     }
 
     // 가입 신청자 조회
@@ -139,5 +150,28 @@ public class MemberService {
                 .orElseThrow(() -> new ResourceNotFoundException("회원", "이메일", email));
         member.setSignUpStatus(SignUpStatus.ACTIVE);
         memberRepository.save(member);
+    }
+
+    public void updateMemberRole(Long id, String newRole) {
+        Member member = memberRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("회원", "ID", id.toString()));
+
+        try {
+            member.setRole(Role.valueOf(newRole)); // ✅ String → Enum 변환
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Invalid role value: " + newRole);
+        }
+
+        memberRepository.save(member);
+    }
+
+    public void updateTeam(Long id, String newTeam) {
+        Member member = memberRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Member not found with id: " + id));
+        try{
+            member.setTeam(Team.valueOf(newTeam));
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Invalid team value: " + newTeam);
+        }
     }
 }

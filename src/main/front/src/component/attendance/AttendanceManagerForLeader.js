@@ -38,8 +38,8 @@ function AttendanceManagerForLeader() {
         try {
             setLoading(true);
             const token = localStorage.getItem("CL_access_token");
-const formattedDate = date.toLocaleDateString('en-CA', { year: 'numeric', month: '2-digit', day: '2-digit' });
-        console.log("보내는 날짜:", formattedDate);
+            const formattedDate = date.toLocaleDateString('en-CA', { year: 'numeric', month: '2-digit', day: '2-digit' });
+            console.log("요청한 날짜:", formattedDate);
 
             let response;
             if (viewType === "forAll") {

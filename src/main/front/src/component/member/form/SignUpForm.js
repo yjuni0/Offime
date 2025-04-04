@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
+import '../../../css/member.css';
+
 function SignUpForm() {
     const [email, setEmail] = useState('');
     const [name, setName] = useState('');

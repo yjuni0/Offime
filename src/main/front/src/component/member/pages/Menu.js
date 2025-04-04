@@ -20,16 +20,27 @@ function Menu() {
         { name: '스케줄', path: '/schedule' },
         { name: '휴가', path: '/vacation' },
         { name: '비용처리', path: '/expenses' },
-        {
-            name: '구성원',
-            path: '/member',
-            isDropdown: true,
-            subMenu: [
-                { name: '직원 관리', path: '/member-management' },
-                { name: '가입 승인', path: '/signUpApproval' },
-            ],
-        },
+        { name: '구성원', path: '/member' },
     ];
+
+    if (member.role === 'ADMIN') {
+        menuItems.push({ name: '가입 승인', path: '/member/signUpStatus' });
+    }
+
+    const getTeamStatus = (teamCode) => {
+        switch (teamCode) {
+            case 'A':
+                return '발령 대기';
+            case 'B':
+                return '경영팀';
+            case 'C':
+                return '인사팀';
+            case 'D':
+                return '업무팀';
+            default:
+                return '미배정';
+        }
+    };
 
     return (
         <section className="sec">
@@ -64,7 +75,7 @@ function Menu() {
                                                     {member.name}
                                                 </span>
                                                 <span className="member_team">
-                                                    {member.team || '미배정'}
+                                                    {getTeamStatus(member.team)}
                                                 </span>
                                             </div>
                                         </div>

@@ -33,7 +33,6 @@ import AttendanceManagerForEmployeeDetail from '../attendance/AttendanceManagerF
 import AttendanceManagerForLeader from '../attendance/AttendanceManagerForLeader';
 import AttendanceManagerForLeaderDetail from '../attendance/AttendanceManagerForLeaderDetail';
 import Menu from '../member/pages/Menu';
-
 function Router() {
     return (
         <Routes>
