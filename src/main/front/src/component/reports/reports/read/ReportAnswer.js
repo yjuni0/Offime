@@ -39,18 +39,17 @@ function ReportAnswer({questionId, reportId, type}) {
     }
 
     return (
-        <div>
-            <p>답변:</p>
+        <div style={{backgroundColor:"#f0f0f0", borderRadius:"10px", padding: "10px", marginLeft:"0.5rem", marginRight:"0.5rem"}}>
             {
                 type === "IMAGE" && downloadUrl ? (
                     <img
                         src={downloadUrl}
                         alt="업로드된 이미지"
-                        style={{ maxWidth: "300px", borderRadius: "8px", marginTop: "10px" }}
+                        style={{ maxWidth: "100px", borderRadius: "8px", marginTop: "10px" }}
                     />
                 ) : type === "FILE" && downloadUrl ? (
                     <a href={downloadUrl} download target="_blank" rel="noopener noreferrer">
-                        📎 다운로드
+                        다운로드
                     </a>
                 ) : (
                     <p>{answer}</p>

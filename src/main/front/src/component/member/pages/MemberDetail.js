@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import LeaveBtn from '../button/LeaveBtn';
 
 function MemberDetail() {
@@ -226,6 +226,10 @@ function MemberDetail() {
                             <p>
                                 <strong>휴대폰 번호</strong>
                                 <br /> {member.phone}
+                            </p>
+                            <br />
+                            <p>
+                                <Link to="/changePassword">비밀번호 변경</Link>
                             </p>
                         </div>
                         <LeaveBtn />

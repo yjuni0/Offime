@@ -174,4 +174,13 @@ public class MemberService {
             throw new IllegalArgumentException("Invalid team value: " + newTeam);
         }
     }
+
+    public void changePassword(Member member, String currentPassword, String newPassword) {
+        if (!passwordEncoder.matches(currentPassword, member.getPassword())) {
+            throw new IllegalArgumentException("현재 비밀번호가 일치하지 않습니다.");
+        }
+
+        member.setPassword(passwordEncoder.encode(newPassword));
+        memberRepository.save(member);
+    }
 }

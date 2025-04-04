@@ -33,6 +33,8 @@ import AttendanceManagerForEmployeeDetail from '../attendance/AttendanceManagerF
 import AttendanceManagerForLeader from '../attendance/AttendanceManagerForLeader';
 import AttendanceManagerForLeaderDetail from '../attendance/AttendanceManagerForLeaderDetail';
 import Menu from '../member/pages/Menu';
+import Chatbot from "../expense/Chatbot";
+
 function Router() {
     return (
         <Routes>
@@ -75,7 +77,7 @@ function Router() {
                 path="/approved-expenses"
                 element={<ApprovedExpensesPage />}
             />
-
+            <Route path="/chatbot" element={<Chatbot />} />
             <Route path="/attendanceBanner" element={<AttendanceBanner />} />
             <Route path="/attendanceManagerForEmployee" element={<AttendanceManagerForEmployee />} />
             <Route path="/attendanceManagerForEmployeeDetail" element={<AttendanceManagerForEmployeeDetail />} />

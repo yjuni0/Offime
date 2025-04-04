@@ -199,6 +199,12 @@ const ExpenseList = () => {
               >
                 승인 경비
               </button>
+              <button
+                onClick={() => navigate("/chatbot")}
+                className="btn btn-sm btn-p02"
+              >
+                제미니
+              </button>
             </div>
             {/* 에러 메시지 표시 */}
             <ul className="">

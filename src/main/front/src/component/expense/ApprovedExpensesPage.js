@@ -15,8 +15,19 @@ const ApprovedExpensesPage = () => {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
   const token = localStorage.getItem("CL_access_token");
+  const totalAmount = expenses.reduce(
+    (sum, expense) => sum + expense.amount,
+    0
+  );
 
   const categories = ["식비", "교통", "숙박", "경조사", "기타"]; // 카테고리 목록 추가
+
+  const categoryTotals = categories.reduce((acc, category) => {
+    acc[category] = expenses
+      .filter((expense) => expense.category === category)
+      .reduce((sum, expense) => sum + expense.amount, 0);
+    return acc;
+  }, {});
 
   const handleCategoryChange = (category, e) => {
     // 카테고리 선택/해제 기능 구현
@@ -91,6 +102,7 @@ const ApprovedExpensesPage = () => {
               <div className="item">
                 <h3>승인된 경비 내역</h3>
               </div>
+
               <div className="txt-a-r ">
                 <select
                   className="fs_md mb_md border_none border_bottom mr_sm "
@@ -132,6 +144,17 @@ const ApprovedExpensesPage = () => {
                   ))}
                 </div>
               </div>
+
+              <div className="item">
+                <p className="fs_lg">
+                  {selectedCategory
+                    ? `${selectedCategory} 총 내역: ${categoryTotals[
+                        selectedCategory
+                      ].toLocaleString()} 원`
+                    : `총 내역: ${totalAmount.toLocaleString()} 원`}
+                </p>
+              </div>
+
               {isLoading && <p>로딩 중...</p>}
               {error && <p className="error">{error}</p>}
               <ul className="">
