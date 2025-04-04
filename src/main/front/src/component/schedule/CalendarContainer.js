@@ -170,7 +170,7 @@ function CalendarContainer() {
                                 onUpdated={() => {
                                     setIsEditMode(false);
                                     setDetailOpen(false);
-                                    renderCalendar(currentDate,schedules);
+                                    getSchedule();
                                 }}
                             />
                         ) : (
