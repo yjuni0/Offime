@@ -16,12 +16,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
-import static Offime.Offime.entity.member.WorkStatus.근무중;
-import static Offime.Offime.entity.member.WorkStatus.준비중;
 
 @Entity
 @Getter
@@ -62,6 +60,7 @@ public class Member extends BaseTimeEntity implements UserDetails {
 
     @OneToOne(mappedBy = "member", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private MemberProfileFiles memberProfileFiles;
+
 
 //    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 //    private List<Vacation> vacations;
@@ -106,9 +105,6 @@ public class Member extends BaseTimeEntity implements UserDetails {
         }
         if (this.team == null){
             this.team = Team.A;
-        }
-        if (this.workStatus == null){
-            this.workStatus = 준비중;
         }
     }
 

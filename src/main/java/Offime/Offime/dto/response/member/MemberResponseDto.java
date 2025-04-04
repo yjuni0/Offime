@@ -8,6 +8,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 @Getter
 @NoArgsConstructor
 public class MemberResponseDto {
@@ -18,17 +20,19 @@ public class MemberResponseDto {
     private String phone;
     private Role role;
     private Team team;
+    private BigDecimal availableLeaveDays;
     private String profileImageUrl;
     private String workStatus;
 
     @Builder
-    public MemberResponseDto(Long id, String name, String email,String phone, Role role, Team team, String profileImageUrl, String workStatus) {
+    public MemberResponseDto(BigDecimal availableLeaveDays, Long id, String name, String email,String phone, Role role, Team team, String profileImageUrl, String workStatus) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.phone = phone;
         this.role = role;
         this.team = team;
+        this.availableLeaveDays = availableLeaveDays;
         this.profileImageUrl = profileImageUrl;
         this.workStatus = workStatus;
     }
@@ -41,8 +45,9 @@ public class MemberResponseDto {
                 .phone(member.getPhone())
                 .role(member.getRole())
                 .team(member.getTeam())
+
+                .availableLeaveDays(member.getAvailableLeaveDays())
                 .profileImageUrl(profileImageUrl)
-                .workStatus(member.getWorkStatus().toString())
                 .build();
     }
 }

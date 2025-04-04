@@ -31,25 +31,26 @@ function ReportRepliesBlock({ reply, deleteReply, updateReply }) {
     return (
         <>
             <div className="reply-header">
-                <img className="reply-profile-img" alt="프로필" src="/image/reportIcon/펭귄.jpg" />
+                <img src={member.profileImageUrl || "/image/member/profile_no_image.jpg"} style={{objectFit: "cover"}}
+                     alt="작성자" className="reply-profile-img"/>
                 <p className="reply-writer-name">{member.name}</p>
             </div>
 
             <div className="reply-container">
-                {!isUpdate ? (
+            {!isUpdate ? (
                     <div className="reply-content-row">
                         <p className="reply-content">{reply.content}</p>
                         {currentMember == reply.writerId && (
                             <div className="reply-button-group">
                                 <img
                                     className="reply-action-icon"
-                                    src="/image/reportIcon/update.png"
+                                    src="/image/report/update.png"
                                     alt="수정"
                                     onClick={() => setIsUpdate(true)}
                                 />
                                 <img
                                     className="reply-action-icon"
-                                    src="/image/reportIcon/recyclebin.png"
+                                    src="/image/report/recyclebin.png"
                                     alt="삭제"
                                     onClick={() => deleteReply(reply.id)}
                                 />

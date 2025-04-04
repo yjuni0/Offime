@@ -21,6 +21,7 @@ public class NotificationMessage extends BaseTimeEntity {
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private Long memberId;
+    private String type;
     private Long typeId;
     private String status;
     private String message;

@@ -3,7 +3,7 @@ import axios from 'axios';
 import {renderCalendar} from "./utils/CalendarUtils";
 
 const ScheduleEditForm = ({ schedule, onClose, onUpdated, colors, selectedColorIndex,
-                              handleSchedColor,schedColor }) => {
+                              handleSchedColor,schedColor, randerDays }) => {
     const [date, setDate] = useState(schedule.date);
     const [startTime, setStartTime] = useState(schedule.startTime);
     const [endTime, setEndTime] = useState(schedule.endTime);
@@ -27,6 +27,7 @@ const ScheduleEditForm = ({ schedule, onClose, onUpdated, colors, selectedColorI
             await axios.patch('http://localhost:8080/schedule/update', req);
             console.log("[ScheduleEditForm.js] updateSchedule() success.")
             onUpdated();
+            randerDays();
         } catch (error) {
             console.error('스케줄 수정 실패:', error);
         }

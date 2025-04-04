@@ -1,5 +1,6 @@
 package Offime.Offime.entity.expense;
 
+import Offime.Offime.dto.request.expense.ExpenseRequestDTO;
 import Offime.Offime.entity.common.RequestStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -35,6 +36,23 @@ public class Expense {
 
     @OneToMany(mappedBy = "expense", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = false) // 수정된 부분
     private List<ExpenseImage> images;  // 여러 개의 사진
+
+    public Expense(ExpenseRequestDTO expenseDTO) {
+        this.title = expenseDTO.getTitle();
+        this.content = expenseDTO.getContent();
+        this.amount = expenseDTO.getAmount();
+        this.category = expenseDTO.getCategory();
+        this.expenseDate = expenseDTO.getExpenseDate();
+        this.status = RequestStatus.PENDING;
+    }
+
+    public void updateFromDTO(ExpenseRequestDTO expenseDTO) {
+        this.title = expenseDTO.getTitle();
+        this.content = expenseDTO.getContent();
+        this.amount = expenseDTO.getAmount();
+        this.category = expenseDTO.getCategory();
+        this.expenseDate = expenseDTO.getExpenseDate();
+    }
 
     // 기본 생성자, 모든 필드를 받는 생성자가 자동 생성됩니다.
 }

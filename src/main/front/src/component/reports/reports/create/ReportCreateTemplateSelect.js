@@ -24,7 +24,7 @@ function ReportCreateTemplateSelect() {
                 <div className="templateHeader">
                     <img
                         className="backIcon"
-                        src="/image/reportIcon/backArrow.png"
+                        src="/image/report/backArrow.png"
                         alt="뒤로가기"
                         onClick={() => navigate(-1)}
                     />
@@ -39,7 +39,7 @@ function ReportCreateTemplateSelect() {
                         >
                             <p className="templateTitle">{template.title}</p>
                             <img
-                                src={`/image/reportIcon/icon${template.icon}.png`}
+                                src={`/image/report/icon${template.icon}.png`}
                                 alt="템플릿 아이콘"
                                 className="templateIcon"
                             />

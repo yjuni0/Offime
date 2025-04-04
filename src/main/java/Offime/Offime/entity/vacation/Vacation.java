@@ -1,5 +1,6 @@
 package Offime.Offime.entity.vacation;
 
+import Offime.Offime.common.BaseTimeEntity;
 import Offime.Offime.entity.member.Member;
 import jakarta.persistence.*;
 import lombok.*;
@@ -11,13 +12,13 @@ import java.time.LocalDate;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Vacation {
+public class Vacation extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade =  CascadeType.MERGE)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinColumn(name = "member_id")
     private Member member;
 

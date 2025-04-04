@@ -1,5 +1,6 @@
 package Offime.Offime.controller.member;
 
+import Offime.Offime.dto.request.member.ChangePassword;
 import Offime.Offime.dto.request.member.MemberLoginDto;
 import Offime.Offime.dto.request.member.MemberRegisterDto;
 import Offime.Offime.dto.response.member.MemberListDto;
@@ -80,15 +81,17 @@ public class MemberController {
         return ResponseEntity.status(HttpStatus.OK).body(myInfo);
     }
 
-//    // 비밀번호 변경
-//    @PutMapping("/member/changePassword")
-//    public ResponseEntity<String> changePassword(@AuthenticationPrincipal Member member,
-//                                                 @RequestBody ChangePasswordRequest changePasswordRequest) {
-//        try {
-//            memberService.changePassword(member, changePasswordRequest.getCurrentPassword(), changePasswordRequest.getNewPassword());
-//            return ResponseEntity.status(HttpStatus.OK).body("비밀번호 변경 성공");
-//        } catch (Exception e) {
-//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("비밀번호 변경에 실패했습니다.");
-//        }
-//    }
+    // 비밀번호 변경
+    @PutMapping("/member/changePassword")
+    public ResponseEntity<String> changePassword(@AuthenticationPrincipal Member member,
+                                                 @RequestBody ChangePassword changePassword) {
+        try {
+            memberService.changePassword(member, changePassword.getCurrentPassword(), changePassword.getNewPassword());
+            return ResponseEntity.status(HttpStatus.OK).body("비밀번호 변경 성공");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("현재 비밀번호가 일치하지 않습니다.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("비밀번호 변경에 실패했습니다. 다시 시도해주세요.");
+        }
+    }
 }

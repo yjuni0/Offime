@@ -6,7 +6,7 @@ function ReportCreateQuestionType({type, questionId, setResponseData}) {
     const [timeRange, setTimeRange] = useState({startTime: "", endTime: ""});
     const [dateRange, setDateRange] = useState({startDate: "", endDate: ""});
     const [previewUrl, setPreviewUrl] = useState(null);
-
+    const [fileName, setFileName] = useState("");
 
     useEffect(() => {
         if (!timeRange) return
@@ -196,7 +196,7 @@ function ReportCreateQuestionType({type, questionId, setResponseData}) {
                 }}>
                     <label htmlFor={`file-input-${questionId}`}>
                         <div style={{backgroundColor:"#2c66d2", width:"2rem", height:"2rem", borderRadius:"50%", display:"flex", justifyContent:"center", alignItems:"center"}}>
-                        <img src="/image/reportIcon/imageUpload.png" style={{width:"1rem", filter:"invert(1)"}} alt="이미지 업로드" />
+                        <img src="/image/report/imageUpload.png" style={{width:"1rem", filter:"invert(1)"}} alt="이미지 업로드" />
                         </div>
                     </label>
                     <input
@@ -218,7 +218,6 @@ function ReportCreateQuestionType({type, questionId, setResponseData}) {
                 <input
                     type="file"
                     className="questionInput"
-                    accept={type === "IMAGE" ? "image/*" : undefined}
                     onChange={(e) => {
                         const file = e.target.files[0];
                         if (file) handleFileUpload(file, questionId);

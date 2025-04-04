@@ -12,7 +12,7 @@ function LoginForm() {
     const navigate = useNavigate();
 
     const { auth, setAuth } = useContext(AuthContext);
-    const { headers, setHeaders } = useContext(HttpHeadersContext);
+    const { setHeaders } = useContext(HttpHeadersContext);
 
     const login = async (e) => {
         e.preventDefault();
@@ -39,7 +39,7 @@ function LoginForm() {
 
                 setAuth(response.data.email);
                 setHeaders({ Authorization: `Bearer ${response.data.token}` });
-                navigate('/pageTest');
+                navigate('/home');
             } else {
                 alert('로그인 실패: ' + response.data.message);
             }
@@ -58,7 +58,7 @@ function LoginForm() {
 
     useEffect(() => {
         if (auth) {
-            navigate('/pageTest');
+            navigate('/home');
         }
     }, []);
 
@@ -92,9 +92,6 @@ function LoginForm() {
                 <button type="submit" className="button-spacing">
                     이메일로 로그인
                 </button>
-                <Link to={'/forgotPassword'} className="forgot-password">
-                    비밀번호 찾기
-                </Link>
             </div>
             <div className="button-container">
                 <div className="divider-line"></div>

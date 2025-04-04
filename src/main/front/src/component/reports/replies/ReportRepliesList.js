@@ -31,7 +31,7 @@ function ReportRepliesList({ reportId }) {
             <div className="replyHeader">
                 <img
                     className="replyBackArrow"
-                    src="/image/reportIcon/backArrow.png"
+                    src="/image/report/backArrow.png"
                     onClick={() => navigate(`/reports/read/${reportId}`)}
                     alt="뒤로가기"
                 />
