@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import ExpensesCount from "./expense/ExpensesCount ";
 
 function Home() {
   return (
@@ -23,6 +24,7 @@ function Home() {
         <button className={"btn btn-lg btn-pm mb_md mlr-a"}>
           <Link to={"/vacation"}>휴가</Link>
         </button>
+        <ExpensesCount />
       </div>
     </>
   );

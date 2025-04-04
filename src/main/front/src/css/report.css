@@ -384,8 +384,7 @@
 }
 
 .reportReadSection {
-    background-color: #f5f7f9;
-    min-height: 100vh;
+    min-height: 90vh;
     padding: 1rem;
     box-sizing: border-box;
 }
@@ -479,8 +478,7 @@
 }
 
 .templateSection {
-    background-color: #f7f9fc;
-    min-height: 100vh;
+    min-height: 93vh;
     padding: 1rem;
     box-sizing: border-box;
 }
