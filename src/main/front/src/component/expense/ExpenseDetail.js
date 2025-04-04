@@ -16,7 +16,6 @@ const ExpenseDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const role = localStorage.getItem("role");
-
   useEffect(() => {
     const fetchExpenseDetail = async () => {
       try {
@@ -39,6 +38,7 @@ const ExpenseDetail = () => {
 
         if (response.ok) {
           const data = await response.json();
+          console.log(data.imageUrls); // 이 부분을 추가해서 URL이 제대로 오고 있는지 확인
           setExpense(data);
         } else {
           console.error("데이터를 가져오는 데 실패했습니다.");
@@ -181,7 +181,7 @@ const ExpenseDetail = () => {
 
                     return (
                       <div key={index}>
-                        <img src={url} alt={`Expense image ${index + 1}`} />
+                        <img src={url} alt={`미리보기 ${index + 1}`} />
                         <button
                           className="btn btn-sm btn-pm fs_sm m_sm"
                           onClick={handleDownload}

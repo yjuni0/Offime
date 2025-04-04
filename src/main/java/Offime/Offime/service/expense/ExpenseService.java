@@ -246,7 +246,4 @@ public class ExpenseService {
         expense.setStatus(status);
         return expenseRepository.save(expense);
     }
-
-
-
 }
