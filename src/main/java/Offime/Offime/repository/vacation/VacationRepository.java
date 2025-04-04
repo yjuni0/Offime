@@ -10,18 +10,11 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
-<<<<<<< HEAD
 import java.util.List;
 
 @Repository
 public interface VacationRepository extends JpaRepository<Vacation, Long> {
     Page<Vacation> findAllByMember(Member member,Pageable pageable);
-=======
-
-@Repository
-public interface VacationRepository extends JpaRepository<Vacation, Long> {
-    Page<Vacation> findAllByMember(Member member, Pageable pageable);
->>>>>>> 3b1e12d85a949549e516839c8699a7ce43a6a5d6
 
     Vacation findByMemberAndId(Member member, Long id);
 
@@ -31,8 +24,6 @@ public interface VacationRepository extends JpaRepository<Vacation, Long> {
                                   @Param("endDate") LocalDate endDate,
                                   @Param("member") Member member);
 
-<<<<<<< HEAD
     List<Vacation> findTop5ByMemberOrderByIdDesc(Member member);
-=======
->>>>>>> 3b1e12d85a949549e516839c8699a7ce43a6a5d6
+
 }
