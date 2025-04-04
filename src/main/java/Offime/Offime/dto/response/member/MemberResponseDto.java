@@ -48,8 +48,6 @@ public class MemberResponseDto {
                 .availableLeaveDays(member.getAvailableLeaveDays())
                 .profileImageUrl(profileImageUrl)
                 .workStatus(member.getWorkStatus().toString())
-                .availableLeaveDays(member.getAvailableLeaveDays())
-                .profileImageUrl(profileImageUrl)
                 .build();
     }
 }

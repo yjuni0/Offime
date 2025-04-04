@@ -33,11 +33,11 @@ function MemberDetail() {
             const response = await axios.get(
                 `http://localhost:8080/member/${id}`
             );
+            console.log('직원 데이터:', response.data);
             setMember(response.data);
             setRole(response.data.role);
             setTeam(response.data.team || '');
             setProfileImageUrl(response.data.profileImageUrl);
-            console.log('직원 데이터', response.data);
         } catch (error) {
             console.error('Error fetching member data:', error);
         }

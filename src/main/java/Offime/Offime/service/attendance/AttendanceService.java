@@ -35,7 +35,7 @@ public class AttendanceService {
     private static final double EARTH_RADIUS = 6371.0088;       // 지구 평균 반지름(km)
     private static final double COMPANY_LATITUDE = 37.482175;   // 구트 아카데미 위도
     private static final double COMPANY_LONGITUDE = 126.898233; // 구트 아카데미 경도
-    private static final int MAX_DISTANCE = 1000;                 // 허용할 최대 거리(m)
+    private static final int MAX_DISTANCE = 100000;                 // 허용할 최대 거리(m)
     private static final LocalTime COMPANY_START_TIME = LocalTime.of(9, 0);
     private static final LocalTime COMPANY_END_TIME = LocalTime.of(18, 0);
 

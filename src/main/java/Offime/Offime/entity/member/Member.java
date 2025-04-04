@@ -106,6 +106,9 @@ public class Member extends BaseTimeEntity implements UserDetails {
         if (this.team == null){
             this.team = Team.A;
         }
+        if (this.workStatus == null){
+            this.workStatus = workStatus;
+        }
     }
 
     public void updateWorkStatus(WorkStatus workStatus){
