@@ -17,14 +17,14 @@ public class AttendanceManagerForEmployeeService {
 
     private final EventRecordRepository eventRecordRepository;
 
-    public ResAttendanceHistoryForEmployeeDto getWeeklyAttendanceHistory(Member member, LocalDate date) {
+    public ResAttendanceHistoryForEmployeeDto getWeeklyAttendanceHistory(Member member, LocalDate date, int totalWorkdays) {
         List<EventRecord> records = getWeeklyRecords(member, date);
-        return ResAttendanceHistoryForEmployeeDto.fromEntity(records);
+        return ResAttendanceHistoryForEmployeeDto.fromEntity(records, totalWorkdays);
     }
 
-    public ResAttendanceHistoryForEmployeeDto getMonthlyAttendanceHistory(Member member, int year, int month) {
+    public ResAttendanceHistoryForEmployeeDto getMonthlyAttendanceHistory(Member member, int year, int month, int totalWorkdays) {
         List<EventRecord> records = getMonthlyRecords(member, year, month);
-        return ResAttendanceHistoryForEmployeeDto.fromEntity(records);
+        return ResAttendanceHistoryForEmployeeDto.fromEntity(records, totalWorkdays);
     }
 
     public ResAttendanceRecordDto getDailyAttendanceRecord(Member member, LocalDate date){

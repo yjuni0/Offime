@@ -17,7 +17,6 @@ import java.time.LocalTime;
 @Getter
 @NoArgsConstructor
 @Table(name = "EVENT_RECORDS")
-
 public class EventRecord {
 
     @Id
@@ -76,7 +75,7 @@ public class EventRecord {
         this.team = team;
         this.member = member;
     }
-    //==================================================================================================================
+
     public void updateClockOut(LocalTime clockOut) {
         this.clockOut = clockOut;
     }

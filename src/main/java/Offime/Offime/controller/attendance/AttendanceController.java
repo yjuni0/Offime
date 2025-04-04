@@ -8,14 +8,12 @@ import Offime.Offime.entity.member.Member;
 import Offime.Offime.entity.member.WorkStatus;
 import Offime.Offime.service.attendance.AttendanceService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 
-@Slf4j
 @RestController
 @RequiredArgsConstructor
 public class AttendanceController {
@@ -70,10 +68,4 @@ public class AttendanceController {
             return ResponseEntity.badRequest().body("퇴근 실패" + e.getMessage());
         }
     }
-//    @GetMapping("/time")
-//    public ResponseEntity<List<Long>> getTimeDifference(
-//            @RequestParam(name = "localDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate localDate) {
-//        List<Long> timeDifference = attendanceService.getTimeDifference(localDate);
-//        return ResponseEntity.ok(timeDifference);
-//    }
 }

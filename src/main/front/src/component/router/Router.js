@@ -28,8 +28,10 @@ import Management from '../member/pages/Management';
 import MemberDetail from '../member/pages/MemberDetail';
 
 import AttendanceBanner from '../attendance/AttendanceBanner';
-import AttendanceManagerForLeader from '../attendance/pages/leader/AttendanceManagerForLeader';
-import AttendanceManagerForEmployee from '../attendance/pages/employee/AttendanceManagerForEmployee';
+import AttendanceManagerForEmployee from '../attendance/AttendanceManagerForEmployee';
+import AttendanceManagerForEmployeeDetail from '../attendance/AttendanceManagerForEmployeeDetail';
+import AttendanceManagerForLeader from '../attendance/AttendanceManagerForLeader';
+import AttendanceManagerForLeaderDetail from '../attendance/AttendanceManagerForLeaderDetail';
 import Menu from '../member/pages/Menu';
 function Router() {
     return (
@@ -75,14 +77,10 @@ function Router() {
             />
 
             <Route path="/attendanceBanner" element={<AttendanceBanner />} />
-            <Route
-                path="/attendanceManagerForLeader"
-                element={<AttendanceManagerForLeader />}
-            />
-            <Route
-                path="/attendanceManagerForEmployee"
-                element={<AttendanceManagerForEmployee />}
-            />
+            <Route path="/attendanceManagerForEmployee" element={<AttendanceManagerForEmployee />} />
+            <Route path="/attendanceManagerForEmployeeDetail" element={<AttendanceManagerForEmployeeDetail />} />
+            <Route path="/attendanceManagerForLeader" element={<AttendanceManagerForLeader />} />
+            <Route path="/attendanceManagerForLeaderDetail" element={<AttendanceManagerForLeaderDetail />} />
         </Routes>
     );
 }
