@@ -147,7 +147,7 @@ const ExpenseDetail = () => {
                   )}
                   {expense.status === "APPROVED" && (
                     <span className="btn btn-sm btn-p04 fs_sm txt-a-c mb_xsm">
-                      수락됨
+                      승인됨
                     </span>
                   )}
                   {expense.status === "REJECTED" && (
@@ -159,15 +159,41 @@ const ExpenseDetail = () => {
               </div>
               {expense.imageUrls && expense.imageUrls.length > 0 && (
                 <div className="pb_md item">
-                  {expense.imageUrls.map((url, index) => (
-                    <img
-                      key={index}
-                      src={url}
-                      alt={`Expense image ${index + 1}`}
-                    />
-                  ))}
+                  {expense.imageUrls.map((url, index) => {
+                    const fileName = url.split("/").pop(); // 파일명 추출
+
+                    const handleDownload = (e) => {
+                      e.preventDefault(); // 기본 동작 방지 (페이지 이동 X)
+                      fetch(url)
+                        .then((response) => response.blob())
+                        .then((blob) => {
+                          const link = document.createElement("a");
+                          link.href = URL.createObjectURL(blob);
+                          link.download = fileName;
+                          document.body.appendChild(link);
+                          link.click();
+                          document.body.removeChild(link);
+                        })
+                        .catch((error) =>
+                          console.error("다운로드 실패:", error)
+                        );
+                    };
+
+                    return (
+                      <div key={index}>
+                        <img src={url} alt={`Expense image ${index + 1}`} />
+                        <button
+                          className="btn btn-sm btn-pm fs_sm m_sm"
+                          onClick={handleDownload}
+                        >
+                          다운로드
+                        </button>
+                      </div>
+                    );
+                  })}
                 </div>
               )}
+
               <div>
                 <div>
                   <p className="fs_lg pb_sm">작성자</p>

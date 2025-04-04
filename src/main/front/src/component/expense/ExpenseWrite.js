@@ -174,7 +174,7 @@ const ExpenseWrite = () => {
                         alt={`미리보기 ${index + 1}`}
                       />
                       <button
-                        className=""
+                        className="btn btn-sm btn-pl fs_sm"
                         type="button"
                         onClick={() => handleRemoveImage(index)}
                       >

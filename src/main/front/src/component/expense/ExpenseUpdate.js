@@ -201,7 +201,7 @@ const ExpenseUpdate = () => {
                         }
                       />
                       <button
-                        className=""
+                        className="btn btn-sm btn-pl fs_sm"
                         type="button"
                         onClick={() => handleRemoveImage(index)}
                       >
