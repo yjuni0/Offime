@@ -79,4 +79,16 @@ public class MemberController {
 
         return ResponseEntity.status(HttpStatus.OK).body(myInfo);
     }
+
+    // 비밀번호 변경
+    @PutMapping("/member/changePassword")
+    public ResponseEntity<String> changePassword(@AuthenticationPrincipal Member member,
+                                                 @RequestBody ChangePasswordRequest changePasswordRequest) {
+        try {
+            memberService.changePassword(member, changePasswordRequest.getCurrentPassword(), changePasswordRequest.getNewPassword());
+            return ResponseEntity.status(HttpStatus.OK).body("비밀번호 변경 성공");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("비밀번호 변경에 실패했습니다.");
+        }
+    }
 }
