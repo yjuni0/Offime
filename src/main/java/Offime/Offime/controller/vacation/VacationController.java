@@ -16,6 +16,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/vacation")
@@ -23,11 +25,15 @@ public class VacationController {
     private final VacationService vacationService;
 
     @GetMapping
-    public ResponseEntity<?> getAll(@AuthenticationPrincipal Member member,@PageableDefault(size = 5, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
-        Page<ResVacation> list = vacationService.getAllVacations(member, pageable);
+    public ResponseEntity<?> getAll(@AuthenticationPrincipal Member member,@PageableDefault(size = 5, sort = "id",direction = Sort.Direction.DESC)Pageable pageable) {
+        Page<ResVacation> list = vacationService.getAllVacations(member,pageable);
         return ResponseEntity.ok().body(list);
     }
-
+    @GetMapping("/latest")
+    public ResponseEntity<?> getLatestVacation(@AuthenticationPrincipal Member member){
+        List<ResVacation> list = vacationService.getFiveLatestVacation(member);
+        return ResponseEntity.ok().body(list);
+    }
     // 특정 휴가 상세 조회
     @GetMapping("/{vacationId}")
     public ResponseEntity<?> getVacationById(@AuthenticationPrincipal Member member, @PathVariable("vacationId") Long vacationId) {

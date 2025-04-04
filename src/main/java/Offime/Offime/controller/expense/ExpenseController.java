@@ -54,22 +54,15 @@ public class ExpenseController {
 
     // 검색 기능
     @GetMapping("/search")
-    public ResponseEntity<?> searchExpenses(
-            @RequestParam(required = false) String searchTerm,
-            @RequestParam(required = true) String status) {
+    public ResponseEntity<?> searchExpenses(@RequestParam(required = false) String searchTerm) {
         try {
-            ExpenseStatus expenseStatus = ExpenseStatus.valueOf(status.toUpperCase());
-
-            List<Expense> expenses = expenseService.searchExpenses(searchTerm, expenseStatus);
+            List<Expense> expenses = expenseService.searchExpenses(searchTerm);
             List<ExpenseResponseDTO> responseDTOs = expenses.stream()
                     .map(this::convertToResponseDTO)
                     .collect(Collectors.toList());
 
             logger.info("Search results: {}", responseDTOs);
-            return ResponseEntity.ok(responseDTOs); // 수정된 부분
-        } catch (IllegalArgumentException e) {
-            logger.error("Invalid status value: {}", status);
-            return ResponseEntity.badRequest().body("Invalid status value"); // String 반환
+            return ResponseEntity.ok(responseDTOs);
         } catch (Exception e) {
             logger.error("Error searching expenses: {}", e.getMessage(), e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred while searching");
@@ -249,6 +242,25 @@ public class ExpenseController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유효하지 않은 토큰입니다.");
         }
     }
+
+    @GetMapping("/rejected/count")
+    public ResponseEntity<?> getRejectedExpensesCount(HttpServletRequest request) {
+        String token = request.getHeader("Authorization");
+        if (token == null || !token.startsWith("Bearer ")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("인증 토큰이 없습니다.");
+        }
+        token = token.substring(7);
+
+        try {
+            long count = expenseService.getRejectedExpensesCount();
+            Map<String, Long> response = new HashMap<>();
+            response.put("count", count);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유효하지 않은 토큰입니다.");
+        }
+    }
+
 
     // Entity -> Response DTO 변환
     private ExpenseResponseDTO convertToResponseDTO(Expense expense) {

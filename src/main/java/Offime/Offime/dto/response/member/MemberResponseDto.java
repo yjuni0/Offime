@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 @Getter
 @NoArgsConstructor
 public class MemberResponseDto {
@@ -17,15 +19,17 @@ public class MemberResponseDto {
     private String phone;
     private Role role;
     private Team team;
+    private BigDecimal availableLeaveDays;
 
     @Builder
-    public MemberResponseDto(Long id, String name, String email,String phone, Role role, Team team) {
+    public MemberResponseDto(Long id, String name, String email,String phone, Role role, Team team,BigDecimal availableLeaveDays) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.phone = phone;
         this.role = role;
         this.team = team;
+        this.availableLeaveDays = availableLeaveDays;
     }
 
     public static MemberResponseDto fromEntity (Member member){
@@ -36,6 +40,7 @@ public class MemberResponseDto {
                 .phone(member.getPhone())
                 .role(member.getRole())
                 .team(member.getTeam())
+                .availableLeaveDays(member.getAvailableLeaveDays())
                 .build();
     }
 }

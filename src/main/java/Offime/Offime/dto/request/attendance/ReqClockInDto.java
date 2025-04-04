@@ -25,6 +25,7 @@ public class ReqClockInDto {
                 .clockIn(LocalTime.now())
                 .eventType(EventType.출근)
                 .late(late)
+                .team(member.getTeam())
                 .build();
     }
 }
