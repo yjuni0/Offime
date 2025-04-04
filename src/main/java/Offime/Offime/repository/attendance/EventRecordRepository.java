@@ -24,4 +24,6 @@ public interface EventRecordRepository extends JpaRepository<EventRecord, Long> 
     List<EventRecord> findByDate(LocalDate date);
 
     List<EventRecord> findByDateAndTeam(LocalDate date, Team team);
+
+    boolean existsByMemberAndDate(Member member, LocalDate today);
 }

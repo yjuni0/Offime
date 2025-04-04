@@ -15,10 +15,8 @@ function AttendanceManagerForLeader() {
     const [team, setTeam] = useState(["A", "B", "C"]);
     const [selectedTeam, setSelectedTeam] = useState(null);
     const [loading, setLoading] = useState(false);
-
-    const navigateToDetailPage = (status) => {
-        navigate("/AttendanceManagerForLeaderDetail", { state: { status, attendanceData } });
-    };
+    const [totalEmployees, setTotalEmployees] = useState(0);
+    const [employeesByTeam, setEmployeesByTeam] = useState({});
 
     const handleViewTypeChange = (type) => {
         setViewType(type);
@@ -68,19 +66,74 @@ function AttendanceManagerForLeader() {
         }
     };
 
+    const fetchTotalEmployees = async () => {
+    try {
+        const token = localStorage.getItem("CL_access_token");
+        const response = await axios.get("http://localhost:8080/total", {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+        });
+        return response.data;
+    } catch (error) {
+        console.error("전체 직원 수 조회 오류:", error);
+        return null;
+    }
+    };
+
+    const fetchTotalEmployeesByTeam = async (team) => {
+    try {
+        const token = localStorage.getItem("CL_access_token");
+        const response = await axios.get("http://localhost:8080/totalByTeam", {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+        params: {
+            team,
+        },
+        });
+        return response.data;
+    } catch (error) {
+        console.error(`팀 ${team}별 직원 수 조회 오류:`, error);
+        return null;
+        }
+        
+    };
+
     useEffect(() => {
-        // const role = localStorage.getItem("role");
-        // if (role !== "ADMIN") {
-        //     alert("리더만 접근할 수 있습니다!");
-        //     navigate("/");
-        //     return;
-        // }
+        const fetchData = async () => {
+            const totalEmployeesData = await fetchTotalEmployees();
+
+            if (totalEmployeesData !== null) {
+                setTotalEmployees(totalEmployeesData);
+            }
+
+            const employeesByTeamData = {};
+            for (const team of ["A", "B", "C"]) {
+                const teamCount = await fetchTotalEmployeesByTeam(team);
+                if (teamCount !== null) {
+                    employeesByTeamData[team] = teamCount;
+                }
+            }
+            setEmployeesByTeam(employeesByTeamData);
+        };
+        fetchData();
+    }, []);
+
+
+
+    useEffect(() => {
+        const role = localStorage.getItem("role");
+        if (role !== "ADMIN") {
+            alert("리더만 접근할 수 있습니다!");
+            navigate("/");
+            return;
+        }
 
         if (selectedDate) {
             fetchAttendanceData(selectedDate);
         }
     }, [viewType, selectedDate, selectedTeam]);
-
 
     return (
         <>
@@ -137,10 +190,8 @@ function AttendanceManagerForLeader() {
                             </>
                         )}
 
-                        {/* 로딩 상태 메시지 */}
                         {loading && <p>데이터를 불러오는 중입니다...</p>}
 
-                        {/* 출근 현황 - 날짜가 선택된 경우에만 렌더링 */}
                         {selectedDate && !loading && attendanceData && (
                             <>
                                 <p className="fs_md mt_md">출근 현황</p>
@@ -148,48 +199,50 @@ function AttendanceManagerForLeader() {
                                 <div className="item attendance-box bg_pm mt_sm">
                                     <div className="tc-w">출근율</div>
                                     <div className="right-square tc-w">
-                                        <BsPeopleFill /> {attendanceData.clockInCount} / {attendanceData.totalCount}
+                                        <BsPeopleFill /> {attendanceData.clockInCount} / 
+                                        {viewType === "forAll" ? totalEmployees : employeesByTeam[selectedTeam] || 0}
                                     </div>
                                 </div>
 
                                 {/* 출근과 미출근 */}
                                 <div className="attendance-row mt_md">
-                                    <button className="attendance-box bg_wt" onClick={() => navigateToDetailPage('출근')}>
+                                    <div className="attendance-box bg_wt">
                                         <div className="tc-pm">출근</div>
                                         <div className="right-square tc-pm">{attendanceData.clockInCount}</div>
-                                    </button>
-                                    <button className="attendance-box bg_wt" onClick={() => navigateToDetailPage('미출근')}>
+                                    </div>
+                                    <div className="attendance-box bg_wt">
                                         <div className="tc-e">미출근</div>
                                         <div className="right-square tc-e">{attendanceData.absentCount}</div>
-                                    </button>
+                                    </div>
                                 </div>
 
-                                {/* 출근 전은 오늘 날짜일 경우에만 렌더링  */}
+                                {/* 출근 전은 오늘 날짜일 경우에만 렌더링 */}
                                 {selectedDate.getFullYear() === new Date().getFullYear() &&
                                     selectedDate.getMonth() === new Date().getMonth() &&
                                     selectedDate.getDate() === new Date().getDate() && (
                                     <>
                                         <div className="attendance-row mt_md">
-                                            <button className="attendance-box bg_wt" onClick={() => navigateToDetailPage('출근 전')}>
+                                            <div className="attendance-box bg_wt">
                                                 <div className="tc-b">출근 전</div>
                                                 <div className="right-square tc-b">{attendanceData.beforeClockInCount}</div>
-                                            </button>
+                                                
+                                            </div>
                                         </div>
-                                </>
+                                    </>
                                 )}
-                                
+
                                 <div className="attendance-row mt_md">
-                                    <button className="attendance-box bg_p04" onClick={() => navigateToDetailPage('지각')}>
+                                    <div className="attendance-box bg_p04">
                                         <div className="tc-w">지각</div>
                                         <div className="right-square">{attendanceData.lateCount}</div>
-                                    </button>
-                                    <button className="attendance-box bg_p03" onClick={() => navigateToDetailPage('조퇴')}>
+                                    </div>
+                                    <div className="attendance-box bg_p03">
                                         <div className="tc-w">조퇴</div>
                                         <div className="right-square tc-w">{attendanceData.leaveEarlyCount}</div>
-                                    </button>
+                                    </div>
                                 </div>
 
-                                {/* 출근인원 근무상태는 오늘 날짜일 경우에만 렌더링  */}
+                                {/* 출근인원 근무상태는 오늘 날짜일 경우에만 렌더링 */}
                                 {selectedDate.getFullYear() === new Date().getFullYear() &&
                                     selectedDate.getMonth() === new Date().getMonth() &&
                                     selectedDate.getDate() === new Date().getDate() && (
@@ -197,26 +250,25 @@ function AttendanceManagerForLeader() {
                                         <p className="fs_md mt_md">출근인원 근무상태</p>
                                         <div className="attendance-box work-status mt_md bg_wt">
                                             {/* 근무 중 */}
-                                            <button className="status-row" onClick={() => navigateToDetailPage('근무 중')}>
+                                            <div className="status-row">
                                                 <div className="status-label">근무 중</div>
                                                 <div className="status-count">{attendanceData.atWorkCount}명</div>
-                                            </button>
+                                            </div>
 
                                             {/* 자리비움 중 */}
-                                            <button className="status-row" onClick={() => navigateToDetailPage('자리비움 중')}>
+                                            <div className="status-row">
                                                 <div className="status-label">자리비움 중</div>
                                                 <div className="status-count">{attendanceData.onBreakCount}명</div>
-                                            </button>
+                                            </div>
 
                                             {/* 퇴근 */}
-                                            <button className="status-row"  onClick={() => navigateToDetailPage('퇴근')}>
+                                            <div className="status-row">
                                                 <div className="status-label">퇴근</div>
                                                 <div className="status-count">{attendanceData.offWorkCount}명</div>
-                                            </button>
+                                            </div>
                                         </div>
                                     </>
-                                    )
-                                }
+                                )}
                             </>
                         )}
                     </div>
