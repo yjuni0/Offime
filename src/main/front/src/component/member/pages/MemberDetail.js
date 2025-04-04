@@ -82,7 +82,7 @@ function MemberDetail() {
     const getTeamStatus = (teamCode) => {
         switch (teamCode) {
             case 'A':
-                return '발령 대기';
+                return '미배정';
             case 'B':
                 return '경영팀';
             case 'C':
@@ -168,7 +168,8 @@ function MemberDetail() {
                         <div className="member_details">
                             <span className="member_name">{member.name}</span>
                             <span className="member_team">
-                                {getTeamStatus(member.team)}
+                                {getTeamStatus(member.team)} &nbsp;
+                                {member.workStatus}
                             </span>
                         </div>
                     </div>
@@ -208,7 +209,7 @@ function MemberDetail() {
                                         className="input-form"
                                     >
                                         <option value="">부서 선택</option>
-                                        <option value="A">발령 대기</option>
+                                        <option value="A">미배정</option>
                                         <option value="B">경영팀</option>
                                         <option value="C">인사팀</option>
                                         <option value="D">업무팀</option>
@@ -217,7 +218,11 @@ function MemberDetail() {
                             </p>
                         </div>
                         <div className="divider-line"></div>
-                        <p>근무 일정</p>
+                        <p>
+                            <strong>근무 상태</strong>
+                            <br />
+                            {member.workStatus}
+                        </p>
                         <div className="divider-line"></div>
 
                         <div className="section">

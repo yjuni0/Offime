@@ -30,7 +30,7 @@ function Menu() {
     const getTeamStatus = (teamCode) => {
         switch (teamCode) {
             case 'A':
-                return '발령 대기';
+                return '미배정';
             case 'B':
                 return '경영팀';
             case 'C':
@@ -65,7 +65,9 @@ function Menu() {
                                             <div className="profile_picture">
                                                 <img
                                                     src={
-                                                        '/image/member/profile_no_image.jpg'
+                                                        member.profileImageUrl
+                                                            ? `${process.env.PUBLIC_URL}${member.profileImageUrl}` // public 폴더 기준으로 접근
+                                                            : '/image/member/profile_no_image.jpg' // 기본 이미지 경로
                                                     }
                                                     alt="프로필"
                                                 />
@@ -75,7 +77,8 @@ function Menu() {
                                                     {member.name}
                                                 </span>
                                                 <span className="member_team">
-                                                    {getTeamStatus(member.team)}
+                                                    {getTeamStatus(member.team)}{' '}
+                                                    {member.workStatus}
                                                 </span>
                                             </div>
                                         </div>

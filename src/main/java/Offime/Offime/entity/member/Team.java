@@ -1,7 +1,7 @@
 package Offime.Offime.entity.member;
 
 public enum Team {
-    A("발령 대기"),
+    A("미배정"),
     B("경영팀"),
     C("인사팀"),
     D("업무팀");

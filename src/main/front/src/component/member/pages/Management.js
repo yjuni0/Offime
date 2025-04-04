@@ -51,7 +51,7 @@ function Management() {
     const getTeamStatus = (teamCode) => {
         switch (teamCode) {
             case 'A':
-                return '발령 대기';
+                return '미배정';
             case 'B':
                 return '경영팀';
             case 'C':
@@ -112,7 +112,9 @@ function Management() {
                                                     <span className="member_team">
                                                         {getTeamStatus(
                                                             member.team
-                                                        )}
+                                                        )}{' '}
+                                                        &nbsp;
+                                                        {member.workStatus}
                                                     </span>
                                                 </div>
                                             </div>
