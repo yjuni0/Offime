@@ -1,4 +1,3 @@
-import BackPage from "../BackPage";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import '../../css/attendance.css';
@@ -123,12 +122,12 @@ function AttendanceManagerForLeader() {
 
 
     useEffect(() => {
-        const role = localStorage.getItem("role");
-        if (role !== "ADMIN") {
-            alert("리더만 접근할 수 있습니다!");
-            navigate("/");
-            return;
-        }
+        // const role = localStorage.getItem("role");
+        // if (role !== "ADMIN") {
+        //     alert("리더만 접근할 수 있습니다!");
+        //     navigate("/");
+        //     return;
+        // }
 
         if (selectedDate) {
             fetchAttendanceData(selectedDate);
@@ -137,7 +136,6 @@ function AttendanceManagerForLeader() {
 
     return (
         <>
-            <BackPage />
             <section className="sec">
                 <div className="inner">
                     <div className="item">
