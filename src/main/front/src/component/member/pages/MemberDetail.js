@@ -36,7 +36,6 @@ function MemberDetail() {
             setMember(response.data);
             setRole(response.data.role);
             setTeam(response.data.team || '');
-
             setProfileImageUrl(response.data.profileImageUrl);
             console.log('직원 데이터', response.data);
         } catch (error) {
@@ -142,13 +141,11 @@ function MemberDetail() {
                         >
                             <img
                                 src={
-                                    profileImageUrl
-                                        ? profileImageUrl
-                                        : '/image/member/profile_no_image.jpg'
+                                    profileImageUrl ||
+                                    '/image/member/profile_no_image.jpg'
                                 }
                                 alt="프로필"
                             />
-
                             <input
                                 id="imageUpload"
                                 type="file"
@@ -232,7 +229,9 @@ function MemberDetail() {
                                 <Link to="/changePassword">비밀번호 변경</Link>
                             </p>
                         </div>
-                        <LeaveBtn />
+                        {(loggedInUserId === id || userRole === 'ADMIN') && (
+                            <LeaveBtn />
+                        )}
                     </div>
                 </div>
             </div>

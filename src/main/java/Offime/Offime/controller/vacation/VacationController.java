@@ -16,11 +16,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-<<<<<<< HEAD
 import java.util.List;
 
-=======
->>>>>>> 3b1e12d85a949549e516839c8699a7ce43a6a5d6
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/vacation")
@@ -28,7 +25,6 @@ public class VacationController {
     private final VacationService vacationService;
 
     @GetMapping
-<<<<<<< HEAD
     public ResponseEntity<?> getAll(@AuthenticationPrincipal Member member,@PageableDefault(size = 5, sort = "id",direction = Sort.Direction.DESC)Pageable pageable) {
         Page<ResVacation> list = vacationService.getAllVacations(member,pageable);
         return ResponseEntity.ok().body(list);
@@ -38,13 +34,6 @@ public class VacationController {
         List<ResVacation> list = vacationService.getFiveLatestVacation(member);
         return ResponseEntity.ok().body(list);
     }
-=======
-    public ResponseEntity<?> getAll(@AuthenticationPrincipal Member member,@PageableDefault(size = 5, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
-        Page<ResVacation> list = vacationService.getAllVacations(member, pageable);
-        return ResponseEntity.ok().body(list);
-    }
-
->>>>>>> 3b1e12d85a949549e516839c8699a7ce43a6a5d6
     // 특정 휴가 상세 조회
     @GetMapping("/{vacationId}")
     public ResponseEntity<?> getVacationById(@AuthenticationPrincipal Member member, @PathVariable("vacationId") Long vacationId) {
