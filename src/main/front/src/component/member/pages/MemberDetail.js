@@ -8,29 +8,26 @@ function MemberDetail() {
     const [member, setMember] = useState({});
     const [role, setRole] = useState('');
     const [team, setTeam] = useState('');
-    const [userRole, setUserRole] = useState(''); // 로그인한 사용자의 권한
-    const [profileImageUrl, setProfileImageUrl] = useState(''); // 프로필 이미지 URL 상태 추가
-    const [loggedInUserId, setLoggedInUserId] = useState(''); // 로그인한 사용자의 ID
+    const [userRole, setUserRole] = useState('');
+    const [profileImageUrl, setProfileImageUrl] = useState('');
+    const [loggedInUserId, setLoggedInUserId] = useState('');
 
     useEffect(() => {
         fetchMemberData();
         fetchUserRole();
-        fetchLoggedInUserId(); // 로그인한 사용자의 ID 가져오기
+        fetchLoggedInUserId();
     }, []);
 
-    // 로그인한 사용자의 ID 정보 가져오기
     const fetchLoggedInUserId = () => {
         const storedId = localStorage.getItem('id');
         setLoggedInUserId(storedId || '');
     };
 
-    // 로그인한 사용자의 권한 정보 가져오기
     const fetchUserRole = () => {
         const storedRole = localStorage.getItem('role');
         setUserRole(storedRole || 'USER');
     };
 
-    // 회원 정보 가져오기
     const fetchMemberData = async () => {
         try {
             const response = await axios.get(
@@ -39,15 +36,14 @@ function MemberDetail() {
             setMember(response.data);
             setRole(response.data.role);
             setTeam(response.data.team || '');
-            // 프로필 이미지 URL을 가져옵니다
-            setProfileImageUrl(response.data.profileImageUrl); // API에서 받은 프로필 이미지 URL을 설정
+
+            setProfileImageUrl(response.data.profileImageUrl);
             console.log('직원 데이터', response.data);
         } catch (error) {
             console.error('Error fetching member data:', error);
         }
     };
 
-    // 직급 변경 처리
     const handleRoleChange = async (e) => {
         const newRole = e.target.value;
         setRole(newRole);
@@ -63,7 +59,6 @@ function MemberDetail() {
         }
     };
 
-    // 팀 변경 처리
     const handleTeamChange = async (e) => {
         const newTeam = e.target.value;
         setTeam(newTeam);
@@ -94,9 +89,7 @@ function MemberDetail() {
         }
     };
 
-    // 이미지 업로드 처리
     const handleImageUpload = async (e) => {
-        // 로그인한 사용자가 자신의 프로필 이미지만 수정할 수 있게 제한
         if (loggedInUserId !== id) {
             alert('다른 사용자의 프로필 이미지는 수정할 수 없습니다.');
             return;
@@ -114,21 +107,20 @@ function MemberDetail() {
 
         try {
             const response = await axios.post(
-                `http://localhost:8080/member/${id}/upload`, // 경로에 member ID 포함
+                `http://localhost:8080/member/${id}/upload`,
                 formData,
                 {
                     headers: {
-                        'Content-Type': 'multipart/form-data', // 자동으로 처리되지만 명시적으로 해도 문제는 없다.
+                        'Content-Type': 'multipart/form-data',
                     },
                 }
             );
-            // 업로드 후 프로필 이미지 URL 업데이트
+
             setProfileImageUrl(
                 `http://localhost:8080${response.data[0].filePath}`
             );
             alert('이미지가 성공적으로 업로드되었습니다.');
 
-            // 새로고침을 위해 회원 정보 재호출
             fetchMemberData();
         } catch (error) {
             console.error('Error uploading image:', error);
@@ -148,7 +140,6 @@ function MemberDetail() {
                                 document.getElementById('imageUpload').click()
                             }
                         >
-                            {/* 프로필 이미지 URL이 있을 경우 해당 이미지 표시, 없으면 기본 이미지 표시 */}
                             <img
                                 src={
                                     profileImageUrl
@@ -157,7 +148,7 @@ function MemberDetail() {
                                 }
                                 alt="프로필"
                             />
-                            {/* 파일 입력을 숨겨서 클릭 시 파일 선택창을 띄운다 */}
+
                             <input
                                 id="imageUpload"
                                 type="file"
