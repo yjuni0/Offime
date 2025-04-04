@@ -33,7 +33,8 @@ import AttendanceManagerForEmployeeDetail from '../attendance/AttendanceManagerF
 import AttendanceManagerForLeader from '../attendance/AttendanceManagerForLeader';
 import AttendanceManagerForLeaderDetail from '../attendance/AttendanceManagerForLeaderDetail';
 import Menu from '../member/pages/Menu';
-import Chatbot from "../expense/Chatbot";
+import Chatbot from '../expense/Chatbot';
+import ChangePassword from '../member/pages/ChangePassword';
 
 function Router() {
     return (
@@ -45,6 +46,7 @@ function Router() {
             <Route path="/member/:id" element={<MemberDetail />} />
             <Route path="/member/signUpStatus" element={<SignUpConfirm />} />
             <Route path="/menu" element={<Menu />} />
+            <Route path="/changePassword" element={<ChangePassword />} />
 
             <Route path="/home" element={<Home />} />
             <Route path="/templates/create" element={<TemplateCreate />} />
@@ -79,10 +81,22 @@ function Router() {
             />
             <Route path="/chatbot" element={<Chatbot />} />
             <Route path="/attendanceBanner" element={<AttendanceBanner />} />
-            <Route path="/attendanceManagerForEmployee" element={<AttendanceManagerForEmployee />} />
-            <Route path="/attendanceManagerForEmployeeDetail" element={<AttendanceManagerForEmployeeDetail />} />
-            <Route path="/attendanceManagerForLeader" element={<AttendanceManagerForLeader />} />
-            <Route path="/attendanceManagerForLeaderDetail" element={<AttendanceManagerForLeaderDetail />} />
+            <Route
+                path="/attendanceManagerForEmployee"
+                element={<AttendanceManagerForEmployee />}
+            />
+            <Route
+                path="/attendanceManagerForEmployeeDetail"
+                element={<AttendanceManagerForEmployeeDetail />}
+            />
+            <Route
+                path="/attendanceManagerForLeader"
+                element={<AttendanceManagerForLeader />}
+            />
+            <Route
+                path="/attendanceManagerForLeaderDetail"
+                element={<AttendanceManagerForLeaderDetail />}
+            />
         </Routes>
     );
 }
