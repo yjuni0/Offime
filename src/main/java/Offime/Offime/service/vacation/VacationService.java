@@ -43,6 +43,10 @@ public class VacationService {
                 .map(vacationDtoMapper::fromEntity);
     }
 
+    public Page<ResVacation> getPendingVacations(VacationApprovalStatus status, Pageable pageable) {
+        return vacationRepository.findAllByStatus(status,pageable)
+                .map(vacationDtoMapper::fromEntity);
+    }
     public List<ResVacation> getFiveLatestVacation(Member member) {
         List<Vacation> vacations = vacationRepository.findTop5ByMemberOrderByIdDesc(member);
         return vacations.stream().map(vacationDtoMapper::fromEntity).toList();
@@ -166,4 +170,5 @@ public class VacationService {
         vacationRepository.delete(vacation);
         log.info("휴가 삭제 {} 멤버id {}", id, member.getId());
     }
+
 }

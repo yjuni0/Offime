@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import calculateDays from "../utils/calculator";
 import getStatusColor from "../utils/getStatusColor";
-import CustomPagination from "../component/CustomPagination";
 const VacationList = ({ res = [] }) => {
   return (
     <>

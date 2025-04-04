@@ -13,6 +13,7 @@ import {
 
 const VacationDetail = () => {
   const { vacationId } = useParams();
+  const name = localStorage.getItem("name");
   const navigate = useNavigate();
   const [response, setResponse] = useState(null);
   const isAdmin = localStorage.getItem("role") === "ADMIN"; // ✅ 관리자 여부 상태 추가
@@ -51,6 +52,7 @@ const VacationDetail = () => {
   const handleApprove = async () => {
     try {
       const res = await approveVacation(vacationId);
+      console.log("휴가 승인 응답:", res);
       alert("승인되었습니다.");
       navigate("/vacation");
     } catch (error) {
@@ -71,6 +73,12 @@ const VacationDetail = () => {
   return (
     <>
       <RequestStatus response={response} />
+      {isAdmin && (
+        <div className="item bg_n0 mt_md">
+          <h4>휴가 신청자</h4>
+          <p style={{ fontSize: "14px", marginTop: "10px" }}>{name}</p>
+        </div>
+      )}
       <p
         style={{
           fontSize: "12px",
