@@ -1,0 +1,570 @@
+
+.reportCreateContainer {
+    background-color: #f7f8fa;
+    min-height: 100vh;
+    padding: 1rem;
+    box-sizing: border-box;
+}
+
+.reportCreateInner {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.reportCreateBackIcon {
+    width: 1.5rem;
+    cursor: pointer;
+    margin-bottom: 1rem;
+}
+
+.reportCreateHeader {
+    padding: 1rem;
+    border-radius: 16px;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+}
+
+/* 개별 색상 클래스 (header 전용) */
+.reportHeaderColor1 { background-color: #f6ebe7; }
+.reportHeaderColor2 { background-color: #eae8f9; }
+.reportHeaderColor3 { background-color: #f8f1d7; }
+.reportHeaderColor4 { background-color: #e0f7f3; }
+.reportHeaderColor5 { background-color: #d9eaf7; }
+.reportHeaderColor6 { background-color: #fce4ec; }
+.reportHeaderColor7 { background-color: #f3e5f5; }
+.reportHeaderColor8 { background-color: #ececec; }
+
+.reportCreateInput {
+    display: block;
+    width: 100%;
+    margin: 1rem auto 1.5rem;
+    padding: 14px 16px;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    background-color: #fff;
+    box-sizing: border-box;
+    outline: none;
+}
+
+.reportCreateInput:focus {
+    border-color: #3b82f6;
+}
+
+.reportCreateSubmit {
+    display: block;
+    width: 100%;
+    max-width: 400px;
+    margin: 2rem auto 0;
+    padding: 1rem;
+    font-size: 1.1rem;
+    font-weight: bold;
+    background-color: #3b82f6;
+    color: #fff;
+    border: none;
+    border-radius: 999px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.reportCreateSubmit:hover {
+    background-color: #2563eb;
+}
+
+.backArrowIcon {
+    display: inline-block;
+    cursor: pointer;
+    width: 1.5rem;
+    margin: 16px;
+}
+
+.templateTitleBox {
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+.templateTitleBox h3 {
+    display: inline-block;
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0;
+}
+
+.templateTitleInput {
+    display: block;
+    width: 100%;
+    max-width: 500px;
+    padding: 12px 16px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+    outline: none;
+    transition: border-color 0.2s;
+    margin: 1rem auto;
+}
+
+.templateTitleInput:focus {
+    border-color: #3b82f6;
+}
+
+.iconSelector {
+    display: flex;
+    background: #ffffff;
+}
+
+.iconSelector img {
+    width: 1.5rem;
+    height: 1.5rem;
+    cursor: pointer;
+    opacity: 0.5;
+    transition: opacity 0.2s;
+}
+
+.iconSelector img.active {
+    opacity: 1;
+}
+
+.colorSelector {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.5rem;
+    width: 50%;
+    margin-left: 1.5rem;
+}
+
+.colorSelector div {
+    width: 1.5rem;
+    height: 1.5rem;
+    cursor: pointer;
+    opacity: 0.5;
+    transition: opacity 0.2s;
+}
+
+.colorSelector div.active {
+    opacity: 1;
+}
+
+.draggableBox {
+    margin-top: 1rem;
+}
+
+.draggableItem {
+    border-radius: 12px;
+    background-color: #ffffff;
+    padding: 16px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.dragHandle {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    cursor: grab;
+    padding: 4px 0;
+}
+
+.dragHandle hr {
+    width: 24px;
+    border-color: #ccc;
+}
+
+.addQuestionButton {
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.2s;
+    display: block;
+    margin: 24px auto;
+}
+
+.submitButton {
+    display: block;
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 14px 20px;
+    font-size: 18px;
+    font-weight: bold;
+    background-color: dodgerblue;
+    color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.submitButton:hover {
+    background-color: #2563eb;
+}
+
+.replyForm {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    border-top: 1px solid #ccc;
+    background-color: #fff;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    box-sizing: border-box;
+}
+
+.replyInput {
+    flex: 1;
+    border: none;
+    padding: 10px 14px;
+    font-size: 1rem;
+    outline: none;
+    border-radius: 20px;
+}
+
+.replySubmitButton {
+    background-color: #ccc;
+    border: none;
+    border-radius: 50%;
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.replySubmitIcon {
+    width: 1.3rem;
+    height: 1.3rem;
+    filter: invert(1);
+}
+
+.replyHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 1rem;
+    margin-bottom: 0.5rem;
+    margin-top: 1rem;
+}
+
+.replyBackArrow {
+    cursor: pointer;
+    width: 1.5rem;
+    display: inline;
+}
+
+.replyTitle {
+    display: inline;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.replyListContainer {
+    background-color: white;
+    padding: 1rem;
+    border-radius: 20px 20px 0 0;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 4rem;
+    bottom: 3.5rem;
+    overflow-y: auto;
+    box-sizing: border-box;
+}
+
+.reply-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.reply-profile-img {
+    border-radius: 50%;
+    width: 2.5rem;
+    margin-right: 0.5rem;
+}
+
+.reply-writer-name {
+    font-weight: bold;
+    display: inline-block;
+}
+
+.reply-container {
+    border-radius: 10px;
+    padding: 12px 16px;
+    margin-bottom: 1rem;
+    background-color: #f0f0f0;
+}
+
+.reply-content-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.reply-content {
+    margin: 8px 0;
+    flex: 1;
+}
+
+.reply-button-group {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.reply-action-icon {
+    width: 1.3rem;
+    cursor: pointer;
+}
+
+.reply-edit-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 8px;
+}
+
+.reply-edit-input {
+    flex: 1;
+    padding: 6px 10px;
+    border-radius: 6px;
+    border: 1px solid #aaa;
+    font-size: 1rem;
+}
+
+.reply-save-button {
+    padding: 6px 12px;
+    background-color: gray;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.reply-date {
+    font-size: 0.9rem;
+    color: #666;
+    margin-top: 4px;
+}
+
+.reportReadSection {
+    background-color: #f5f7f9;
+    min-height: 100vh;
+    padding: 1rem;
+    box-sizing: border-box;
+}
+
+.reportInner {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.reportHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.reportBackIcon,
+.reportDeleteIcon {
+    width: 1.5rem;
+    cursor: pointer;
+}
+
+.reportCard {
+    padding: 1rem;
+    border-radius: 20px;
+    margin-bottom: 1.5rem;
+}
+
+.reportTitle {
+    font-weight: bold;
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+}
+
+.reportMeta {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.reportProfile {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+}
+
+.reportWriter {
+    font-weight: bold;
+}
+
+.reportDate {
+    font-size: 0.8rem;
+    color: #888;
+}
+
+.reportReplyIcon {
+    position: absolute;
+    right:2rem;
+    margin-right: 0;
+    width: 1.3rem;
+    cursor: pointer;
+}
+
+.reportQuestionBox {
+    background-color: white;
+    padding: 1rem;
+    border-radius: 14px;
+    margin-bottom: 1rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.questionLabel {
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    margin-left: 0.5rem;
+}
+
+.questionDivider {
+    border: none;
+    border-top: 1px solid #ddd;
+    margin: 2rem 0;
+}
+
+.reportBottomButtons {
+    text-align: center;
+    margin-top: 2rem;
+}
+
+.templateSection {
+    background-color: #f7f9fc;
+    min-height: 100vh;
+    padding: 1rem;
+    box-sizing: border-box;
+}
+
+.templateInner {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.templateHeader {
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 1rem;
+}
+
+.backIcon {
+    width: 1.5rem;
+    cursor: pointer;
+}
+
+.templateList {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.templateItem {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+    border-radius: 16px;
+    background-color: #fff;
+    position: relative;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+    cursor: pointer;
+}
+
+.templateItem::before {
+    content: '';
+    width: 8px;
+    height: 100%;
+    border-radius: 16px 0 0 16px;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.templateTitle {
+    font-size: 1rem;
+    font-weight: 500;
+    padding-left: 1rem;
+}
+
+.templateIcon {
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+.templateItem {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* 제목 + 아이콘 묶기 */
+.templateLeft {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    overflow: hidden;
+    flex: 1;
+}
+
+/* 삭제 아이콘 */
+.templateDeleteIcon {
+    width: 1.5rem;
+    height: 1.5rem;
+    cursor: pointer;
+}
+
+/* 색상 클래스 정의 */
+.templateColor1::before { background-color: #f6ebe7; }  /* 베이지 */
+.templateColor2::before { background-color: #eae8f9; }  /* 연보라 */
+.templateColor3::before { background-color: #f8f1d7; }  /* 연노랑 */
+.templateColor4::before { background-color: #e0f7f3; }  /* 민트 */
+.templateColor5::before { background-color: #d9eaf7; }  /* 하늘 */
+.templateColor6::before { background-color: #fce4ec; }  /* 핑크 */
+.templateColor7::before { background-color: #f3e5f5; }  /* 보라핑크 */
+.templateColor8::before { background-color: #ececec; }  /* 회색 */
+
+
+
+.questionInput {
+    width: 100%;
+    padding: 12px 14px;
+    border: none;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    font-size: 1rem;
+    box-sizing: border-box;
+    outline: none;
+}
+
+.questionInputGroup {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.questionInputGroup span {
+    line-height: 2rem;
+    font-weight: bold;
+    color: #555;
+}
+

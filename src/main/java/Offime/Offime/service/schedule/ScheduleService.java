@@ -19,8 +19,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Transactional
 public class ScheduleService {
-    private ScheduleRepository scheduleRepository;
-    private MemberRepository memberRepository;
+    private final ScheduleRepository scheduleRepository;
+    private final MemberRepository memberRepository;
 
     public List<ResScheduleDto> getScheduleByMemberIdAndYearAndMonth(Long memberId,Integer year, Integer month) {
         List<Schedule> schedules = scheduleRepository.findByMemberIdAndYearAndMonth(memberId, year, month);

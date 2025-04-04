@@ -2,7 +2,7 @@ package Offime.Offime.entity.member;
 
 import Offime.Offime.common.BaseTimeEntity;
 import Offime.Offime.common.Role;
-import Offime.Offime.entity.attendance.WorkStatus;
+import Offime.Offime.entity.member.WorkStatus;
 //import Offime.Offime.entity.vacation.Vacation;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -19,6 +19,9 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
+import static Offime.Offime.entity.member.WorkStatus.근무중;
+import static Offime.Offime.entity.member.WorkStatus.준비중;
 
 @Entity
 @Getter
@@ -56,6 +59,9 @@ public class Member extends BaseTimeEntity implements UserDetails {
 
     @Enumerated(EnumType.STRING)
     private SignUpStatus signUpStatus;
+
+    @OneToOne(mappedBy = "member", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    private MemberProfileFiles memberProfileFiles;
 
 //    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 //    private List<Vacation> vacations;
@@ -97,6 +103,12 @@ public class Member extends BaseTimeEntity implements UserDetails {
         }
         if (!this.enable) {
             this.enable = true;
+        }
+        if (this.team == null){
+            this.team = Team.A;
+        }
+        if (this.workStatus == null){
+            this.workStatus = 준비중;
         }
     }
 

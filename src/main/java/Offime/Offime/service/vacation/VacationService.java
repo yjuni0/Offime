@@ -43,38 +43,38 @@ public class VacationService {
                 .map(vacationDtoMapper::fromEntity);
     }
 
-    public List<ResVacation> getFiveLatestVacation(Member member){
+    public List<ResVacation> getFiveLatestVacation(Member member) {
         List<Vacation> vacations = vacationRepository.findTop5ByMemberOrderByIdDesc(member);
         return vacations.stream().map(vacationDtoMapper::fromEntity).toList();
     }
 
-    public ResVacation getVacationById(Member member,Long id) {
-        Vacation vacation = vacationRepository.findById(id).orElseThrow(()->new IllegalArgumentException("없음"));
-        log.info("요청 멤버{} 휴가 id {} : ", member.getId(),id);
-        if (member.getRole() != Role.ADMIN){
-            if (vacation==null || !vacation.getMember().getId().equals(member.getId())) {
+    public ResVacation getVacationById(Member member, Long id) {
+        Vacation vacation = vacationRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("없음"));
+        log.info("요청 멤버{} 휴가 id {} : ", member.getId(), id);
+        if (member.getRole() != Role.ADMIN) {
+            if (vacation == null || !vacation.getMember().getId().equals(member.getId())) {
                 log.error("요청 휴가 id {}를 찾을 수 없음 또는  멤버 id가 다름 {}", id, member.getId());
                 throw new IllegalArgumentException("해당 멤버만 조회 가능 " + member.getId());
             }
         }
-        log.info("요청 휴가 {} 멤버 id {} ",id,member.getId());
+        log.info("요청 휴가 {} 멤버 id {} ", id, member.getId());
         return vacationDtoMapper.fromEntity(vacation);
     }
 
     // 신청
     public ResVacation applyVacation(Member member, ReqVacation reqVacation) {
-        if (vacationRepository.existsVacationOverlap(reqVacation.startDate(),reqVacation.endDate(),member)){
+        if (vacationRepository.existsVacationOverlap(reqVacation.startDate(), reqVacation.endDate(), member)) {
             throw new VacationException("중복된 기간 휴가 신청은 불가.");
         }
-        log.info("휴가 신청 멤버 id {} 요청 데이터 : {} ", member.getId(),reqVacation);
+        log.info("휴가 신청 멤버 id {} 요청 데이터 : {} ", member.getId(), reqVacation);
 
         Vacation vacation = vacationDtoMapper.toEntity(member, reqVacation);
-        log.info("휴가 신청 성공 멤버{} , 휴가 id{} ",member.getId(),vacation.getId());
+        log.info("휴가 신청 성공 멤버{} , 휴가 id{} ", member.getId(), vacation.getId());
         vacationRepository.save(vacation);
         // 2. 휴가 신청 후 알림 전송 (RabbitMQ)
         log.info(String.valueOf(vacation.getId()));
-        String message = MessageConvertor.convertApplyVacationMessage(member.getId(),reqVacation,memberRepository);
-        messagePublisher.sendVacationMessage("vacation.request",member.getId(), vacation.getId(), message);  // 알림 전송
+        String message = MessageConvertor.convertApplyVacationMessage(member.getId(), reqVacation, memberRepository);
+        messagePublisher.sendVacationMessage("vacation.request", member.getId(), vacation.getId(), message); // 알림 전송
         return vacationDtoMapper.fromEntity(vacation);
     }
 
@@ -92,8 +92,9 @@ public class VacationService {
 
                 String message = MessageConvertor.convertApproveVacationMessage(vacation);
                 vacationRepository.save(vacation);
-                messagePublisher.sendVacationApprovedMessage("vacation.approve",requstMember.getId(),vacationId,message);  // 알림 전송
-                 // 변경 사항 저장
+                messagePublisher.sendVacationApprovedMessage("vacation.approve", requstMember.getId(), vacationId,
+                        message); // 알림 전송
+                // 변경 사항 저장
                 log.info("휴가 id {} 승인 처리됨", vacationId);
             }
             return "승인 완료";
@@ -119,7 +120,7 @@ public class VacationService {
 
         // 잔여 연차가 충분한지 체크
         if (availableDays.compareTo(useDays) < 0) {
-            throw new VacationException("잔여 연차가 부족합니다.") ;
+            throw new VacationException("잔여 연차가 부족합니다.");
         }
         Member requstMember = vacation.getMember();
         // 연차 차감
@@ -127,41 +128,42 @@ public class VacationService {
         return requstMember;
     }
 
-    //반려
+    // 반려
     public String rejectVacation(Member member, Long vacationId) {
         try {
             if (member.getRole().equals(Role.ADMIN)) {
-                Vacation vacation = vacationRepository.findById(vacationId).orElseThrow(() -> new IllegalArgumentException("해당 신청 휴가 없음"));
+                Vacation vacation = vacationRepository.findById(vacationId)
+                        .orElseThrow(() -> new IllegalArgumentException("해당 신청 휴가 없음"));
                 vacation.setStatus(VacationApprovalStatus.REJECTED);
                 Member requstMember = vacation.getMember();
                 String message = MessageConvertor.convertRejectVacationMessage(vacation);
                 vacationRepository.save(vacation);
-                messagePublisher.sendVacationRejectedMessage("vacation.reject",requstMember.getId(),vacationId,message);  // 알림 전송
+                messagePublisher.sendVacationRejectedMessage("vacation.reject", requstMember.getId(), vacationId,
+                        message); // 알림 전송
 
                 log.info("휴가 id {} 반려 처리됨", vacationId);
-            }else {
+            } else {
                 throw new IllegalArgumentException("관리자만 가능");
             }
             return "휴가 반려";
-        }catch (IllegalArgumentException iae) {
+        } catch (IllegalArgumentException iae) {
             log.error("휴가 조회 실패");
             throw new IllegalArgumentException("휴가 조회 실패 ");
-        }catch (Exception e) {
-            log.error("서버 오류 발생",e);
+        } catch (Exception e) {
+            log.error("서버 오류 발생", e);
             throw new RuntimeException("서버 오류 발생");
         }
     }
 
     // 취소 ( 삭제 )
-    public void deleteVacation(Member member,Long id){
-        log.info("휴가 삭제 요청 id {} 멤버 id : {}",id,member.getId());
-        Vacation vacation = vacationRepository.findByMemberAndId(member,id);
-        if (vacation==null || !vacation.getMember().getId().equals(member.getId())) {
-            log.error("요청 휴가 id {}를 찾을 수 없음 또는  멤버 id가 다름 {}",id,member.getId());
-            throw new IllegalArgumentException("해당 멤버만 삭제 가능"+member.getId());
+    public void deleteVacation(Member member, Long id) {
+        log.info("휴가 삭제 요청 id {} 멤버 id : {}", id, member.getId());
+        Vacation vacation = vacationRepository.findByMemberAndId(member, id);
+        if (vacation == null || !vacation.getMember().getId().equals(member.getId())) {
+            log.error("요청 휴가 id {}를 찾을 수 없음 또는  멤버 id가 다름 {}", id, member.getId());
+            throw new IllegalArgumentException("해당 멤버만 삭제 가능" + member.getId());
         }
         vacationRepository.delete(vacation);
-        log.info("휴가 삭제 {} 멤버id {}",id,member.getId());
+        log.info("휴가 삭제 {} 멤버id {}", id, member.getId());
     }
 }
-

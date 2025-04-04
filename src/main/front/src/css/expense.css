@@ -43,7 +43,7 @@
   --header-height: 2.5rem;
 }
 
-/* ExpenseList.css */
+/* Expense.css */
 
 .flex {
   display: flex;
@@ -61,8 +61,27 @@
   background-color: var(--natural_0);
 }
 
+.bg_n10 {
+  background-color: var(--natural_10);
+}
 .display_none {
   display: none;
+}
+
+.border_none {
+  border: none;
+}
+
+.border_bottom {
+  border-bottom: 1px solid black;
+}
+
+.border_radius10 {
+  border-radius: 10px;
+}
+
+.width100 {
+  width: 100%;
 }
 
 /* 카테고리 버튼 그룹 */

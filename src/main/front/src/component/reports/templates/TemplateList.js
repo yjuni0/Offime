@@ -18,6 +18,11 @@ function TemplateList() {
 
     const navigate = useNavigate();
 
+    const getColorClass = (colorId) => {
+        return `templateColor${colorId}`;
+    };
+
+
     useEffect(() => {
         getTemplateList();
     }, []);
@@ -27,21 +32,37 @@ function TemplateList() {
             <div className={"inner"}>
                 <div className={"item"}>
                     <img style={{cursor: "pointer", width: "1.5rem", display: "inline"}}
-                         src={"/image/backArrow.png"}
-                         onClick={() => navigate(`/`)}/>
+                         src={"/image/reportIcon/backArrow.png"}
+                         onClick={() => navigate(-1)}/>
                 </div>
-                <input className={"input-txt mlr-a"} type="text" placeholder={"템플릿명"}></input>
+                <div className="templateList">
+                    {templateList.map((template) => (
+                        <div
+                            key={template.id}
+                            className={`templateItem ${getColorClass(template.color)}`}
+                        >
+                            <div className="templateLeft">
+                                <img
+                                    src={`/image/reportIcon/icon${template.icon}.png`}
+                                    alt="템플릿 아이콘"
+                                    className="templateIcon"
+                                />
+                                <p className="templateTitle">{template.title}</p>
+                            </div>
+                            <img
+                                src={"/image/reportIcon/recyclebin.png"}
+                                alt="delete"
+                                className="templateDeleteIcon"
+                                onClick={() => {
+                                    if (window.confirm("정말 삭제하시겠습니까?")) {
+                                        deleteTemplate(template.id);
+                                    }
+                                }}
+                            />
+                        </div>
 
-
-                {templateList.map(template => (
-                    <div className={"item bg_pm mt_md"} key={template.id}>
-                        <p className={"txt-a-l"}>{template.title}</p>
-                        <p className={"txt-a-r"}>{template.icon}</p>
-                        <p className={"txt-a-r"}>{template.color}</p>
-                        <button onClick={() => deleteTemplate(template.id)}>삭제</button>
-                    </div>
-                ))}
-
+                    ))}
+                </div>
             </div>
         </section>
     )

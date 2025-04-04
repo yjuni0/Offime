@@ -7,7 +7,6 @@ function Login() {
         <section className="sec">
             <div className="inner">
                 <div className="item">
-                    <p className="txt-a-c mt_xlg title-lg">Offime 로고</p>
                     <LoginForm />
                 </div>
             </div>

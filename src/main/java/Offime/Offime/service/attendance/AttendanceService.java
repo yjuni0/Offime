@@ -5,7 +5,7 @@ import Offime.Offime.dto.request.attendance.ReqClockOutDto;
 import Offime.Offime.dto.request.attendance.ReqOutOfOfficeDto;
 import Offime.Offime.dto.request.attendance.ReqReturnToOfficeDto;
 import Offime.Offime.entity.attendance.EventRecord;
-import Offime.Offime.entity.attendance.WorkStatus;
+import Offime.Offime.entity.member.WorkStatus;
 import Offime.Offime.entity.member.Member;
 import Offime.Offime.exception.MemberException;
 import Offime.Offime.repository.attendance.EventRecordRepository;
@@ -35,13 +35,15 @@ public class AttendanceService {
     private static final double EARTH_RADIUS = 6371.0088;       // 지구 평균 반지름(km)
     private static final double COMPANY_LATITUDE = 37.482175;   // 구트 아카데미 위도
     private static final double COMPANY_LONGITUDE = 126.898233; // 구트 아카데미 경도
-    private static final int MAX_DISTANCE = 50;                 // 허용할 최대 거리(m)
+    private static final int MAX_DISTANCE = 1000;                 // 허용할 최대 거리(m)
     private static final LocalTime COMPANY_START_TIME = LocalTime.of(9, 0);
     private static final LocalTime COMPANY_END_TIME = LocalTime.of(18, 0);
 
     @Transactional
     public void clockIn(Member member, ReqClockInDto dto, LocalDateTime now) {
         if (!isInDistance(dto.getLatitude(), dto.getLongitude())) {
+            log.info("clockIn dto.getLatitude() = " + dto.getLatitude());
+            log.info("clockIn dto.getLongitude() = " + dto.getLongitude());
             throw new IllegalArgumentException(" - " + "허용 범위를 벗어났습니다.");
         }
         Member currentMember = memberRepository.findByEmail(member.getEmail()).orElseThrow(
@@ -154,29 +156,4 @@ public class AttendanceService {
         log.info("거리 : "  + String.format("%.3f", distance) + "미터.");
         return distance;
     }
-//    public List<Long> getTimeDifference(LocalDate localDate) {
-//        // 해당 날짜의 모든 기록 가져오기
-//        List<EventRecord> eventRecords = eventRecordRepository.findByDate(localDate);
-//
-//        // 기록이 없거나 하나만 있으면 시간 차이를 계산할 수 없으므로 빈 리스트 반환
-//        if (eventRecords == null || eventRecords.size() <= 1) {
-//            return new ArrayList<>();
-//        }
-//        // 기록을 requestTime 기준으로 정렬
-//        eventRecords.sort(Comparator.comparing(EventRecord::getRequestTime));
-//        // 시간 차이를 저장할 리스트 생성
-//        List<Long> timeDifference = new ArrayList<>();
-//        // 각 기록 사이의 시간 차이를 계산
-//        for (int i = 1; i < eventRecords.size(); i++) {
-//            EventRecord previous = eventRecords.get(i - 1);
-//            EventRecord current = eventRecords.get(i);
-//
-//            // 이전 기록과 현재 기록 사이의 시간 차이 계산 (분 단위)
-//            Duration duration = Duration.between(previous.getRequestTime(), current.getRequestTime());
-//            long minutesDifference = duration.toMinutes();
-//
-//            timeDifference.add(minutesDifference);
-//        }
-//        return timeDifference;
-//    }
 }

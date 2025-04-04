@@ -1,7 +1,7 @@
 package Offime.Offime.repository.expense;
 
 import Offime.Offime.entity.expense.Expense;
-import Offime.Offime.entity.expense.ExpenseStatus;
+import Offime.Offime.entity.common.RequestStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public interface ExpenseRepository extends JpaRepository<Expense, Long> {
     List<Expense> findByUsername(String username);
-    List<Expense> findByStatus(ExpenseStatus status);
+    List<Expense> findByStatus(RequestStatus status);
 
     // 검색 기능을 위한 쿼리 메서드 (특정 상태의 경비만 검색)
     @Query("SELECT e FROM Expense e WHERE " +

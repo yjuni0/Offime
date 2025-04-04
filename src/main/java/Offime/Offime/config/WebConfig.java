@@ -9,6 +9,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.util.unit.DataSize;
 import jakarta.servlet.MultipartConfigElement;
 
+import java.nio.file.Paths;
+
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
@@ -40,11 +42,17 @@ public class WebConfig implements WebMvcConfigurer {
     // 🛠 추가: 정적 리소스 핸들러 설정
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        // 이미지 저장 경로를 실제 경로로 변경
-        String uploadDir = "file:/C:/IntelliJ/Offime/src/main/resources/static/images/";
 
-        registry.addResourceHandler("/images/**")
-                .addResourceLocations(uploadDir); // 실제 경로를 통해 이미지 서빙
+        // toUri = OS에 따라 적절한 URI로 변환
+        // Paths.get = OS에 따라 적절한 경로로 변환
+        // System.getProperty("user.dir") = 프로젝트의 루트 경로를 가져옴
+        String uploadPath = Paths.get(System.getProperty("user.dir"), "uploads").toUri().toString();
+
+        // addResourceHandler = URL 요청 패턴 처리
+        // addResourceLocations() = 요청된걸 어떤거에서 가져올지 정해줌
+        // /uploads/ 로 시작하는 모든 요청을 uploadPath로 변환
+        registry.addResourceHandler("/uploads/**")
+                .addResourceLocations(uploadPath);
     }
 
 }

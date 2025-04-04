@@ -2,6 +2,7 @@ import {useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import axios from "axios";
 import ReportCreateQuestionBlock from "./ReportCreateQuestionBlock";
+import "../../../../css/report.css"
 
 function ReportCreate() {
 
@@ -23,10 +24,12 @@ function ReportCreate() {
     const [title, setTitle] = useState('');
     const [responseData, setResponseData] = useState([]);
 
+    const writerId = localStorage.getItem("id");
+
     const postReport = async (e) => {
         e.preventDefault();
         const data = {
-            title, templateId, writerId: 1, responseData
+            title, templateId, writerId, responseData
         }
         await axios.post('http://localhost:8080/reports/create', data)
         navigate("/reports/read")
@@ -39,23 +42,39 @@ function ReportCreate() {
     return (
 
 
-                    <section className={"sec"}>
-                        <div className={"inner"}>
-                            <div className={"item"}>
-                                <img onClick={() => navigate("/reports/templateList")} style={{cursor: "pointer", width: "1.5rem"}} src={"/image/backArrow.png"}/>
-                                <div className={"btn bg_pm mt_md"}>
-                                    <p className={"txt-a-c"}>{templateData.title}</p>
-                                </div>
-                                <form onSubmit={postReport}>
-                                    <input className={"mlr-a input-txt mt_md input-max"} placeholder={"제목"} type={"text"} value={title}
-                                           onChange={(e) => setTitle(e.target.value)}/>
-                                    <ReportCreateQuestionBlock templateId={templateId} setResponseData={setResponseData}
-                                                               responseData={responseData}/>
-                                    <button className={"btn btn-lg btn-pm mt_md mlr-a"} type={"submit"}>보고서 작성</button>
-                                </form>
-                            </div>
-                        </div>
-                    </section>
+        <section className="reportCreateContainer">
+            <div className="reportCreateInner">
+                <img
+                    onClick={() => navigate(-1)}
+                    src="/image/reportIcon/backArrow.png"
+                    className="reportCreateBackIcon"
+                />
+
+                <div className={`reportCreateHeader reportHeaderColor${templateData.color}`}>
+                    <p>{templateData.title}</p>
+                </div>
+
+                <form onSubmit={postReport}>
+                    <input
+                        className="reportCreateInput"
+                        placeholder="제목"
+                        type="text"
+                        value={title}
+                        onChange={(e) => setTitle(e.target.value)}
+                    />
+
+                    <ReportCreateQuestionBlock
+                        templateId={templateId}
+                        setResponseData={setResponseData}
+                        responseData={responseData}
+                    />
+
+                    <button type="submit" className="reportCreateSubmit">
+                        제출
+                    </button>
+                </form>
+            </div>
+        </section>
 
     )
 }

@@ -30,7 +30,7 @@ const ExpenseUpdate = () => {
 
   useEffect(() => {
     const fetchExpenseData = async () => {
-      const accessToken = localStorage.getItem("access_token");
+      const accessToken = localStorage.getItem("CL_access_token");
 
       if (!accessToken) {
         console.error("No access token found. Redirecting to login.");
@@ -51,7 +51,7 @@ const ExpenseUpdate = () => {
 
         if (response.status === 401 || response.status === 403) {
           console.error("Unauthorized. Redirecting to login...");
-          navigate("/login");
+          navigate("/");
           return;
         }
 
@@ -91,8 +91,8 @@ const ExpenseUpdate = () => {
     const selectedFiles = Array.from(e.target.files);
     const imageUrls = selectedFiles.map((file) => URL.createObjectURL(file));
 
-    setPreviewImages((prevImages) => [...prevImages, ...imageUrls]); // 기존 이미지에 새 이미지 추가
-    setFiles((prevFiles) => [...prevFiles, ...selectedFiles]); // 기존 파일에 새 파일 추가
+    setPreviewImages((prevImages) => [...prevImages, ...imageUrls]);
+    setFiles((prevFiles) => [...prevFiles, ...selectedFiles]);
   };
 
   const handleRemoveImage = (index) => {
@@ -105,7 +105,7 @@ const ExpenseUpdate = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const accessToken = localStorage.getItem("access_token");
+    const accessToken = localStorage.getItem("CL_access_token");
     if (!accessToken) {
       console.error("No access token found. Redirecting to login.");
       navigate("/login");
@@ -124,17 +124,14 @@ const ExpenseUpdate = () => {
       })
     );
 
-    // 기존 이미지를 포함한 새로운 이미지 파일들 추가
     files.forEach((file) => {
       formData.append("images", file);
     });
 
-    // 삭제된 이미지 목록을 서버로 전달
     const deletedImages = expense.photoUrls.filter(
-      (url) => !previewImages.includes(url) // 기존 이미지 중 삭제된 이미지 찾기
+      (url) => !previewImages.includes(url)
     );
 
-    // 삭제된 이미지가 있다면 이를 서버에 전달
     if (deletedImages.length > 0) {
       formData.append("deletedImages", JSON.stringify(deletedImages));
     }
@@ -149,7 +146,7 @@ const ExpenseUpdate = () => {
       });
 
       if (response.ok) {
-        navigate(`/expenseDetail/${id}`); // 수정된 후 상세 페이지로 이동
+        navigate(-1); // 수정된 후 상세 페이지로 이동
       } else {
         console.error("Failed to update expense", await response.text());
       }
@@ -204,7 +201,7 @@ const ExpenseUpdate = () => {
                         }
                       />
                       <button
-                        className=""
+                        className="btn btn-sm btn-pl fs_sm"
                         type="button"
                         onClick={() => handleRemoveImage(index)}
                       >

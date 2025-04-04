@@ -20,6 +20,7 @@ public class VacationDtoMapper {
                 .status(VacationApprovalStatus.WAITING)
                 .build();
     }
+
     public ResVacation fromEntity(Vacation vacation) {
         return ResVacation.builder()
                 .id(vacation.getId())
