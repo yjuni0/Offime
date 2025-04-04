@@ -193,12 +193,8 @@ const ExpenseUpdate = () => {
                     <div key={index} className="item">
                       <img
                         className="item"
-                        src={src}
+                        src={src} // 여기서 src가 서버에서 반환된 이미지 URL로 들어가야 합니다.
                         alt={`미리보기 ${index + 1}`}
-                        onError={
-                          (e) =>
-                            (e.target.src = "/path/to/your/default-image.jpg") // 이미지 오류시 기본 이미지로 변경
-                        }
                       />
                       <button
                         className="btn btn-sm btn-pl fs_sm"

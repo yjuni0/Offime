@@ -35,7 +35,8 @@ function TemplateQuestionBlock({ question, questionIndex, updateQuestion }) {
                 display: "flex",
                 alignItems: "center",
                 gap: "12px",
-                marginBottom: "12px"
+                marginBottom: "12px",
+                flexWrap: "wrap"
             }}>
                 {questionList.type !== "SECTION" && (
                     <input

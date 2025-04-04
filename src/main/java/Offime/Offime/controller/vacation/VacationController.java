@@ -40,6 +40,7 @@ public class VacationController {
         return ResponseEntity.ok().body(list);
     }
 
+
     @GetMapping("/latest")
     public ResponseEntity<?> getLatestVacation(@AuthenticationPrincipal Member member) {
         List<ResVacation> list = vacationService.getFiveLatestVacation(member);

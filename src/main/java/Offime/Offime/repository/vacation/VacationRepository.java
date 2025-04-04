@@ -16,7 +16,9 @@ import java.util.List;
 
 @Repository
 public interface VacationRepository extends JpaRepository<Vacation, Long> {
+
     Page<Vacation> findAllByMember(Member member, Pageable pageable);
+
 
     Vacation findByMemberAndId(Member member, Long id);
 

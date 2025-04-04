@@ -24,8 +24,8 @@ public class MemberResponseDto {
     private String workStatus;
 
     @Builder
-    public MemberResponseDto(Long id, String name, String email, String phone, Role role, Team team,
-            BigDecimal availableLeaveDays, String profileImageUrl, String workStatus) {
+    public MemberResponseDto(BigDecimal availableLeaveDays, Long id, String name, String email,String phone, Role role, Team team, String profileImageUrl, String workStatus) {
+
         this.id = id;
         this.name = name;
         this.email = email;
@@ -48,6 +48,8 @@ public class MemberResponseDto {
                 .availableLeaveDays(member.getAvailableLeaveDays())
                 .profileImageUrl(profileImageUrl)
                 .workStatus(member.getWorkStatus().toString())
+                .availableLeaveDays(member.getAvailableLeaveDays())
+                .profileImageUrl(profileImageUrl)
                 .build();
     }
 }

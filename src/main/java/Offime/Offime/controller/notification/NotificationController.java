@@ -1,3 +1,4 @@
+
 package Offime.Offime.controller.notification;
 
 import Offime.Offime.config.rabbitMQ.NotificationService;
@@ -51,4 +52,5 @@ public class NotificationController {
             @PathVariable Long notificationId) {
         return ResponseEntity.status(HttpStatus.OK).body(notificationService.getById(notificationId));
     }
+
 }

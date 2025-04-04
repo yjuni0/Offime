@@ -13,10 +13,6 @@ function AttendanceManagerForEmployee() {
     const [attendanceData, setAttendanceData] = useState(null);
     const [loading, setLoading] = useState(false);
 
-    const navigateToDetailPage = (status) => {
-        navigate("/attendanceManagerForEmployeeDetail", { state: { status, attendanceData } }); // status와 attendanceData를 전달
-    };
-
     useEffect(() => {
         if (selectedDate) {
             fetchAttendanceData(selectedDate);
@@ -172,25 +168,25 @@ function AttendanceManagerForEmployee() {
                                                 </div>
 
                                                 <div className="attendance-row mt_md">
-                                                    <button className="attendance-box bg_wt" onClick={() => navigateToDetailPage('출근')}>
+                                                    <div className="attendance-box bg_wt">
                                                         <div className="tc-pm">출근</div>
                                                         <div className="right-square tc-pm">{attendanceData.clockInCount}</div>
-                                                    </button>
-                                                    <button className="attendance-box bg_wt" onClick={() => navigateToDetailPage('미출근')}>
+                                                    </div>
+                                                    <div className="attendance-box bg_wt">
                                                         <div className="tc-e">미출근</div>
                                                         <div className="right-square tc-e">{attendanceData.absentCount}</div>
-                                                    </button>
+                                                    </div>
                                                 </div>
 
                                                 <div className="attendance-row mt_md">
-                                                    <button className="attendance-box bg_p04" onClick={() => navigateToDetailPage('지각')}>
+                                                    <div className="attendance-box bg_p04">
                                                         <div className="tc-w">지각</div>
                                                         <div className="right-square">총 {attendanceData.totalLateMinutes} 분</div>
-                                                    </button>
-                                                    <button className="attendance-box bg_p03" onClick={() => navigateToDetailPage('조퇴')}>
+                                                    </div>
+                                                    <div className="attendance-box bg_p03">
                                                         <div className="tc-w">조퇴</div>
                                                         <div className="right-square tc-w">총 {attendanceData.totalLeaveEarlyMinutes} 분</div>
-                                                    </button>
+                                                    </div>
                                                 </div>
                                             </>
                                         )}
@@ -198,29 +194,29 @@ function AttendanceManagerForEmployee() {
                                             <>
                                                 <div className="item bg_pm mt_sm">
                                                     <div className="fs_md tc-w">출근율</div>
-                                                    <div className="fs_md tc-w">{attendanceData.clockInCount} / 5</div>
+                                                    <div className="fs_md tc-w">{attendanceData.clockInCount} / {attendanceData.totalWeekdays}</div>
                                                 </div>
 
                                                 <div className="attendance-row mt_md">
-                                                    <button className="attendance-box bg_wt" onClick={() => navigateToDetailPage('출근')}>
+                                                    <div className="attendance-box bg_wt">
                                                         <div className="tc-pm">출근</div>
                                                         <div className="right-square tc-pm">{attendanceData.clockInCount}</div>
-                                                    </button>
-                                                    <button className="attendance-box bg_wt"onClick={() => navigateToDetailPage('미출근')}>
+                                                    </div>
+                                                    <div className="attendance-box bg_wt">
                                                         <div className="tc-e">미출근</div>
                                                         <div className="right-square tc-e">{attendanceData.absentCount}</div>
-                                                    </button>
+                                                    </div>
                                                 </div>
 
                                                 <div className="attendance-row mt_md">
-                                                    <button className="attendance-box bg_p04" onClick={() => navigateToDetailPage('지각')}>
+                                                    <div className="attendance-box bg_p04">
                                                         <div className="tc-w">지각</div>
                                                         <div className="right-square">총 {attendanceData.totalLateMinutes} 분</div>
-                                                    </button>
-                                                    <button className="attendance-box bg_p03" onClick={() => navigateToDetailPage('조퇴')}>
+                                                    </div>
+                                                    <div className="attendance-box bg_p03">
                                                         <div className="tc-w">조퇴</div>
                                                         <div className="right-square tc-w">총 {attendanceData.totalLeaveEarlyMinutes} 분</div>
-                                                    </button>
+                                                    </div>
                                                 </div>
                                             </>
                                         )}

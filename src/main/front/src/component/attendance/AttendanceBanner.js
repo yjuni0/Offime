@@ -61,6 +61,8 @@ function AttendanceBanner() {
       navigator.geolocation.getCurrentPosition(
         async (position) => {
           const { latitude, longitude } = position.coords;
+          console.log(`클라이언트 위도: ${latitude}, 경도: ${longitude}`); // 로그 추가
+
           try {
             const response = await axios.post(
               "http://localhost:8080/clockIn",

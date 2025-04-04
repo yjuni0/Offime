@@ -25,14 +25,37 @@
 }
 
 /* 개별 색상 클래스 (header 전용) */
-.reportHeaderColor1 { background-color: #f6ebe7; }
-.reportHeaderColor2 { background-color: #eae8f9; }
-.reportHeaderColor3 { background-color: #f8f1d7; }
-.reportHeaderColor4 { background-color: #e0f7f3; }
-.reportHeaderColor5 { background-color: #d9eaf7; }
-.reportHeaderColor6 { background-color: #fce4ec; }
-.reportHeaderColor7 { background-color: #f3e5f5; }
-.reportHeaderColor8 { background-color: #ececec; }
+.reportHeaderColor1 {
+    background-color: #f6ebe7;
+}
+
+.reportHeaderColor2 {
+    background-color: #eae8f9;
+}
+
+.reportHeaderColor3 {
+    background-color: #f8f1d7;
+}
+
+.reportHeaderColor4 {
+    background-color: #e0f7f3;
+}
+
+.reportHeaderColor5 {
+    background-color: #d9eaf7;
+}
+
+.reportHeaderColor6 {
+    background-color: #fce4ec;
+}
+
+.reportHeaderColor7 {
+    background-color: #f3e5f5;
+}
+
+.reportHeaderColor8 {
+    background-color: #ececec;
+}
 
 .reportCreateInput {
     display: block;
@@ -178,7 +201,7 @@
 .addQuestionButton {
     padding: 10px 20px;
     font-size: 16px;
-    border-radius: 8px;
+    border-radius: 20px;
     cursor: pointer;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
     transition: background-color 0.2s;
@@ -200,6 +223,7 @@
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
     cursor: pointer;
     transition: background-color 0.2s;
+    border: none;
 }
 
 .submitButton:hover {
@@ -267,6 +291,7 @@
     display: inline;
     font-weight: bold;
     font-size: 1.1rem;
+    margin-left: 1rem;
 }
 
 .replyListContainer {
@@ -291,6 +316,7 @@
 .reply-profile-img {
     border-radius: 50%;
     width: 2.5rem;
+    height: 2.5rem;
     margin-right: 0.5rem;
 }
 
@@ -376,14 +402,18 @@
     margin-bottom: 1rem;
 }
 
-.reportBackIcon,
-.reportDeleteIcon {
+.reportBackIcon {
     width: 1.5rem;
     cursor: pointer;
 }
 
+.reportDetailIcon {
+    cursor: pointer;
+    width: 2rem;
+}
+
 .reportCard {
-    padding: 1rem;
+    padding: 1.5rem;
     border-radius: 20px;
     margin-bottom: 1.5rem;
 }
@@ -417,7 +447,7 @@
 
 .reportReplyIcon {
     position: absolute;
-    right:2rem;
+    right: 2rem;
     margin-right: 0;
     width: 1.3rem;
     cursor: pointer;
@@ -475,6 +505,7 @@
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    margin-top: 1rem;
 }
 
 .templateItem {
@@ -508,6 +539,7 @@
 .templateIcon {
     width: 1.5rem;
     height: 1.5rem;
+    margin-top: 0.5rem;
 }
 
 .templateItem {
@@ -524,6 +556,7 @@
     gap: 10px;
     overflow: hidden;
     flex: 1;
+    margin-left: 1rem;
 }
 
 /* 삭제 아이콘 */
@@ -534,15 +567,54 @@
 }
 
 /* 색상 클래스 정의 */
-.templateColor1::before { background-color: #f6ebe7; }  /* 베이지 */
-.templateColor2::before { background-color: #eae8f9; }  /* 연보라 */
-.templateColor3::before { background-color: #f8f1d7; }  /* 연노랑 */
-.templateColor4::before { background-color: #e0f7f3; }  /* 민트 */
-.templateColor5::before { background-color: #d9eaf7; }  /* 하늘 */
-.templateColor6::before { background-color: #fce4ec; }  /* 핑크 */
-.templateColor7::before { background-color: #f3e5f5; }  /* 보라핑크 */
-.templateColor8::before { background-color: #ececec; }  /* 회색 */
+.templateColor1::before {
+    background-color: #f6ebe7;
+    width: 20px;
+}
 
+/* 베이지 */
+.templateColor2::before {
+    background-color: #eae8f9;
+    width: 20px;
+}
+
+/* 연보라 */
+.templateColor3::before {
+    background-color: #f8f1d7;
+    width: 20px;
+}
+
+/* 연노랑 */
+.templateColor4::before {
+    background-color: #e0f7f3;
+    width: 20px;
+}
+
+/* 민트 */
+.templateColor5::before {
+    background-color: #d9eaf7;
+    width: 20px;
+}
+
+/* 하늘 */
+.templateColor6::before {
+    background-color: #fce4ec;
+    width: 20px;
+}
+
+/* 핑크 */
+.templateColor7::before {
+    background-color: #f3e5f5;
+    width: 20px;
+}
+
+/* 보라핑크 */
+.templateColor8::before {
+    background-color: #ececec;
+    width: 20px;
+}
+
+/* 회색 */
 
 
 .questionInput {
@@ -568,3 +640,43 @@
     color: #555;
 }
 
+.floatingCreateButton {
+    position: absolute;
+    bottom: 2rem;
+    right: 2rem;
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 50%;
+    background-color: gray;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 999;
+    text-decoration: none;
+    transition: background-color 0.2s;
+}
+
+.floatingCreateButton:hover {
+    background-color: #434343;
+}
+
+.plusIcon {
+    font-size: 2rem;
+    font-weight: bold;
+    color: white;
+    line-height: 1;
+}
+
+.color {
+    width: 1.5rem;
+    height: 1.5rem;
+    cursor: pointer;
+    filter: saturate(200%);
+    border-radius: 50%;
+}
+
+.icon {
+    width: 1.5rem;
+    cursor: pointer;
+}

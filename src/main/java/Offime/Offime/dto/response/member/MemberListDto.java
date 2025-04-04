@@ -35,7 +35,6 @@ public class MemberListDto {
                 .profileImageUrl(member.getMemberProfileFiles() != null
                         ? member.getMemberProfileFiles().getFilePath()
                         : null)
-                .workStatus(member.getWorkStatus().toString())
                 .build();
     }
 }
