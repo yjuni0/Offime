@@ -35,6 +35,7 @@ import AttendanceManagerForLeaderDetail from '../attendance/AttendanceManagerFor
 import Menu from '../member/pages/Menu';
 import Chatbot from '../expense/Chatbot';
 import ChangePassword from '../member/pages/ChangePassword';
+import TemplateDetail from "../reports/templates/TemplateDetail";
 
 import Notification from '../notification/Notification';
 import VacationApply from '../vacation/pages/VacationApply';
@@ -68,6 +69,7 @@ function Router() {
             <Route path="/replies/:reportId" element={<ReportReplies />} />
             <Route path="/schedule" element={<Schedule />} />
             <Route path="/templates/list" element={<TemplateList />} />
+                <Route path="/templates/detail/:templateId" element={<TemplateDetail/>}/>
             <Route
                 path="/reports/update/:reportId"
                 element={<ReportUpdate />}
