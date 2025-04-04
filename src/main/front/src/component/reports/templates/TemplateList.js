@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import axios from "axios";
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 
 function TemplateList() {
 
@@ -28,32 +28,33 @@ function TemplateList() {
     }, []);
 
     return (
-        <section className={"sec"}>
-            <div className={"inner"}>
-                <div className={"item"}>
+        <section className={"templateSection"}>
+            <div className={"templateInner"}>
                     <img style={{cursor: "pointer", width: "1.5rem", display: "inline"}}
-                         src={"/image/reportIcon/backArrow.png"}
+                         src={"/image/report/backArrow.png"}
                          onClick={() => navigate(-1)}/>
-                </div>
                 <div className="templateList">
                     {templateList.map((template) => (
                         <div
                             key={template.id}
                             className={`templateItem ${getColorClass(template.color)}`}
+                            onClick={() => navigate(`/templates/detail/${template.id}`)}
                         >
                             <div className="templateLeft">
                                 <img
-                                    src={`/image/reportIcon/icon${template.icon}.png`}
+                                    src={`/image/report/icon${template.icon}.png`}
                                     alt="템플릿 아이콘"
                                     className="templateIcon"
+                                    style={{marginTop:"0"}}
                                 />
                                 <p className="templateTitle">{template.title}</p>
                             </div>
                             <img
-                                src={"/image/reportIcon/recyclebin.png"}
+                                src={"/image/report/recyclebin.png"}
                                 alt="delete"
                                 className="templateDeleteIcon"
-                                onClick={() => {
+                                onClick={(e) => {
+                                    e.stopPropagation();
                                     if (window.confirm("정말 삭제하시겠습니까?")) {
                                         deleteTemplate(template.id);
                                     }
@@ -62,8 +63,13 @@ function TemplateList() {
                         </div>
 
                     ))}
+
                 </div>
+
             </div>
+            <Link to="/templates/create" className="floatingCreateButton">
+                <span className="plusIcon">＋</span>
+            </Link>
         </section>
     )
 

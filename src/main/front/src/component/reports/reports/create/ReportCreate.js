@@ -46,7 +46,7 @@ function ReportCreate() {
             <div className="reportCreateInner">
                 <img
                     onClick={() => navigate(-1)}
-                    src="/image/reportIcon/backArrow.png"
+                    src="/image/report/backArrow.png"
                     className="reportCreateBackIcon"
                 />
 

@@ -21,7 +21,7 @@ function ReportRepliesWrite({ reportId }) {
             />
             <button type="submit" className="replySubmitButton">
                 <img
-                    src="/image/reportIcon/check.png"
+                    src="/image/report/check.png"
                     alt="댓글 작성"
                     className="replySubmitIcon"
                 />
