@@ -1,7 +1,7 @@
 #schedule { margin-bottom: 0 }
 #schedule .calendar { width: 100%; text-align: center; transition: .3s; height: 100vh}
-#schedule .calendar-container.active .calendar { height: 50vh; overflow: hidden; }
-#schedule .calendar .calendar-header { display: flex; justify-content: flex-start; align-items: center; padding: 0 2rem}
+#schedule .calendar-container.active .calendar { height: 40vh; overflow: hidden; }
+#schedule .calendar .calendar-header { display: flex; justify-content: space-between; align-items: center; padding: 0 2rem}
 #schedule .calendar .calendar-header p { cursor: pointer; color: var(--primary_m); }
 #schedule .calendar .cal-month { font-size: var(--font_lg); color: var(--primary_m);}
 #schedule .calendar .weekdays { background-color: var(--natural_20); border-top: 1px solid var(--natural_40);border-bottom: 1px solid var(--natural_40)}
@@ -23,6 +23,7 @@
 #schedule .calendar .sched.blue { background-color: var(--primary_m) }
 #schedule .calendar .sched.navy { background-color: var(--primary_02) }
 #schedule .calendar .sched.yellow { background-color: var(--primary_03) }
+#schedule .calendar .sched.yellow p {color: var(--natural_80) !important; }
 #schedule .calendar .sched.green { background-color: var(--primary_04) }
 #schedule .calendar .sched.red { background-color: var(--primary_05) }
 
@@ -30,7 +31,7 @@
 #schedule .sched-btn img { display: block; width: 1.5rem; filter: invert(1); }
 #schedule .dark-area { display: none; position: fixed; top: 50%; left: 50%; transform:translate(-50%,-50%); width: var(--device-width); height: 100vh; background-color: rgba(0,0,0,0.4); z-index: 900; cursor: pointer;}
 #schedule .dark-area.active { display: block }
-#schedule .schedule-detail { display: block; position: fixed; bottom: 0; width: var(--device-width); height: 50vh; background-color: var(--natural_0); border-radius: var(--round-xlg) var(--round-xlg) 0 0; box-shadow: 0 -2px .5rem rgba(0,0,0,.2); z-index: 990; transform: translateY(100%); transition: .3s; overflow:hidden;}
+#schedule .schedule-detail { display: block; position: fixed; bottom: 0; width: var(--device-width); height: 60vh; background-color: var(--natural_0); border-radius: var(--round-xlg) var(--round-xlg) 0 0; box-shadow: 0 -2px .5rem rgba(0,0,0,.2); z-index: 990; transform: translateY(100%); transition: .3s; overflow:hidden;}
 #schedule .schedule-detail.active { transform: translateY(0); }
 #schedule .schedule-detail .color_list { display: flex; gap: 1rem; }
 #schedule .schedule-detail .color_list li { width: 1rem; height: 1rem; border-radius: 50%; cursor: pointer;}
