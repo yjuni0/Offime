@@ -6,11 +6,10 @@ import jakarta.persistence.Id;
 @Entity
 public class HolidayEntity {
     @Id
-    private String date; // YYYYMMDD 형식
+    private String date;
 
-    private String name; // 공휴일 이름
+    private String name;
 
-    // Getter & Setter
     public String getDate() {
         return date;
     }
