@@ -53,6 +53,9 @@ public class WebConfig implements WebMvcConfigurer {
         // /uploads/ 로 시작하는 모든 요청을 uploadPath로 변환
         registry.addResourceHandler("/uploads/**")
                 .addResourceLocations(uploadPath);
+
+        registry.addResourceHandler("/images/**")
+                .addResourceLocations("file:///C:/IntelliJ/Offime/uploads/");
     }
 
 }
