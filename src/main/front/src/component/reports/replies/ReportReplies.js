@@ -9,12 +9,8 @@ function ReportReplies() {
 
     return (
         <>
-                        <section className={"sec"}>
-                            <div className={"inner"}>
                                 <ReportRepliesList reportId={reportId}/>
                                 <ReportRepliesWrite reportId={reportId}/>
-                            </div>
-                        </section>
 
         </>
     )

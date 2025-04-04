@@ -1,33 +1,84 @@
-import {useState} from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 
-function ReportRepliesBlock({reply, deleteReply, updateReply}) {
-
+function ReportRepliesBlock({ reply, deleteReply, updateReply }) {
     const [isUpdate, setIsUpdate] = useState(false);
     const [content, setContent] = useState(reply.content);
+    const [member, setMember] = useState("");
 
+    const getmember = async () => {
+        await axios.get(`http://localhost:8080/member/${reply.writerId}`).then((res) => setMember(res.data));
+    };
 
+    const currentMember = localStorage.getItem("id");
+
+    const formatDate = (rawDate) => {
+        const date = new Date(rawDate);
+        const dayMap = ['일', '월', '화', '수', '목', '금', '토'];
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        const dayOfWeek = dayMap[date.getDay()];
+        const hour = String(date.getHours()).padStart(2, '0');
+        const minute = String(date.getMinutes()).padStart(2, '0');
+        return `${year}.${month}.${day}(${dayOfWeek}) ${hour}:${minute}`;
+    };
+
+    useEffect(() => {
+        getmember();
+    }, []);
 
     return (
-        <div className={"item btn btn-pm mt_sm"} style={{borderRadius: "10px"}} key={reply.createdAt}>
-            <p>{reply.writerId}</p>
-            <p>{reply.createdAt}</p>
-            {!isUpdate ? (
-                <div>
-                    <p>{reply.content}</p>
-                    <p onClick={() => setIsUpdate(true)} style={{cursor: "pointer"}}>수정</p>
-                </div>
-            ) : (
-                <div>
-                    <input type="text" value={content} onChange={(e) => setContent(e.target.value)}></input>
-                    <p onClick={() => {updateReply(reply.id, content); setIsUpdate(false)}} style={{cursor: "pointer"}}>수정완료</p>
-                </div>
-            )}
+        <>
+            <div className="reply-header">
+                <img className="reply-profile-img" alt="프로필" src="/image/reportIcon/펭귄.jpg" />
+                <p className="reply-writer-name">{member.name}</p>
+            </div>
 
-            <p onClick={() => deleteReply(reply.id)} style={{cursor: "pointer"}}>삭제</p>
-        </div>
-    )
-
+            <div className="reply-container">
+                {!isUpdate ? (
+                    <div className="reply-content-row">
+                        <p className="reply-content">{reply.content}</p>
+                        {currentMember == reply.writerId && (
+                            <div className="reply-button-group">
+                                <img
+                                    className="reply-action-icon"
+                                    src="/image/reportIcon/update.png"
+                                    alt="수정"
+                                    onClick={() => setIsUpdate(true)}
+                                />
+                                <img
+                                    className="reply-action-icon"
+                                    src="/image/reportIcon/recyclebin.png"
+                                    alt="삭제"
+                                    onClick={() => deleteReply(reply.id)}
+                                />
+                            </div>
+                        )}
+                    </div>
+                ) : (
+                    <div className="reply-edit-row">
+                        <input
+                            type="text"
+                            value={content}
+                            onChange={(e) => setContent(e.target.value)}
+                            className="reply-edit-input"
+                        />
+                        <button
+                            className="reply-save-button"
+                            onClick={() => {
+                                updateReply(reply.id, content);
+                                setIsUpdate(false);
+                            }}
+                        >
+                            저장
+                        </button>
+                    </div>
+                )}
+                <p className="reply-date">{formatDate(reply.createdAt)}</p>
+            </div>
+        </>
+    );
 }
 
-export default ReportRepliesBlock
+export default ReportRepliesBlock;

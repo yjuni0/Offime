@@ -68,23 +68,35 @@ function TemplateCreate() {
                     <section className={"sec"}>
                         <div className={"inner"}>
                             <div className={"item"}>
-                                <img onClick={() => navigate(-1)}
-                                     style={{display: "inline-block", cursor: "pointer", width: "1.5rem"}}
-                                     src={"/image/reportIcon/backArrow.png"}/>
-                                <div style={{textAlign: "center"}}>
-                                    <h3 style={{display: "inline-block"}} className={"title mt_md"}>새 템플릿 작성</h3>
+                                <img
+                                    onClick={() => navigate(-1)}
+                                    src={"/image/reportIcon/backArrow.png"}
+                                    className={"backArrowIcon"}
+                                />
+
+                                <div style={{textAlign: "center", marginBottom: "24px"}}>
+                                    <h3
+                                        className={"templateTitleBox"}
+                                    >
+                                        새 템플릿 작성
+                                    </h3>
                                 </div>
+
                                 <form onSubmit={create}>
                                     <div>
                                         <input
-                                            className={"input-txt input-lg mb_lg mlr-a mt_sm"}
-                                            type={"text"}
-                                            id={"title"}
-                                            placeholder={"제목"}
+                                            className={"templateTitleInput"}
+                                            type="text"
+                                            id="title"
+                                            placeholder="제목"
                                             value={title}
-                                            onChange={(e) => setTitle(e.target.value)}/>
+                                            onChange={(e) => setTitle(e.target.value)}
+                                            onFocus={(e) => e.target.style.borderColor = "#3b82f6"}
+                                            onBlur={(e) => e.target.style.borderColor = "#ccc"}
+                                        />
                                     </div>
-                                    <div className={"btn btn-max"} style={{display: "flex", background: "#ffffff"}}>
+
+                                    <div className={"btn btn-max iconSelector"}>
                                         <div style={{
                                             display: "grid",
                                             gridTemplateColumns: "repeat(5, 1fr)",
@@ -153,59 +165,62 @@ function TemplateCreate() {
                                                      opacity: icon === 10 ? 1 : 0.5
                                                  }}/>
                                         </div>
-                                        <div style={{
-                                            display: "grid",
-                                            gridTemplateColumns: "repeat(4, 1fr)",
-                                            gap: "0.5rem",
-                                            width: "50%"
-                                        }} className={"ml_lg"}>
-                                            <div className={"btn btn-pm btn-sm"} onClick={() => setColor(1)} style={{
+                                        <div className={"colorSelector"}>
+                                            <div className={"btn btn-sm"} onClick={() => setColor(1)} style={{
                                                 width: "1.5rem",
                                                 height: "1.5rem",
                                                 cursor: "pointer",
-                                                opacity: color === 1 ? 1 : 0.5
+                                                opacity: color === 1 ? 1 : 0.5,
+                                                backgroundColor: "#f6ebe7"
                                             }}/>
-                                            <div className={"btn btn-pl btn-sm"} onClick={() => setColor(2)} style={{
+                                            <div className={"btn btn-sm"} onClick={() => setColor(2)} style={{
                                                 width: "1.5rem",
                                                 height: "1.5rem",
                                                 cursor: "pointer",
-                                                opacity: color === 2 ? 1 : 0.5
+                                                opacity: color === 2 ? 1 : 0.5,
+                                                backgroundColor: "#eae8f9"
                                             }}/>
-                                            <div className={"btn btn-pk btn-sm"} onClick={() => setColor(3)} style={{
+                                            <div className={"btn btn-sm"} onClick={() => setColor(3)} style={{
                                                 width: "1.5rem",
                                                 height: "1.5rem",
                                                 cursor: "pointer",
-                                                opacity: color === 3 ? 1 : 0.5
+                                                opacity: color === 3 ? 1 : 0.5,
+                                                backgroundColor: "#f8f1d7"
                                             }}/>
-                                            <div className={"btn btn-p02 btn-sm"} onClick={() => setColor(4)} style={{
+                                            <div className={"btn btn-sm"} onClick={() => setColor(4)} style={{
                                                 width: "1.5rem",
                                                 height: "1.5rem",
                                                 cursor: "pointer",
-                                                opacity: color === 4 ? 1 : 0.5
+                                                opacity: color === 4 ? 1 : 0.5,
+                                                backgroundColor: "#e0f7f3"
                                             }}/>
-                                            <div className={"btn btn-p03 btn-sm"} onClick={() => setColor(5)} style={{
+                                            <div className={"btn btn-sm"} onClick={() => setColor(5)} style={{
                                                 width: "1.5rem",
                                                 height: "1.5rem",
                                                 cursor: "pointer",
-                                                opacity: color === 5 ? 1 : 0.5
+                                                opacity: color === 5 ? 1 : 0.5,
+                                                backgroundColor: "#d9eaf7"
                                             }}/>
-                                            <div className={"btn btn-p04 btn-sm"} onClick={() => setColor(6)} style={{
+                                            <div className={"btn btn-sm"} onClick={() => setColor(6)} style={{
                                                 width: "1.5rem",
                                                 height: "1.5rem",
                                                 cursor: "pointer",
-                                                opacity: color === 6 ? 1 : 0.5
+                                                opacity: color === 6 ? 1 : 0.5,
+                                                backgroundColor: "#fce4ec"
                                             }}/>
-                                            <div className={"btn btn-p05 btn-sm"} onClick={() => setColor(7)} style={{
+                                            <div className={"btn btn-sm"} onClick={() => setColor(7)} style={{
                                                 width: "1.5rem",
                                                 height: "1.5rem",
                                                 cursor: "pointer",
-                                                opacity: color === 7 ? 1 : 0.5
+                                                opacity: color === 7 ? 1 : 0.5,
+                                                backgroundColor: "#f3e5f5"
                                             }}/>
-                                            <div className={"btn btn-e btn-sm"} onClick={() => setColor(8)} style={{
+                                            <div className={"btn btn-sm"} onClick={() => setColor(8)} style={{
                                                 width: "1.5rem",
                                                 height: "1.5rem",
                                                 cursor: "pointer",
-                                                opacity: color === 8 ? 1 : 0.5
+                                                opacity: color === 8 ? 1 : 0.5,
+                                                backgroundColor: "#ececec"
                                             }}/>
                                         </div>
                                     </div>
@@ -222,26 +237,26 @@ function TemplateCreate() {
                                                                        index={questionIndex}>
                                                                 {(provided) => (
                                                                     <div
-                                                                        className={"btn btn-pm pt_sm mb_sm"}
+                                                                        className={"draggableItem"}
                                                                         ref={provided.innerRef}
                                                                         {...provided.draggableProps}
-                                                                        style={{
-                                                                            ...provided.draggableProps.style,
-                                                                            borderRadius: "30px",
-                                                                        }}>
-                                                                        <div
-                                                                            style={{width: "100%"}} {...provided.dragHandleProps}>
-                                                                            <hr className={"bar bar-lg"}/>
-                                                                            <hr className={"bar bar-lg"}/>
-                                                                            <hr className={"bar bar-lg"}/>
+                                                                    >
+                                                                        <div className={"dragHandle"}
+                                                                            {...provided.dragHandleProps}
+                                                                        >
+                                                                            <hr/>
+                                                                            <hr/>
+                                                                            <hr/>
                                                                         </div>
-                                                                        <TemplateQuestionBlock question={q}
-                                                                                               questionIndex={questionIndex}
-                                                                                               updateQuestion={(i, newQ) => {
-                                                                                                   const updated = [...questionList];
-                                                                                                   updated[i] = newQ;
-                                                                                                   setQuestionList(updated);
-                                                                                               }}/>
+                                                                        <TemplateQuestionBlock
+                                                                            question={q}
+                                                                            questionIndex={questionIndex}
+                                                                            updateQuestion={(i, newQ) => {
+                                                                                const updated = [...questionList];
+                                                                                updated[i] = newQ;
+                                                                                setQuestionList(updated);
+                                                                            }}
+                                                                        />
                                                                     </div>
                                                                 )}
                                                             </Draggable>
@@ -252,18 +267,32 @@ function TemplateCreate() {
                                             </Droppable>
                                         </DragDropContext>
                                     </div>
-                                    <div className={"mlr-a"}>
-                                        <button className={"btn btn-md btn-pm mb_lg mlr-a"} type="button"
-                                                onClick={questionAdd}>질문 추가
+
+                                    <div className={"mlr-a"}
+                                         style={{display: "flex", justifyContent: "center", marginBottom: "24px"}}>
+                                        <button
+                                            className={"addQuestionButton btn-pm btn"}
+                                            type="button"
+                                            onClick={questionAdd}
+                                        >
+                                            질문 추가
                                         </button>
                                     </div>
-                                    <input className={"submit btn btn-max"} type="submit" value="템플릿 생성"/>
+
+                                    <input
+                                        className={"submitButton"}
+                                        type="submit"
+                                        value="템플릿 생성"
+                                        onMouseOver={(e) => e.target.style.backgroundColor = "#2563eb"}
+                                        onMouseOut={(e) => e.target.style.backgroundColor = "#3b82f6"}
+                                    />
+
                                 </form>
                             </div>
                         </div>
                     </section>
 
-)
+    )
 }
 
 export default TemplateCreate;
