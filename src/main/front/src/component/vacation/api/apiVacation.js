@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { axiosPrivate } from "../../axios/axios";
 
 export const getLatestVacation = async () => {

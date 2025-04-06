@@ -1,8 +1,7 @@
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import {  useLocation, useNavigate } from "react-router-dom";
 import "../../css/common.css";
 import useCount from "../notification/hooks/useCount";
 import useSelectTitle from "./utils/useSelectTitle";
-import { useEffect } from "react";
 import BackButton from "./BackButton";
 import NotificationIcon from "./NotificationIcon";
 import homeImage from "./image/home.png";
@@ -17,7 +16,6 @@ const CommonNav = (messages) => {
   const handleListPage = () => {
     navigate("/vacationList");
   };
-  useEffect(() => {}, [count]);
 
   return (
     <nav

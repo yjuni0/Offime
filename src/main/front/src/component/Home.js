@@ -1,9 +1,15 @@
 import { Link } from "react-router-dom";
 import ExpensesCount from "./expense/ExpensesCount ";
-
+import useSse from "./notification/hooks/useSse";
+import CommonNav from "../component/header/CommonNav";
+import { ToastContainer } from "react-toastify";
+import NotificationToast from "./notification/NotificationToast";
 function Home() {
+  const messages = useSse();
+
   return (
     <>
+      <CommonNav messages={messages} />
       <h1>Check</h1>
       <div className={"item mlr-a"}>
         <button className={"btn btn-lg btn-pm mb_md mlr-a"}>
@@ -25,9 +31,16 @@ function Home() {
           <Link to={"/vacation"}>휴가</Link>
         </button>
         <ExpensesCount />
+        <ToastContainer
+          autoClose={3000}
+          position="top-center"
+          hideProgressBar="false"
+          closeOnClick="true"
+          draggable="true"
+        />
+        <NotificationToast messages={messages} />
       </div>
     </>
   );
 }
 export default Home;
-

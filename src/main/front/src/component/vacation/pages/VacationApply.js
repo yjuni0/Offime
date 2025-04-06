@@ -8,7 +8,7 @@ const VacationApply = () => {
   const getMemberData = async () => {
     const res = await axiosPrivate.get(`/member/${memberId}`);
     setResponse(res.data);
-    console.log("멤버 정보 ", res);
+    console.log("신청페이지 멤버 정보 ", res);
   };
   useEffect(() => {
     getMemberData();

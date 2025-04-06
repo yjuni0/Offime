@@ -1,4 +1,3 @@
-import HeaderNav from "../header/CommonNav";
 import "../../css/common.css";
 import { useNavigate } from "react-router-dom";
 import { axiosPrivate } from "../axios/axios";
