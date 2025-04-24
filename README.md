@@ -1,70 +1,133 @@
-# Getting Started with Create React App
+# 🕒 Offime - 출퇴근 및 근무 태도 관리 웹 애플리케이션
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+**Offime**은 팀원들의 근무 상태와 출퇴근 현황을 효율적으로 관리할 수 있는 **통합형 웹 애플리케이션**입니다. 직관적인 UI와 실용적인 기능을 통해 조직의 업무 흐름과 생산성을 향상시키는 것을 목표로 합니다.
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## 📌 기획 의도
 
-### `npm start`
+기존 수동 방식의 출퇴근 기록 시스템은 정확성과 신뢰도가 낮고, 관리 측면에서도 많은 비효율을 낳고 있었습니다.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- 수기 작성 방식(41.6%)이 여전히 주를 이루며, 잦은 오류와 데이터 누락이 발생
+- 동일한 직원의 출퇴근 기록이 일관되지 않거나 누락되어 통계 분석에 어려움 발생
+- 관리자가 매일 출결 내용을 수기로 확인해야 하며, 업무 부담 가중
+- 기록이 종이, 엑셀, 수기 등 다양한 포맷으로 분산되어 통합 관리가 어려움
+- 관리자와 사용자 모두에게 불편한 환경이 지속됨
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+이러한 문제 인식을 바탕으로, 실시간 출결 관리와 업무 보고를 **하나의 플랫폼**에서 처리할 수 있는 시스템의 필요성을 느껴 본 프로젝트를 기획하게 되었습니다.
 
-### `npm test`
+또한 이 프로젝트는 단순한 기능 구현을 넘어서, 실무에 가까운 CRUD 중심의 기능 흐름, 프론트엔드와 백엔드 간의 REST API 연동, DB 모델링 등 다양한 개발 역량을 키우는 것을 목적으로 하였습니다.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+**수요는 존재하지만 아직 충분히 서비스화되지 않은 '근태 관리' 시스템**이라는 점에서 실용성과 학습 두 측면을 모두 충족하는 주제라고 판단하였습니다.
 
-### `npm run build`
+---
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## 🎯 개발 목표
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+출퇴근 기록, 스케줄 관리, 보고서 작성 등 **근태 및 업무 활동 전반을 통합 관리할 수 있는 모바일 중심의 웹 플랫폼**을 구축하는 것이 목표입니다.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### 📱 정확하고 효율적인 출결 관리
 
-### `npm run eject`
+- 출퇴근 시간을 실시간으로 체크 가능
+- 관리자와 사용자가 실시간으로 출결 현황 파악 가능
+- 출결 데이터 자동화 및 통계 기반 행정 업무 최소화
+- 직관적 UI/UX를 고려한 사용자 중심 설계
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### 🗂 간편한 업무 관리 및 보고
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- 보고서 작성과 승인 절차를 모바일에서 간편하게 처리
+- 휴가 신청과 승인 여부를 실시간 알림으로 확인
+- 스케줄 관리까지 통합한 올인원 업무 플랫폼 구성
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+---
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## 👥 팀원 구성 및 역할
 
-## Learn More
+| 이름       | 역할 및 담당 기능                                                                              |
+| -------- | --------------------------------------------------------------------------------------- |
+| 김성우 (PM) | 프론트 / 백엔드 개발 : 스케줄 파트 담당 / 공통 스타일 CSS 제작 / 공용 캘린더 개발 / 캘린더 시스템 내 CRUD 기능 개발                 |
+| 최수민(PM)  | 프론트 / 백엔드 개발 : 멤버 파트 담당 / JWT를 이용한 인증 시스템 개발 / 회원가입 신청 및 승인 기능 개발                          |
+| 손수용 (PL) | 프론트 / 백엔드 개발 : 보고서 파트 담당 / 템플릿 작성 기능 개발 / 보고서, 댓글 CRUD 개발 / 드래그 앤 드롭 기능 구현                  |
+| 박시진      | 프론트 / 백엔드 개발 : 비용처리 파트 담당 / 비용처리 관련 CRUD 개발- 헤더 / 푸터 제작 / 제미니 AI 연동 챗봇 기능 구현               |
+| 오예준      | 프론트 / 백엔드 개발 : 휴가 및 알림 파트 담당 / RabbitMQ를 이용한 비동기적 실시간 알림 시스템 구현 / 휴가 신청 CRUD 개발            |
+| 이영현      | 프론트 / 백엔드 개발 : 출결 및 근태 현황 파트 담당 / Geolocation API를 이용한 GPS 기반 출퇴근 처리 기능 개발 / 출퇴근 현황 페이지 개발 |
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+---
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## 🛠 작업 분배 기준
 
-### Code Splitting
+작업은 프론트엔드와 백엔드의 비중을 고려해 **기능 단위**로 분배하였으며, 한 사람이 하나의 기능을 처음부터 끝까지 책임지고 구현하는 방식을 적용했습니다.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+---
 
-### Analyzing the Bundle Size
+## ✨ 구현 기능 상세
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+### 🔹 김성우 (PM)
 
-### Making a Progressive Web App
+- 공통 스타일 CSS 제작
+- 공용 캘린더 개발 및 CRUD 구현
+- 스케줄 파트 구현 및 캘린더 시스템 연동
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+### 🔹 최수민
 
-### Advanced Configuration
+- JWT 기반 인증 시스템 구현
+- 회원가입 신청 및 승인 기능 개발
+- 멤버 관련 DB 설계 및 연동
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+### 🔹 손수용 (PL)
 
-### Deployment
+- 드래그 앤 드롭 기반 템플릿 작성 기능 구현
+- 보고서 작성 / 조회 / 수정 기능 구현 (REST API 기반)
+- 댓글 CRUD 기능 개발
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+### 🔹 박시진
 
-### `npm run build` fails to minify
+- 비용처리 기능 관련 CRUD 구현
+- 헤더 / 푸터 UI 제작
+- 제미니 AI 연동 챗봇 기능 구현
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### 🔹 오예준
+
+- 휴가 신청 / 승인 기능 구현
+- RabbitMQ 기반 실시간 알림 시스템 구현
+
+### 🔹 이영현
+
+- GPS 기반 출퇴근 기능 개발 (Geolocation API 활용)
+- 출퇴근 현황 시각화 페이지 개발
+
+---
+
+## ⚙️ 사용 기술 및 개발 환경
+
+### 💻 개발 도구
+
+- VSCode: 프론트엔드 개발
+- IntelliJ IDEA: 백엔드 개발
+- GitHub: 형상 관리 및 협업
+
+### 🧩 프론트엔드
+
+- HTML5 / CSS3 / JavaScript (ES6)
+- React: SPA 기반 화면 구성
+- Axios: REST API 통신
+- npm: 패키지 관리
+- HTML5 Geolocation API: 위치 기반 기능
+- @hello-pangea/dnd: 드래그 앤 드롭 구현 라이브러리
+
+### ⚙️ 백엔드
+
+- Java 17
+- Spring Boot: 서버 프레임워크
+- Gradle: 빌드 도구
+- JPA: ORM 기반 DB 연동
+- REST API: 프론트엔드와의 데이터 통신 구현
+
+### 🗄 데이터베이스
+
+- MySQL: 관계형 데이터베이스 설계 및 연동
+
+### 🌐 기타
+
+- Chrome, Edge 등 주요 브라우저를 통한 클라이언트 테스트
+
